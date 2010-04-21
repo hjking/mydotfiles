@@ -1,0 +1,14 @@
+#-----------------
+defencoding eucJP
+escape ^z^z
+hardstatus alwayslastline "%w"
+ 
+ shelltitle "$ |bash"
+ hardstatus alwayslastline "%`%-w%{=b bw}%n %t%{-}%+w"
+ bind s
+ startup_message off  # おまけ: 起動画面OFF
+ autodetach on        # おまけ: 回線切断時に自動でdetach
+ defscrollback 1024   # おまけ: スクロールバッファ行数を増やす
+ bind ' ' windowlist -b
+ #-----------------
+
