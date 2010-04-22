@@ -1,73 +1,921 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; File Name : .emacs
+;; Emacs customization file
+;; Auther : Hong Jin
+;; Last Change: 2010/04/22-12:44 .
+;; Email : hon9jin@gmail.com
+;; History:
+;; +--------+-------------+------------------------------------+
+;; |  Date  |  Revision   | Description                        |
+;; +--------+-------------+------------------------------------+
+;; |        |             |                                    |
+;; +--------+-------------+------------------------------------+
+;; |        |             |                                    |
+;; +--------+-------------+------------------------------------+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(put 'upcase-region 'disabled nil)
-;; Text mode
-(setq default-major-mode 'text-mode)
-;;(setq text-mode-hook '(lambda nil (setq fill-column 100) (auto-fill-mode 1)))
-(setq text-mode-hook '(lambda nil (auto-fill-mode 1)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; ==== General Stuff ====
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;Set user name
+(setq user-full-name "Hong Jin")
+;; Set email address
+(setq user-mail-address "hon9jin@gmail.com");
+;;(setq sendmail-program "/usr/sbin/sendmail")
 
-;; Chinese
-(set-language-environment 'Chinese-GB)
-(set-keyboard-coding-system 'euc-cn)
-(set-clipboard-coding-system 'euc-cn)
-(set-terminal-coding-system 'euc-cn)
-(set-buffer-file-coding-system 'euc-cn)
-(set-selection-coding-system 'euc-cn)
-(modify-coding-system-alist 'process "*" 'euc-cn)
-(setq default-process-coding-system '(euc-cn . euc-cn))
-(setq-default pathname-coding-system 'euc-cn)
+(defconst is-before-emacs-21 (>= 21 emacs-major-version) "before ver 21")
+(defconst is-after-emacs-23  (<= 23 emacs-major-version) "after ver 23")
 
-;; auto insert
-(setq auto-insert t)
-(setq auto-insert-query t)
-(add-hook 'find-file-hooks 'auto-insert)
-;;(setq auto-insert-directory "~/insert/")
-;;
-;;Time stamp
-(add-hook 'write-file-hooks 'time-stamp)
-(setq time-stamp-format "%:u %02m/%02d/%04y %02H:%02M:%02S")
 
-;; no bell ring when TAB
-(setq visible-bell t)
-;; yes/no ==> y/n
-(fset 'yes-or-no-p 'y-or-n-p)
+;;; === configuration file ===
+;; custom file: modified setting by menu bar
+(setq custom-file ".emacs.d/plugin/my-custom.el")
+
+;; default dir
+(setq default-directory "~/")
+
+;;; === load file ===
+(load custom-file 'noerror)
+
+;;; === startup ===
+;; no GNU emacs startup logo
+(setq inhibit-startup-message t)
+(setq gnus-inhibit-startup-message t)
+(setq initial-scratch-message "")
+
+;; Show marked text
+(setq transient-mark-mode '1)
+
+;; use a bigger kill ring
+(setq kill-ring-max 200)
+
+;; don't add new lines when scrolling
+(setq next-line-add-newlines nil)
+
+;; add a new line at the end of file
+(setq require-final-newline t)
+
+;; minibuffer setting
+;; If non-`nil', resize the minibuffer so its entire contents are visible.
+(setq resize-minibuffer-mode t)
+;; auto-complete on in minibuffer
+(partial-completion-mode 1)
+;; auto-complete when execute M-x functions and variables
+(icomplete-mode 1)
+(define-key minibuffer-local-completion-map (kbd "SPC") 'minibuffer-complete-word)
+
+;; auto-complete
+(minibuffer-electric-default-mode t)
+
 ;; display row and column number
 (setq column-number-mode t)
 (setq line-number-mode t)
+(setq display-line-number-format "%3d ")
+(setq line-number-display-limit 1000000)
+
+;; forward to same name file
+(setq uniquify-buffer-name-style 'forward)
+
+;; use current buffer when read man
+(setq Man-notify-method 'pushy)
+
+;; better buffer switching
+(iswitchb-mode 1)
+
+;; hide toolbar with emacs version >=21 :
+(if (>= emacs-major-version 21)
+  (tool-bar-mode -1)
+;;(setq tool-bar-mode nil)
+)
+
+;; menu bar
+;; (setq menu-bar-mode t)
+
+;; scroll bar
+;; no scroll bar
+(scroll-bar-mode nil)
+;;  ;; scroll when 3 lines far
+(setq scroll-step 1 scroll-margin 3 scroll-conservatively 10000)
+;;  (setq scroll-bar-mode-explicit t)
+;; scroll bar at right hand
+;;  (set-scroll-bar-mode `right)
+
+;; Non-nil if searches should ignore case
+(setq case-fold-search t)
+
+(put 'set-goal-column 'disable nil)
+(put 'narrow-to-region 'disable nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+;; Shut off warning messages when using system shell
+(setq w32-allow-system-shell t)
+
+;; no bell ring when TAB
+(setq visible-bell nil)
+
+;; no ring and screen flash
+(setq ring-bell-function 'ignore)
+
+;; Tab width
+(setq default-tab-width 2)
+(setq-default indent-tabs-mode nil)
+(setq sentence-end-double-space nil)
+
+;; yes/no ==> y/n
+(fset 'yes-or-no-p 'y-or-n-p)
+
 ;; highlight selected area
-(transient-mark-mode t)
+(setq transient-mark-mode t)
+
+;; highlight current line
+(require 'hl-line)
+;;(hl-line-mode 1)
+(global-hl-line-mode 1)
+
+;; not open new frame when WoMan
+(setq woman-use-own-frame nil)
+
 ;; show paren
-(show-paren-mode t)
-;; no temp file
-(setq-default make-backup-files nil)
+(setq show-paren-mode t)
+(setq show-paren-style 'parentheses)
 
-(auto-image-file-mode t)
+;;auto pairing
+(setq skeleton-pair t)
+(setq skeleton-autowrap nil)
+;; (setq skeleton-pair-alist  '(
+;;     (?\(? _ ")")
+;;     (?\[? _ "]")
+;;     (?\{? _ "}")))
+(global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
 
+;; C-k delete a whole line
+(setq-default kill-whole-line t)
+
+;; no backup file
+(setq make-backup-files nil
+      backup-inhibited t)
+
+;; bookmark
+(setq bookmark-default-file "~/.emacs.d/.emacs_bmk")
+(setq bookmark-save-flag t)
+
+;; abbrev
+(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
+(setq-default abbrev-mode t)
+(setq save-abbrevs nil)
+
+;; load-path
+(setq load-path (cons "~/.emacs.d/plugin" load-path))
+;;  (setq emacs-dir (expand-file-name "~/.emacs.d/"))
+;;  (add-to-list 'load-path emacs-dir)
+;;  (setq plugin-dir (concat emacs-dir "plugin/"))
+;;  (setq conf-dir (concat emacs-dir "conf/"))
+;;  (add-to-list 'load-path plugin-dir)
+;;  (add-to-list 'load-path conf-dir)
+
+;; copy
+;; use clipboard
 (setq x-select-enable-clipboard t)
+;; middle button for paste
+(setq mouse-yank-at-point t)
+
+;; calendar setting
+(setq calendar-load-hook 
+  '( lambda ()
+     (set-face-foreground 'diary-face "skyblue")
+     (set-face-background 'holiday-face "slate blue")
+     (set-face-foreground 'holiday-face "white")
+   )
+)
+;; set location
+(setq calendar-location-name "Osaka")
+;;
+(setq calendar-remove-frame-by-deleting t)
+;; week start with Mon
+(setq calendar-week-start-day 1)
+
+;; after 1 second typed M-x CMD, display CMD binding key
+(setq suggest-key-bindings 1)
+
+;; backup setting
+;; default backup folder:~/.emacs.d/auto-save-list/
+;; version control on
+(setq version-control t)
+;; auto save interval
+(setq auto-save-interval 80)
+;; backup original version twice:before 1st edit and 2nd edit
+(setq kept-old-versions 2)
+;; backup latest version 5 times
+(setq kept-new-versions 5)
+;; delete old versions except above 7 version
+(setq delete-old-versions t)
+;; set backup file path
+(setq backup-directory-alist '(("." . "~/.emacs.d/tmp/.emacs.tmp")))
+;; backup method: copy directly
+(setq backup-by-copying t)
+;; in case of press "print" of menu bar
+(fset 'print-buffer 'ignore)
+(setq lpr-command "")
+(setq printer-name "")
+;; display images
+;;  (require 'image-mode)
+(auto-image-file-mode)
+;;  (define-key image-mode-map (kbd "'")  'switch-to-other-buffer)
+
+;; handle compressed file
+(require 'jka-compr)
+(auto-compression-mode 1)
+
+;; Mouse setting
+;; move mouse when point is coming
+(mouse-avoidance-mode 'animate)
+;; keep cursor at the end of the line
+(setq track-eol t)
+;; use mouse wheel
+(mouse-wheel-mode t)
+;;(global-set-key (kbd "<mouse-1>") 'mouse-set-point)           ;;default
+;;(global-set-key (kbd "<down-mouse-1>") 'mouse-drag-region)    ;;default
+;;(global-set-key (kbd "<mouse-2>") 'mouse-yank-at-click)       ;;default
+;;(global-set-key (kbd "<C-down-mouse-1>") 'mouse-buffer-menu)
+;;(global-set-key (kbd "<mouse-3>") 'mouse-save-then-kill)
+;;(global-set-key (kbd "<S-down-mouse-1>") 'mouse-set-font)
+;;(global-set-key (kbd "<C-down-mouse-2>") 'mouse-popup-menuar-stuff)
+;; fast copy and paste
+(require 'mouse-copy)
+(global-set-key [M-down-mouse-1] 'mouse-drag-secondary-pasting)
+(global-set-key [M-S-down-mouse-1] 'mouse-drag-secondary-moving)
+
 ;; display time
-;;(display-time-mode 1)
-;;(setq display-time-24hr-format t)
+;; on
+(display-time-mode 1)
+;; use 24-hour format
+(setq display-time-24hr-format t)
+(setq display-time-interval 10)
+;; display time,day and time
+(setq display-time-day-and-date t)
+(display-time)
 
+;; display function the cursor is in
+(which-function-mode)
+
+;; display file name on the frame title
+;;(setq frame-title-format "%n%F/%b")
+;;(setq frame-title-format '((:eval (getenv-internal "LOGNAME"))
+;;(setq frame-title-format '((:eval (getenv-internal "USER"))
+(setq frame-title-format '(
+   "Emacs:"
+   (:eval ( user-full-name))
+   "@"
+   (:eval (getenv-internal "HOSTNAME"))
+   ":"
+   (:eval (or (buffer-file-name) (buffer-name))))
+)
+
+;; highlight syntax
 (global-font-lock-mode t)
+(setq font-lock-maximum-decoration t)
+;;(setq font-lock-global-modes '(not text-mode))
+;;(setq font-lock-verbose t)
+;;(setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
 
-;; display font
-;;(set-default-font "clean 8x16")
-(set-default-font "9x15")
-
-;; session
-;;(add-to-list 'load-path "<path to session>")
-;;(require 'session)
-;;(add-hook 'after-init-hook 'session-initialize)
+;; font setting
+(set-default-font "clR8x14")
+;;(set-default-font "-Misc-Fixed-Medium-R-Normal--12-100-75-75-C-60-ISO8859-1")
+;;(set-default-font "Vera Sans Mono-14")
+;;(set-default-font "-*-Monaco-normal-r-*-*-17-102-120-120-c-*-iso8859-1")
+;;(set-default-font "Monospace-10")
+;;(set-default-font "-adobe-courier-medium-r-normal--18-180-75-75-m-110-iso8859-1")
 
 ;; color
 (add-to-list 'load-path "~/.emacs.d/plugin/color_th")
 (require 'color-theme)
 (setq color-theme-is-global t)
-(color-theme-jedit-grey)
+(color-theme-hongjin)
+;;(color-theme-jsc-dark)
+;;(color-theme-ramangalahy)
+;;(color-theme-vim-colors)
+;;(color-theme-jedit-grey)
 
-;; Tab width
-(setq default-tab-width 4)
+;; confirm before quit emacs
+(setq confirm-kill-emacs 'yes-or-no-p)
+;; recognize Win path
+(setq ffap-string-at-point-mode-alist
+      '((file "--:\\\\$+<>@-Z_a-z~*?" "<@" "@>;.,!:")
+        (url "--:=&?$+@-Z_a-z~#,%;*" "^A-Za-z0-9" ":;.,!?")
+        (nocolon "--9$+<>@-Z_a-z~" "<@" "@>;.,!?")
+        (machine "-a-zA-Z0-9." "" ".")
+        (math-mode ",-:$+<>@-Z_a-z~`" "<" "@>;.,!?`:")))
 
-;; Verilog-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;-------------P L U G I N----S E T T I N G----S T A R T------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+(add-to-list 'load-path "~/.emacs.d/plugin")
+
+;; [ TAG ]------------------------------------------------------------
+;;; ctags -e -R *.cpp *.h
+;;; M-. : find-tag ; M-* : jump back ; 
+;;; M-x tags-search : regexp-search
+;;; M-, : resume 'tags-search'
+;;; M-x tags-apropos : list all tags in a tag file that match a regexp
+;;; M-x list-tags : list all tags defined in a source file
+(setq path-to-ctags "/usr/bin/ctags")
+(defun my-create-tags (dir-name)
+    "Create tags file."
+    (interactive "DDirectory: ")
+    (shell-command
+      (format "%s -f %s/TAGS -e -R %s" path-to-ctags dir-name dir-name)
+    )
+)
+
+
+
+;; [ ibuffer ]-----------------------------------------------------------
+;; buffer switch
+(message ">>>>> Loading [ ibuffer ] Customizations ....")
+(require 'ibuffer)
+(require 'ibuf-ext nil t)
+(when (featurep 'ibuffer)
+  (global-set-key (kbd "C-x C-b")   'ibuffer)
+  (define-key ibuffer-mode-map "r"  'ywb-ibuffer-rename-buffer)
+  (define-key ibuffer-mode-map (kbd "C-x C-f")  'ywb-ibuffer-find-file)
+  (define-key ibuffer-mode-map " "  'scroll-up)
+  (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (setq ibuffer-filter-groups
+                    '(
+                      ("*buffer*" (name . "\\*.*\\*"))
+                      ("TAGS" (name . "^TAGS\\(<[0-9]+>\\)?$"))
+                      ("dired" (mode . dired-mode))
+                      ("perl" (mode . cperl-mode))
+                      ("elisp" (or (mode . emacs-lisp-mode)
+                                   (mode . lisp-interaction-mode)))
+                      ))))
+  (setq ibuffer-saved-filters
+      '(("t" ((or (mode . latex-mode)
+                 (mode . plain-tex-mode))))
+        ("c" ((or (mode . c-mode)
+                 (mode . c++-mode))))
+        ("p" ((mode . cperl-mode)))
+        ("e" ((or (mode . emacs-lisp-mode)
+                  (mode . lisp-interaction-mode))))
+        ("d" ((mode . dired-mode)))
+        ("s" ((mode . shell-mode)))
+        ("i" ((mode . image-mode)))
+        ("h" ((mode . html-mode)))
+        ("gnus" ((or (mode . message-mode)
+                     (mode . mail-mode)
+                     (mode . gnus-group-mode)
+                     (mode . gnus-summary-mode)
+                     (mode . gnus-article-mode))))
+        ("pr" ((or (mode . emacs-lisp-mode)
+                   (mode . cperl-mode)
+                   (mode . c-mode)
+                   (mode . c++-mode)
+                   (mode . php-mode)
+                   (mode . java-mode)
+                   (mode . idl-mode)
+                   (mode . lisp-interaction-mode))))
+        ("m" ((mode . muse-mode)))
+        ("w" ((or (mode . emacs-wiki-mode)
+                  (mode . muse-mode))))
+        ("*" ((name . "*")))
+        ))
+  )
+;;;###autoload
+(defun ywb-ibuffer-rename-buffer ()
+  (interactive)
+  (call-interactively 'ibuffer-update)
+  (let* ((buf (ibuffer-current-buffer))
+         (name (generate-new-buffer-name
+                (read-from-minibuffer "Rename buffer(to new name): "
+                                      (buffer-name buf)))))
+    (with-current-buffer buf
+      (rename-buffer name)))
+  (call-interactively 'ibuffer-update))
+(defun ywb-ibuffer-find-file ()
+  (interactive)
+  (let ((default-directory (let ((buf (ibuffer-current-buffer)))
+      (if (buffer-live-p buf)
+        (with-current-buffer buf
+          default-directory)
+        default-directory))))
+    (call-interactively 'ido-find-file)))
+
+
+;; [ ido ]-----------------------------------------------------------
+(message ">>>>> Loading [ ido ] Customizations ....")
+(require 'ido nil t)
+(when (featurep 'ido)
+  (ido-mode 1)
+  (setq ido-save-directory-list-file "~/.emacs.d/_ido_last"))
+
+
+;; [ windmove ]------------------------------------------------------
+;;  (require 'windmove) ;; default: Shift and arrow keys
+;;  (windmove-default-keybindings)
+;;  (when (featurep 'windmove)
+;;    (global-set-key (kbd "S-<down>")  'windmove-down)
+;;    (global-set-key (kbd "S-<up>")    'windmove-up)
+;;    (global-set-key (kbd "S-<left>")  'windmove-left)
+;;    (global-set-key (kbd "S-<right>") 'windmove-right)
+;;    (windmove-default-keybindings)
+;;  )
+;;  (windmove-default-keybindings 'meta)
+
+
+;; [ Table ]----------------------------------------------------------
+(message ">>>>> Loading [ table ] Customizations ....")
+(require 'table)
+(autoload 'table-insert "table" "WYGIWYS table editor")
+(add-hook 'text-mode-hook 'table-recognize)
+
+
+;; [ redo+ ]----------------------------------------------------------
+(message ">>>>> Loading [ redo+ ] Customizations ....")
+(require 'redo+)
+
+
+;; [ htmlize ]--------------------------------------------------------
+(message ">>>>> Loading [ htmlize ] Customizations ....")
+(require 'htmlize)
+
+
+;; [ pager ]----------------------------------------------------------
+;;; Excellent package for better scrolling in emacs
+;;; should be default package. But now it can be downloaded
+;;; from: http://user.it.uu.se/~mic/pager.el
+(message ">>>>> Loading [ pager ] Customizations ....")
+(require 'pager)
+(global-set-key "\C-v"     'pager-page-down)
+(global-set-key [next]     'pager-page-down)
+(global-set-key "\ev"      'pager-page-up)
+(global-set-key [prior]    'pager-page-up)
+(global-set-key '[M-up]    'pager-row-up)
+(global-set-key '[M-kp-8]  'pager-row-up)
+(global-set-key '[M-down]  'pager-row-down)
+(global-set-key '[M-kp-2]  'pager-row-down)
+
+
+;; [ browse-kill-ring ]-----------------------------------------------
+;; Select something that you put in the kill ring ages ago.
+;; enhance kill ring function
+(message ">>>>> Loading [ browse-kill-ring ] Customizations ....")
+(require 'browse-kill-ring)
+(require 'browse-kill-ring+)
+(browse-kill-ring-default-keybindings)
+(global-set-key (kbd "C-c k") 'browse-kill-ring)
+
+
+;; [ remember ]-------------------------------------------------------
+(message ">>>>> Loading [ remember ] Customizations ....")
+(require 'remember)
+
+
+;; [ multi-term ]-------------------------------------------------------
+;; conflict with Emacs Info: with-selected-window void
+;;  (message ">>>>> Loading [ mutil-term ] Customizations ....")
+;;  (require 'multi-term)
+;;  (setq multi-term-program "/bin/tcsh")
+;;  (setq multi-term-switch-after-close nil)
+;;  (defun term-mode-settings ()
+;;    "Settings for term-mode"
+;;    (make-local-variable 'scroll-margin)
+;;    (setq-default scroll-margin 0)
+;;  )
+;;  (add-hook 'term-mode-hook 'term-mode-settings)
+;;  (global-set-key "\M-t"              'multi-term)
+
+
+;; [ hide-lines ]----------------------------------------------------------
+(message ">>>>> Loading [ hide-lines ] Customizations ....")
+(require 'hide-lines)
+
+
+;; [ smart-compile ]-------------------------------------------------------
+(message ">>>>> Loading [ smart-compile ] Customizations ....")
+(require 'smart-compile nil t)
+;;   %F  absolute pathname            ( /usr/local/bin/netscape.bin )
+;;   %f  file name without directory  ( netscape.bin )
+;;   %n  file name without extention  ( netscape )
+;;   %e  extention of file name       ( bin )
+(when (featurep 'smart-compile)
+    (setq smart-compile-alist
+          '(("\\.c$"          . "g++ -o %n %f")
+            ("\\.[Cc]+[Pp]*$" . "g++ -o %n %f")
+            ("\\.java$"       . "javac %f")
+            ("\\.php$"        . "php %f")
+            ("\\.tex$"        . "latex %f")
+            ("\\.l$"          . "lex -o %n.yy.c %f")
+            ("\\.py$"         . "python %f")
+            ("\\.sql$"        . "mysql < %f")
+            ("\\.sh$"         . "./%f")
+            ("\\.csh$"        . "./%f")
+            (emacs-lisp-mode  . (emacs-lisp-byte-compile))))
+    (setq smart-run-alist
+          '(("\\.c$"          . "./%n")
+            ("\\.[Cc]+[Pp]*$" . "./%n")
+            ("\\.java$"       . "java %n")
+            ("\\.php$"        . "php %f")
+            ("\\.tex$"        . "dvisvga %n.dvi")
+            ("\\.py$"         . "python %f")
+            ("\\.pl$"         . "perl \"%f\"")
+            ("\\.pm$"         . "perl \"%f\"")
+            ("\\.bat$"        . "%f")
+            ("\\.csh$"        . "./%f")
+            ("\\.sh$"         . "./%f")))
+    (setq smart-executable-alist
+          '("%n.class"
+            "%n.exe"
+            "%n"
+            "%n.php"
+            "%n.py"
+            "%n.pl"
+            "%n.bat"
+            "%n.csh"
+            "%n.sh"))
+)
+
+
+;; [ highlight-parentheses ]---------------------------------------------
+(message ">>>>> Loading [ highlight-parentheses ] Customizations ....")
+(require 'highlight-parentheses)
+(setq hl-paren-colors '("red" "yellow" "cyan" "magenta" "green" "red"))
+(dolist (hook (list 'find-file-hook 'help-mode-hook 'Man-mode-hook 'log-view-mode-hook
+                    'compilation-mode-hook 'gdb-mode-hook 'lisp-interaction-mode-hook
+                    'browse-kill-ring-mode-hook 'completion-list-mode-hook 'hs-hide-hook
+                    'inferior-ruby-mode-hook 'custom-mode-hook 'Info-mode-hook 'svn-log-edit-mode-hook
+                    'package-menu-mode-hook 'dired-mode-hook 'apropos-mode-hook))
+  (add-hook hook
+            (lambda()
+              (highlight-parentheses-mode t)) t)
+)
+
+
+;; [ auto insert ]-------------------------------------------------------
+(message ">>>>> Loading [ auto-insert ] Customizations ....")
+(require 'autoinsert)
+(auto-insert-mode 1)
+(setq auto-insert t)
+(setq auto-insert-query t)
+(add-hook 'find-file-hooks 'auto-insert)
+(setq auto-insert-directory "~/.emacs.d/auto-insert/")
+(define-auto-insert '("\\.v\\'"."Verilog File") "verilog.v")
+(define-auto-insert '("\\.py\\'"."Python File") "python.py")
+
+
+;; [ goto change ]-------------------------------------------------------
+(require 'goto-chg)
+
+
+;; [ auto complete ]-------------------------------------------------------
+;;  (message ">>>>> Loading [ auto-compression ] Customizations ....")
+;;  (add-to-list 'load-path "~/.emacs.d/plugin/auto-complete")
+;;  (require 'auto-complete)
+;;  (require 'auto-complete-config)
+;;  (global-auto-complete-mode t)
+;;  (setq ac-menu-height 20)
+;;  (ac-set-trigger-key "TAB")
+;;  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+;;  (setq-default ac-sources '(ac-source-words-in-all-buffer))
+;;(load "ac-conf")
+
+
+;; [ ffap ]--------------------------------------------------------------
+;; find file at point
+;;  (message ">>>>> Loading [ ffap ] Customizations ....")
+;;  (require 'ffap)
+;;  (ffap-bindings)
+;;  (setq ffap-c-path (append ffap-c-path system-head-file-dir user-head-file-dir))
+
+
+;; [ EMMS ]--------------------------------------------------------------
+;;  (message ">>>>> Loading [ EMMS ] Customizations ....")
+;;  (add-to-list 'load-path "~/.emacs.d/plugin/emms/")
+;;  (require 'emms-setup)
+;;  (emms-standard)
+;;  (emms-default-players)
+;;  (setq emms-repeat-playlist t
+;;        emms-source-file-default-directory "/home/music/"
+;;        emms-lyrics-coding-system nil     ;; let emacs to identify the encode of lyrics
+;;        emms-lyrics-dir "/home/music/lyrics")
+;;  ;; show info at mode-line
+;;  (require 'emms-mode-line)
+;;  (emms-mode-line 1)
+;;  ;; show time of music
+;;  (require 'emms-playing-time)
+;;  (emms-playing-time 1)
+;;  ;; show lyrics
+;;  (require 'emms-lyrics)
+;;  (emms-lyrics 1)
+;;  ;; auto identify encode
+;;  (require 'emms-i18n)
+;;  ;; auto save and import playlist
+;;  (require 'emms-history)
+;;  (emms-history-load)
+;;  (global-set-key (kbd "<f6>") 'emms-play-directory)
+;;  (global-set-key (kbd "<f5>") 'emms-playlist-mode-go)
+
+;; [ VM ]-------------------------------------------------------------
+;;  (message ">>>>> Loading [ VM ] Customizations ....")
+;;(setq load-path (append load-path '("~/.emacs.d/plugin/vm") load-path))
+;;(autoload 'vm "vm" "Start VM on your primary inbox." t)
+;;(autoload 'vm-other-frame "vm" "Like `vm' but starts in another frame." t)
+;;(autoload 'vm-visit-folder "vm" "Start VM on an arbitrary folder." t)
+;;(autoload 'vm-visit-virtual-folder "vm" "Visit a VM virtual folder." t)
+;;(autoload 'vm-mode "vm" "Run VM major mode on a buffer" t)
+;;(autoload 'vm-mail "vm" "Send a mail message using VM." t)
+;;(autoload 'vm-submit-bug-report "vm" "Send a bug report about VM." t)
+
+
+;; [ Hide-Show ]----------------------------------------------------------
+;;  (message ">>>>> Loading [ hide-show ] Customizations ....")
+;;  (load-library "hideshow")
+;;  (add-hook 'verilog-mode-hook               ; other modes similarly
+;;      (lambda () (hs-minor-mode 1))
+;;  )
+
+
+;; [ Email ]----------------------------------------------------------
+;;  (require 'email)
+;;  (setq send-mail-function 'email-send)
+
+;; [ frame-cmds ]------------------------------------------------------
+;;  (require 'frame-cmds)
+
+;; [ zoom-frm ]--------------------------------------------------------
+;;  (require 'zoom-frm)
+;;  (global-set-key (if (boundp 'mouse-wheel-down-event) ; Emacs 22+
+;;                      (vector (list 'control mouse-wheel-down-event))
+;;                    [C-mouse-wheel])    ; Emacs 20, 21
+;;                  'zoom-in
+;;  )
+;;  (when (boundp 'mouse-wheel-up-event) ; Emacs 22+
+;;    (global-set-key (vector (list 'control mouse-wheel-up-event))
+;;          'zoom-out
+;;    )
+;;  )
+;;  (global-set-key [S-mouse-1]    'zoom-in)
+;;  (global-set-key [C-S-mouse-1]  'zoom-out)
+;;  ;; Get rid of `mouse-set-font' or `mouse-appearance-menu':
+;;  (global-set-key [S-down-mouse-1] nil)
+
+
+;; [ org ]---------------------------------------------------------
+;;  (message ">>>>> Loading [ org ] Customizations ....")
+;;  (setq load-path (cons "~/.emacs.d/plugin/org/lisp" load-path))
+;;  (require 'org-install)
+;;  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+;;  (global-set-key "\C-cl" 'org-store-link)
+;;  (global-set-key "\C-ca" 'org-agenda)
+;;  (global-set-key "\C-cb" 'org-iswitchb)
+;;  (add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
+;;
+;;
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;-------------P L U G I N----S E T T I N G----E N D----------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; ==== Mode Setting ====
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;; [ auto Mode ]-----------------------------------------------------
+;; use right mode for specified file
+(setq auto-mode-alist
+      (append
+       '(("\\.txt$" . text-mode)
+         ("\\.doc$" . text-mode)
+         ("\\.c$" .   c-mode)
+         ("\\.C$" .   c++-mode)
+         ("\\.cpp$" . c++-mode)
+         ("\\.h$" .   c++-mode)
+         ("\\.java$" . java-mode)
+         ("\\.sh$" .   shell-script-mode)
+         ("\\.csh$" .   shell-script-mode)
+         ("\\.zsh$" .  shell-script-mode)
+         ("\\rc$" .    shell-script-mode)
+         ("\\.pl$"   . perl-mode)
+         ("\\.perl$" . perl-mode)
+         ("\\.el$" .   emacs-lisp-mode)
+         ("\\.tex$" . latex-mode)
+         ("mutt-" .  mail-mode)
+         ("makefile" .  makefile-mode)
+         ("Makefile" .  makefile-mode)
+         ("\\.html$"  . html-mode)
+         ("\\.htm$"   . html-mode)
+         ("\\.bin$" . hexl-mode)
+         ("\\.py\\'" . python-mode)
+       )
+       auto-mode-alist
+     )
+)
+
+;; [ Text Mode ]-----------------------------------------------------
+;; default mode is Text Mode
+(setq default-major-mode 'text-mode)
+(defun my-textmode-startup ()
+  (interactive)
+;;  (filladapt-mode t)
+  (flyspell-mode t)
+  (local-set-key "\C-css" 'insert-text-seperator-line)
+  (setq tab-width 4)
+)
+(add-hook 'text-mode-hook 'my-textmode-startup)
+
+
+;; [ Auto-Fill Mode ]-----------------------------------------------------
+(auto-fill-mode 1)
+(setq default-justification 'full)
+(setq adaptive-fill-mode nil)
+(setq default-fill-column 80)
+(add-hook 'text-mode-hook 'auto-fill-mode)
+;;  (setq text-mode-hook '(lambda nil (auto-fill-mode 1)))
+
+
+;; [ Debug Mode ]-----------------------------------------------------
+;;  (define-key debugger-mode-map "o" 'other-window)
+
+
+;; [ Dired Mode ]-----------------------------------------------------
+(message ">>>>> Loading [ dired ] Customizations ....")
+(add-hook 'dired-mode-hook
+    '(lambda()
+       (define-key dired-mode-map [delete] 'dired-flag-file-deletion)
+       (define-key dired-mode-map [return] 'dired-find-file-other-window)
+       (define-key dired-mode-map [C-down-mouse-1] 'dired-mouse-find-file-other-window)
+    )
+)
+;; sort ( s s : sort by size ; s x : sort by extension; s t : sort by time; s b : sort by name )
+(add-hook 'dired-mode-hook (lambda ()
+  (interactive)
+  (make-local-variable  'dired-sort-map)
+  (setq dired-sort-map (make-sparse-keymap))
+  (define-key dired-mode-map "s" dired-sort-map)
+  (define-key dired-sort-map "s"
+    '(lambda () "sort by Size"
+       (interactive) (dired-sort-other (concat dired-listing-switches "S"))
+    )
+  )
+  (define-key dired-sort-map "x"
+    '(lambda () "sort by eXtension"
+       (interactive) (dired-sort-other (concat dired-listing-switches "X"))
+    )
+  )
+  (define-key dired-sort-map "t"
+    '(lambda () "sort by Time"
+       (interactive) (dired-sort-other (concat dired-listing-switches "t"))
+    )
+  )
+  (define-key dired-sort-map "n"
+    '(lambda () "sort by Name"
+       (interactive) (dired-sort-other (concat dired-listing-switches ""))
+      )
+  ))
+)
+;; directory before files
+(defun my-dired-sort ()
+  "Dired sort hook to list directories first."
+  (save-excursion
+    (let (buffer-read-only)
+      (forward-line 2) ;; beyond dir. header
+      (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max))))
+  (and (featurep 'xemacs)
+       (fboundp 'dired-insert-set-properties) ;; not define dired-insert-set-properties
+       (dired-insert-set-properties (point-min) (point-max)))
+  (set-buffer-modified-p nil)
+)
+(add-hook 'dired-after-readin-hook 'my-dired-sort)
+(add-hook 'dired-lood-hook 'my-dired-sort)
+;;------- "T" compress dir to .tar.gz file
+(require 'dired-tar)
+;; no wrap
+(defun my-dired-long-lines ()
+  (setq truncate-lines t))
+(add-hook 'dired-after-readin-hook 'my-dired-long-lines)
+;; C-x C-j open the directory of current buffer
+(global-set-key (kbd "C-x C-j")
+  (lambda ()
+    (interactive)
+    (if (buffer-file-name) (dired default-directory))
+  )
+)
+;; Dired copy/delete folders recursively
+(setq dired-recursive-copies 'top)
+(setq dired-recursive-deletes 'top)
+;; setting for view CVS
+(setq cvs-dired-use-hook 'always)
+;; copy/move files/folders in current window to other windows
+(setq dired-dwim-target t)
+
+;; [ dired-x ]-----------------------------------------------------------
+(message ">>>>> Loading [ dired-x ] Customizations ....")
+(require 'dired-x nil t)
+(when (featurep 'dired-x)
+  (add-hook 'dired-load-hook
+            (function (lambda ()
+                        (load "dired-x"))))
+  (add-hook 'dired-mode-hook
+            (function (lambda () ;; Set buffer-local variables here.  For example:
+                        (setq dired-omit-files-p t))))
+  (setq dired-omit-extensions
+        '(
+          ".svn/" "CVS/" ".o" "~" ".bin" ".bak" ".obj" ".map" ".ico"
+          ".pif" ".lnk" ".a" ".ln" ".blg" ".bbl" ".dll" ".drv" ".vxd"
+          ".386" ".elc" ".lof" ".glo" ".idx" ".lot" ".fmt" ".tfm"
+          ".class" ".lib" ".mem" ".x86f" ".sparcf" ".fasl"
+          ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo"
+          ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr"
+          ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo"
+          ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".cps" ".fn"
+          ".fns" ".ky" ".kys" ".pg" ".pgs" ".tp" ".tps" ".vr" ".vrs"
+          ".pdb" ".ilk"
+          )
+  )
+  (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~")
+  (setq dired-omit-size-limit 1000000)
+  (add-to-list 'dired-guess-shell-alist-default '("\\.dvi$" "dvipdfmx"))
+  (add-to-list 'dired-guess-shell-alist-default '("\\.pl$" "perltidy"))
+)
+
+;; [ dired-single ]--------------------------------------------------
+(message ">>>>> Loading [ dired-single ] Customizations ....")
+(require 'dired-single)
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "RET")        'dired-single-buffer)
+            (define-key dired-mode-map (kbd "<mouse-1>")  'dired-single-buffer-mouse)
+            (define-key dired-mode-map (kbd "^")
+                    (lambda () (interactive) (dired-single-buffer "..")))
+            (setq dired-use-magic-buffer t)
+            (setq dired-magic-buffer-name "*Dired*")))
+(global-set-key (kbd "C-x d") 'dired-magic-buffer)
+
+;;  (defun my-dired-init ()
+;;    "Bunch of stuff to run for dired, either immediately or when it's loaded."
+;;    ;; <add other stuff here>
+;;    (define-key dired-mode-map [return]         'dired-single-buffer)
+;;    (define-key dired-mode-map (kbd "RET")      'dired-single-buffer)
+;;    (define-key dired-mode-map [mouse-1]        'dired-single-buffer-mouse)
+;;    (define-key dired-mode-map (kbd "mouse-1")  'dired-single-buffer-mouse)
+;;    (define-key dired-mode-map "^"
+;;        (function
+;;            (lambda nil (interactive) (dired-single-buffer "..")))))
+;;  ;; if dired's already loaded, then the keymap will be bound
+;;  (if (boundp 'dired-mode-map)
+;;      ;; we're good to go; just add our bindings
+;;      (my-dired-init)
+;;    ;; it's not loaded yet, so add our bindings to the load-hook
+;;    (add-hook 'dired-load-hook 'my-dired-init))
+
+
+
+;; [ View Mode ]-----------------------------------------------------
+;; vim style
+(setq view-mode-hook
+  (lambda ()
+    (define-key view-mode-map "h" 'backward-char)
+    (define-key view-mode-map "l" 'forward-char)
+    (define-key view-mode-map "j" 'next-line)
+    (define-key view-mode-map "k" 'previous-line)
+  )
+)
+
+;;; === Mode Line ===
+;; (setq-default mode-line-format
+;;       '(""
+;;         mode-line-modified
+;;         "[%b]"
+;;         global-mode-string
+;;         "%[("
+;;         mode-name
+;;         mode-line-process
+;;         minor-mode-alist
+;;         "%n" ")%]--"
+;;         (line-number-mode "L%l--")
+;;         (column-number-mode "C%c--")
+;;         (-3 . "%p")  ;; position
+;;         " -- "
+;; ;;        user-login-name "@" system-name  ;; you@host.domain.org
+;;         user-login-name "@" hostname  ;;  you@host
+;;         ":"
+;; ;;        "%f"  ;; print file with full path
+;;         (:eval buffer-file-truename)  ;; print file with abbreviated path
+;;         " %-"
+;;         ) )
+;;(provide 'mode-line)
+
+
+;; [ Verilog Mode ]---------------------------------------------------
+(message ">>>>> Loading [ verilog-mode ] Customizations ....")
 (add-to-list 'load-path "~/.emacs.d/plugin/verilog")
 (autoload 'verilog-mode "verilog-mode" "Verilog mode" t );; load verilog mode only when needed
 (add-to-list 'auto-mode-alist '("\\.[ds]?v\\'" . verilog-mode))
@@ -86,6 +934,902 @@
       verilog-indent-begin-after-if    t
       verilog-auto-lineup              'declarations
       verilog-highlight-p1800-keywords nil
-      verilog-linter			 "my_lint_shell_command"
+      verilog-linter             "vcs +v2k -R -PP -Mupdate -P /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/vcsd.tab /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/pli.a +vcsd +vcsd +incdir+."
+      verilog-compiler           "vcs +v2k -R -PP -Mupdate -P /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/vcsd.tab /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/pli.a +vcsd +vcsd +incdir+."
+      verilog-simulator          "vcs +v2k  -R -PP -Mupdate -P /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/vcsd.tab /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/pli.a +vcsd +vcsd +incdir+."
+      verilog-tool               "vcs +v2k  -R -PP -Mupdate -P /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/vcsd.tab /cadtools/novas/Novas-201001/share/PLI/vcsd_latest/LINUX/pli.a +vcsd +vcsd +incdir+."
 )
 (add-hook 'verilog-mode-hook '(lambda () (add-hook 'local-write-file-hooks (lambda() (untabify (point-min) (point-max))))))
+
+
+;; [ start-programing-mode ]-------------------------------------------
+(defun start-programing-mode()
+  (interactive)
+;;    ;; Display column numbers only in code.
+;;    (column-number-mode t)
+  ;; Setup flyspell to make me not look like an idiot to my coworkers
+  ;; and Haeleth and whoever else reads my code.
+  (flyspell-prog-mode)
+;;  (project-root-fetch)
+  ;; All trailing whitespace needs to be highlighted so it can die.
+  (setq show-trailing-whitespace t)
+  ;; Highlight matching parenthesis (and other bracket likes)
+  (show-paren-mode t)
+)
+
+;; [ my-start-scripting-mode ]-------------------------------------------
+(defun my-start-scripting-mode (file-extension hash-bang)
+  ;; All scripting languages are programming languages
+  (start-programing-mode)
+  (local-set-key "\C-css" 'insert-script-seperator-line)
+  (local-set-key "\C-csh" 'insert-script-section-header)
+  (local-set-key "\C-csb" 'insert-script-big-header)
+  ;; Build a startup template for this mode.
+  (my-start-autoinsert)
+  (tempo-define-template (concat file-extension "startup")
+                         (list (concat hash-bang "\n\n"))
+  )
+  (push (cons (concat "\\." file-extension "$")
+              (intern (concat "tempo-template-" file-extension "startup"))
+        )
+        auto-insert-alist
+  )
+  ;; Make the script executable on save
+  (add-hook 'after-save-hook
+            'executable-make-buffer-file-executable-if-script-p
+            nil t
+  )
+)
+
+
+;; [ Python Mode ]------------------------------------------------------
+(message ">>>>> Loading [ python-mode ] Customizations ....")
+(add-to-list 'load-path "~/.emacs.d/plugin/python")
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode) interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+
+(defun my-python-startup ()
+  "Setup Python style."
+  (interactive)
+  (local-set-key '[f4] 'pdb)
+  (setq tab-width 2)
+  (setq indent-tabs-mode nil)  ; Autoconvert tabs to spaces
+  (setq python-indent 2)
+  (setq python-continuation-offset 2)
+  (setq py-smart-indentation nil)
+  (my-start-scripting-mode "py" "#!/usr/bin/python")
+)
+
+(add-hook 'python-mode-hook 'my-python-startup)
+
+(add-hook 'python-mode-hook
+  (lambda ()
+    (set
+      (make-variable-buffer-local 'beginning-of-defun-function) 'py-beginning-of-def-or-class
+    )
+    (setq outline-regexp "def\\|class ")
+  )
+)
+
+;; [ Perl Mode ]------------------------------------------------------
+(message ">>>>> Loading [ perl-mode ] Customizations ....")
+(defun my-perl-startup ()
+  "Setup perl."
+  (interactive)
+  (local-set-key '[pause] 'perldb)
+  (setq gud-perldb-command-name "perl -w ") ; For warnings
+  (setq tab-width 8)
+  (setq indent-tabs-mode nil)  ; Autoconvert tabs to spaces
+  (setq perl-indent-level 2)
+  (setq perl-tab-always-indent nil) ; Indent if at left margin, else tab
+  (setq perl-continued-statement-offset 2)
+  (setq perl-continued-brace-offset -2)
+  (my-start-scripting-mode "pl" "#!/usr/bin/perl")
+)
+(add-hook 'perl-mode-hook 'my-perl-startup)
+
+
+;; [ Shell Mode ]----------------------------------------------
+(message ">>>>> Loading [ shell-mode ] Customizations ....")
+;; close shell buffer when "exit"
+(setq comint-use-prompt-regexp-instead-of-fields nil)
+;; close when exit shell
+(defun my-shell-mode-hook-func  ()
+  (set-process-sentinel (get-buffer-process (current-buffer))
+                            #'my-shell-mode-kill-buffer-on-exit)
+)
+(defun my-shell-mode-kill-buffer-on-exit (process state)
+  (message "%s" state)
+  (if (or
+        (string-match "exited abnormally with code.*" state)
+        (string-match "finished" state))
+        (kill-buffer (current-buffer)
+      )
+  )
+)
+(add-hook 'shell-mode-hook 'my-shell-mode-hook-func)
+
+
+;; [ Shell script Mode ]----------------------------------------------
+(defun my-shellscript-startup ()
+  "Setup shell script mode."
+  (interactive)
+  (my-start-scripting-mode "sh" "#!/bin/bash")
+)
+(add-hook 'sh-mode-hook 'my-shellscript-startup)
+
+
+;; [ Makefile Mode ]--------------------------------------------------
+(defun my-makefile-startup ()
+  "Setup how I like editing makefiles (Allow for project access, etc."
+  (interactive)
+  (start-programing-mode)
+  (local-set-key "\C-css" 'insert-script-seperator-line)
+  (local-set-key "\C-csh" 'insert-script-section-header)
+  (local-set-key "\C-csb" 'insert-script-big-header)
+)
+(add-hook 'makefile-mode-hook 'my-makefile-startup)
+
+
+;; [ C Mode ]---------------------------------------------------------
+(defun my-c-startup ()
+  "Change C C++ and Obj-C indents."
+  (interactive)
+  (local-set-key "\C-css" 'insert-c-seperator-line)
+  (local-set-key "\C-csh" 'insert-c-section-header)
+  (local-set-key "\C-o" 'ff-get-other-file)
+  (setq compile-command "make")
+)
+(add-hook 'c-mode-hook 'my-c-startup)
+
+
+;; [ Emacs Lisp Mode ]------------------------------------------------
+(message ">>>>> Loading [ elisp-mode ] Customizations ....")
+(defun my-elisp-startup ()
+  (interactive)
+  (start-programing-mode)
+  ;; Byte compile this file as soon as its saved.
+  (setq byte-compile-warnings nil)
+  (make-local-variable 'after-save-hook)
+  (add-hook 'after-save-hook
+    '(lambda () (byte-compile-file buffer-file-name))
+    nil t
+  )
+  ;; When editing elisp code, we want hippie expand to reference emacs
+  ;; lisp symbols. (Note: We are shifting this onto the front of the
+  ;; list, so put this so -partially is called first)
+  (make-local-variable 'hippie-expand-try-functions-list)
+  (add-to-list 'hippie-expand-try-functions-list
+               'try-complete-lisp-symbol)
+  (add-to-list 'hippie-expand-try-functions-list
+               'try-complete-lisp-symbol-partially)
+  ;; Define lisp key macros
+  (local-set-key "\C-css" 'insert-elisp-seperator-line)
+  (local-set-key "\C-csh" 'insert-elisp-section-header)
+  (local-set-key "\C-csb" 'insert-elisp-big-header)
+)
+(add-hook 'emacs-lisp-mode-hook 'my-elisp-startup)
+
+
+;; [ SVN Log Edit Mode ]----------------------------------------------
+(defun my-svn-load-edit-mode-startup ()
+  (interactive)
+  (filladapt-mode t)
+  (show-paren-mode t)
+  (flyspell-mode t)
+)
+(add-hook 'svn-log-edit-mode-hook 'my-svn-load-edit-mode-startup)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; ==== Chinese setting ====
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message ">>>>> Loading [ Chinese ] Customizations ....")
+(set-language-environment 'Chinese-GB)
+(set-keyboard-coding-system 'euc-cn)
+(set-clipboard-coding-system 'euc-cn)
+(set-terminal-coding-system 'euc-cn)
+(set-buffer-file-coding-system 'utf-8)
+(set-selection-coding-system 'euc-cn)
+(modify-coding-system-alist 'process "*" 'euc-cn)
+(setq default-process-coding-system '(euc-cn . euc-cn))
+(setq-default pathname-coding-system 'euc-cn)
+
+;;; === Time stamp ===
+;; time-stamp on
+(setq time-stamp-active t)
+;; if "Last Change: " in file, auto save time stamp
+(setq time-stamp-start " Last Change:  ")
+;; time-stamp warning off
+(setq time-stamp-warn-inactive t)
+;; time-stamp end
+(setq time-stamp-end "\n")
+;; time-stamp format
+(setq time-stamp-format "%04y/%02m/%02d/ %02H:%02M:%02S")
+;; when save file, save time-stamp
+(add-hook 'write-file-hooks 'time-stamp)
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; ==== Define Function ====
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(message ">>>>> Loading [ Function Defination ] ....")
+;;; === load .emacs ===
+(defun my-load-dotemacs ()
+  "Load ~/.emacs."
+  (interactive)
+  (load-file "~/.emacs")
+)
+
+;;; === compile .emacs to .elc ===
+;;  (defun autocompile nil
+;;    "compile itself when save ~/.emacs"
+;;    (interactive)
+;;    (if (string= (buffer-file-name) (concat default-directory "~/.emacs"))
+;;        (byte-compile-file (buffer-file-name))
+;;    )
+;;  )
+;;  (add-hook 'after-save-hook 'autocompile)
+
+(defun my-autocompile nil
+  "compile itself if ~/.emacs"
+  (interactive)
+  (require 'bytecomp)
+  (let ((dotemacs (expand-file-name "~/.emacs")))
+    (if (string= (buffer-file-name) (file-chase-links dotemacs))
+      (byte-compile-file dotemacs)
+    )
+  )
+)
+(add-hook 'after-save-hook 'my-autocompile)
+
+;; To overcome the fact that that we can’t bytecompile the .emacs while it is being read
+;;  (when (file-newer-than-file-p "~/.emacs" "~/.emacs.elc")
+;;    (defun byte-compile-dotemacs-if-needed ()
+;;      (when (y-or-n-p "byte-compiling .emacs to .emacs.elc?")
+;;        (byte-compile-file "~/.emacs")
+;;      )
+;;      (remove-hook 'find-file-hooks 'byte-compile-dotemacs-if-needed)
+;;    )
+;;    (add-hook 'find-file-hooks 'byte-compile-dotemacs-if-needed)
+;;  )
+
+;;; === switch major mode ===
+;; {{
+(defvar switch-major-mode-last-mode nil)
+(make-variable-buffer-local 'switch-major-mode-last-mode)
+
+(defun major-mode-heuristic (symbol)
+  (and (fboundp symbol) (string-match ".*-mode$" (symbol-name symbol)))
+)
+
+(defun my-switch-major-mode (mode)
+  (interactive
+    (let ((fn switch-major-mode-last-mode) val)
+      (setq val
+        (completing-read
+          (if fn
+            (format "Switch major mode to (default %s): " fn)
+            "Switch major mode to: "
+          )
+          obarray 'major-mode-heuristic t nil nil (symbol-name fn)
+        )
+      )
+      (list (intern val))
+    )
+  )
+  (let ((last-mode major-mode))
+    (funcall mode)
+    (setq switch-major-mode-last-mode last-mode)
+  )
+)
+;; }} end of switch major mode
+
+;;; === Goto column n ===
+(defun my-goto-column (n)
+  "Goto column ARG, counting from column 0.  Argument N column number."
+  (interactive "Goto Column: ")
+  (move-to-column n)
+)
+
+;;; === match paren ===
+(defun my-match-paren ()
+  "Move to the parenthesis matching the one under the cursor."
+  (interactive "p")
+  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
+        (t (self-insert-command (or arg 1)))
+  )
+)
+;;;###autoload
+;;;use % to jumo to the matching parenthesis
+(defun goto-match-paren (arg)
+  "Go to the matching paren if on a paren; otherwise insert %."
+  (interactive "p")
+  (let ((prev-char (char-to-string (preceding-char)))
+        (next-char (char-to-string (following-char))))
+    (cond ((string-match "[[{(<]" next-char) (forward-sexp 1))
+          ((string-match "[\]})>]" prev-char) (backward-sexp 1))
+          (t (self-insert-command (or arg 1))))
+  )
+)
+
+;;; === insert filename ===
+(defun my-insert-file-name ()
+  "Insert buffer-file-name at point."
+  (interactive)
+  (insert buffer-file-name)
+)
+
+;;; === insert date ===
+(defun my-insert-date ()
+  "Insert date at point."
+  (interactive)
+;;  (shell-command "date +'%Y-%B-%d' | tr -d '\n' " (quote (4)) nil) )
+  (insert (format-time-string "%Y-%B-%d" (current-time)))
+)
+
+;;; === insert date and time ===
+(defun my-insert-date-time ()
+  "Insert date and time at point."
+  (interactive)
+;;  (shell-command "date +'%Y-%B-%d (%H:%M)' | tr -d '\n' " (quote (4)) nil) )
+  (insert (format-time-string "%Y-%B-%d (%H:%M)" (current-time)))
+)
+
+;;; === copy line ===
+(defun my-copy-line (&optional arg)
+ "Save current line into Kill-Ring without mark the line"
+ (interactive "P")
+ (let ((beg (line-beginning-position)) 
+    (end (line-end-position arg)))
+ (copy-region-as-kill beg end))
+)
+
+;;; === copy word ===
+(defun my-copy-word (&optional arg)
+ "Copy words at point"
+ (interactive "P")
+ (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
+    (end (progn (forward-word arg) (point))))
+ (copy-region-as-kill beg end))
+)
+
+;;; === copy region ===
+(defun my-copy-paragraph (&optional arg)
+ "Copy paragraphes at point"
+ (interactive "P")
+ (let ((beg (progn (backward-paragraph 1) (point))) 
+    (end (progn (forward-paragraph arg) (point))))
+ (copy-region-as-kill beg end))
+)
+
+;;; === load .emacs.elc ===
+(defun my-load-dotemacselc ()
+  "Byte compiles and loads the .emacs file."
+  (interactive)
+  (progn
+    (byte-compile-file "~/.emacs")
+    (load-file "~/.emacs.elc")
+  )
+)
+
+;;; === update number ===
+;; similar to "C-a" in vim
+;;;###autoload
+(defun ywb-html-preview-region (beg end)
+  (interactive "r")
+  (let ((file (make-temp-file "region-" nil ".html")))
+    (write-region beg end file)
+    (browse-url file)
+  )
+)
+(defvar wcy-rotate-text-definations
+  '(("[0-9]+" . (lambda (arg)
+                  (format "%d" (+ arg (string-to-number (match-string 0))))))
+    ("zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"))
+  " a list of ROT text defination. each element is a defination.
+    element can be a list of string or a cons. (REGEXP . func)
+    if REGEXP matched, func is called with no args, return value is the next value."
+)
+(defun wcy-rotate-text-aux (arg)
+  (catch 'break
+    (mapc
+     #'(lambda (def)
+         (let ((regexp (if (functionp (cdr def))
+                           (car def)
+                         (mapconcat 'regexp-quote def "\\|")))
+               (func (if (functionp (cdr def))
+                         (cdr def)
+                       #'(lambda (arg)
+                           (let* ((len (length def))
+                                  (rest (member (match-string 0) def))
+                                  (pos (- len (length rest))))
+                             (format "%s" (nth (mod (+ pos arg) len) def)))))))
+           (if (re-search-forward regexp (line-end-position) t nil)
+               (throw 'break (funcall func arg)))))
+     wcy-rotate-text-definations)
+    nil)
+)
+(defun my-rotate-text(arg)
+  (interactive "p")
+  (save-excursion
+    (let ((x (wcy-rotate-text-aux arg)))
+      (if x (replace-match x))
+    )
+  )
+)
+;;; ==== end of update number
+
+;;; === go to char ===
+;;;###autoload
+(defun my-go-to-char (n char)
+  "Move forward to Nth occurence of CHAR.
+Typing `my-go-to-char-key' again will move forwad to the next Nth
+occurence of CHAR."
+  (interactive "p\ncGo to Char:")
+  (search-forward (string char) nil nil n)
+  (while (char-equal (read-char)
+                     char)
+    (search-forward (string char) nil nil n))
+  (setq unread-command-events (list last-input-event))
+)
+
+;;; === save line ===
+(defun my-kill-ring-save-line ()
+  "Add current line to `kill-ring'."
+  (interactive)
+  (progn
+    (save-excursion
+      (beginning-of-line)
+      (setq beg (point))
+      (end-of-line)
+      (kill-new (buffer-substring beg (point)))
+    )
+  )
+)
+
+;;; === get column number ===
+(defun my-get-col ()
+  "Return column number of point."
+  (interactive)
+  (save-excursion
+    (let ( (opoint (point)) (ncol) )
+      (beginning-of-line)
+          (setq ncol (- opoint (point)))
+;;          (message "col = %s" ncol)
+          ncol
+    )
+  )
+)
+
+;;; === duplicate current line===
+(defun my-duplicate-line ()
+  "Duplicate current line."
+  (interactive)
+  (progn
+    (my-kill-ring-save-line) ; save line
+    (save-excursion ; duplicate line
+      (end-of-line)
+      (insert "\n")
+      (yank)
+    )
+    (let ( (n (my-get-col)) ) ; move to new line, goto same column
+      (forward-line +1)
+      (move-to-column n)
+    )
+  )
+)
+
+;;; === delete current line ===
+(defun my-delete-line ()
+  "Delete current line."
+  (interactive)
+  (progn
+    (beginning-of-line) (kill-line 1)
+  )
+)
+
+;;; === delete ^M ===
+(defun my-delete-crtl-M ()
+  "Delete all ^M (dos --> unix line endings)."
+  (interactive)
+  (progn
+    (save-excursion
+      (goto-line 1) (replace-regexp "
++" "")
+    )
+  )
+)
+
+;;; === kill-buffer-other-window ===
+(defun my-kill-buffer-other-window (arg)
+  "Kill the buffer in the ARGth other window, or the current buffer if no
+other window."
+  (interactive "p")
+  (let ((buf (save-window-excursion
+           (other-window arg)
+           (current-buffer))))
+    (delete-windows-on buf)
+    (kill-buffer buf)
+  )
+)
+
+;;; === my-save-buffer-kill-frame ===
+(defun my-save-buffer-kill-frame (arg)
+  "Saves buffer, if necessary (with ARG, w/o asking), and then kills
+it and its frame."
+  (interactive "P")
+  (let ((buf (current-buffer))
+    (delete-frame nil)
+    (kill-buffer nil))
+    (if (and (buffer-file-name buf)
+         (buffer-modified-p)
+         (or arg (y-or-n-p (format "Save buffer %s? " (buffer-name)))))
+    (save-buffer nil))
+    (setq kill-buffer (or (not (buffer-modified-p buf))
+              (not (buffer-file-name buf))
+              (yes-or-no-p (concat "Buffer "
+                           (buffer-name buf)
+                           " modified; kill anyway? "))))
+    (setq delete-frame (if (and (one-window-p)
+                (or arg
+                    (unwind-protect
+                    (y-or-n-p "Delete frame as well? ")
+                      (message ""))))
+               (selected-frame)
+             nil))
+    (delete-windows-on buf)
+    (if kill-buffer (progn (if (string-match "XEmacs" (emacs-version))
+                   (set-buffer-modified-p nil buf)
+                 (save-excursion
+                   (set-buffer buf)
+                   (set-buffer-modified-p nil)))
+               (kill-buffer buf)))
+    (and delete-frame (delete-frame))
+  )
+)
+
+;;; === save-buffer-kill-buffer ===
+(defun my-save-buffer-kill-buffer (arg)
+  "Saves buffer, if necessary (with ARG, w/o asking), and then kills it."
+  (interactive "P")
+  (let ((buf (current-buffer)))
+    (if (and (buffer-file-name buf)
+      (buffer-modified-p)
+      (or arg (y-or-n-p (format "Save buffer %s? " (buffer-name)))))
+      (save-buffer nil)
+    )
+    (delete-windows-on buf)
+    (kill-buffer buf)
+  )
+)
+
+;;; === open dired ===
+(defun my-dired-open-in-current-buffer ()
+  "Open the currently selected file/directory in the same buffer as this one."
+  (interactive)
+  (find-alternate-file (dired-get-filename))
+)
+
+;;; === insert-braces ===
+(defun my-insert-braces ()
+  "Insert matched braces, leave point inside."
+  (interactive "*")
+  (let (blink-paren-function) ;nil it temporarily
+    (execute-kbd-macro
+      (if (and (eq major-mode 'cc-c++-mode) (not (looking-at ";")))
+        "{};" "{}"
+      )
+    )
+  )
+  (backward-sexp 1)
+  (if
+    (save-excursion
+        (forward-char -1)
+        (looking-at "\\$")
+      )
+    nil
+    (reindent-then-newline-and-indent)
+;;    (c-indent-exp)
+    (forward-char 1)
+    (newline-and-indent)
+  )
+)
+
+;;; === Set The Size and Position of Emacs Frames ===
+(defun my-arrange-frame (w h x y)
+  "Set the width, height, and x/y position of the current frame"
+  (let ((frame (selected-frame)))
+    (delete-other-windows)
+    (set-frame-position frame x y)
+    (set-frame-size frame w h)
+  )
+)
+(my-arrange-frame 100 50 2 22)
+
+;;; === add executable to some files ===
+(setq my-shebang-patterns
+      (list "^#!/usr/.*/perl\\(\\( \\)\\|\\( .+ \\)\\)-w *.*"
+            "^#!/usr/.*/python\\(\\( \\)\\|\\( .+ \\)\\)-w *.*"
+            "^#!/usr/.*/sh"
+            "^#!/usr/.*/csh"
+            "^#!/usr/.*/csh -f"
+            "^#!/usr/.*/bash"
+            "^#!/bin/sh"
+            "^#!/.*/perl"
+            "^#!/.*/awk"
+            "^#!/.*/sed"
+            "^#!/bin/bash")
+)
+(add-hook 'after-save-hook
+  (lambda ()
+    (if (not (= (shell-command (concat "test -x " (buffer-file-name))) 0))
+      (progn
+        ;;This puts message in *Message* twice, but minibuffer output looks better
+        (message (concat "Wrote " (buffer-file-name)))
+        (save-excursion
+          (goto-char (point-min))
+          ;; Always checks every pattern even after match. Inefficient but easy
+          (dolist (my-shebang-pat my-shebang-patterns)
+            (if (looking-at my-shebang-pat)
+              (if (= (shell-command
+                (concat "chmod u+x " (buffer-file-name)))
+                 0)
+                (message (concat
+                           "Wrote and made executable "
+                           (buffer-file-name)
+                         )
+                )
+              )
+            )
+          )
+        )
+      )
+     ;; This puts message in *Message* twice, but minibuffer output looks better
+     (message (concat "Wrote " (buffer-file-name)))
+    )
+  )
+)
+
+;; go to last edit position
+(defun my-goto-last-edit-pos ()
+  "Go to the last position where editing occurred."
+  (interactive)
+  (let ((undos buffer-undo-list))
+    (when (listp undos)
+      (while (and undos
+                (let ((pos (or (cdr-safe (car undos))
+                        (car undos))))
+                     (not (and (integerp pos)
+                        (goto-char (abs pos))))
+                )
+             )
+             (setq undos (cdr undos))
+      )
+    )
+  )
+)
+
+;; popup a terminal
+(defun my-popup-term ()
+  (interactive)
+  (apply 'start-process "terminal" nil popup-terminal-command)
+)
+(setq popup-terminal-command '("/bin/tcsh"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; ==== Gloabal Key Binding ====
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message ">>>>> Loading [ Key Bindings ] ....")
+
+;;; === define prefix binding key ===
+;;(define-prefix-command 'ctrl-cc-map)
+;;(global-set-key (kbd "C-c c") 'ctrl-cc-map)
+
+(define-prefix-command 'ctrl-z-map)
+(global-set-key (kbd "C-z") 'ctrl-z-map)
+
+;;; === Control Key ===
+;; Moving around more easily (default setting)
+;;  (global-set-key [C-right] 'forward-word)
+;;  (global-set-key [C-left]  'backward-word)
+
+;; Make control+pageup/down scroll the other buffer
+(global-set-key [C-next]            'scroll-other-window)
+(global-set-key [C-prior]           'scroll-other-window-down)
+;; C-Home and C-End keys to move to beginning/end of buffer
+(global-set-key [\C-home]           'beginning-of-buffer)
+(global-set-key [\C-end]            'end-of-buffer)
+;; switch in windows with arrow key
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c SPC")     'my-goto-last-edit-pos)
+;; This binds word completions to Shift-Tab, and Ctrl+Space
+(global-set-key [S-iso-lefttab]     'dabbrev-completion)
+(global-unset-key [?\C-\040])
+(global-set-key [?\C-\040]          'dabbrev-completion)
+(global-set-key "\C-\\"             'compare-windows)
+;; Copy sexp under cursor into register. Somewhat of a hack since
+;; marked region remains active following copy. Macro will call
+;; unmark-region. If there's a better way, show me!
+(fset 'copy-word-under-cursor
+   [?\C-\M-b ?\C-  ?\C-\M-f ?\C-x ?r ?s ?l ?\M-x ?t ?i ?: ?: ?t ?- ?u ?n ?m ?a ?r ?k ?- ?r ?e ?g ?i ?o ?n return])
+;(global-set-key (kbd "C-c a")       ')
+;(global-set-key (kbd "C-c b")       ')
+(global-set-key (kbd "C-c c")       'copy-word-under-cursor)
+;;Open the currently selected file / directory in the same buffer as this one.
+(global-set-key (kbd "C-c d")       'my-dired-open-in-current-buffer) ;; not working
+;(global-set-key (kbd "C-c e")       ')
+;; find file at point
+(global-set-key (kbd "C-c f")       'ffap)
+;; go to specific line in current buffer
+(global-set-key (kbd "C-c g")       'goto-line)
+;(global-set-key (kbd "C-c h")       ')
+;(global-set-key (kbd "C-c i")       ')
+;; jump to char,similar to "f" in vim
+(global-set-key (kbd "C-c j")       'my-go-to-char)
+;(global-set-key (kbd "C-c k")      'browse-kill-ring)
+;; load .emacs
+(global-set-key (kbd "C-c l")       'my-load-dotemacs)
+;; switch mode
+(global-set-key (kbd "C-c m")       'my-switch-major-mode)
+(global-set-key (kbd "C-c n")       'mouse-tear-off-window)
+;; smart-compile: according to the extension to compile/run program
+;; when makefile existed, run "make" automaticlly
+(global-set-key (kbd "C-c o")       'smart-run)
+(global-set-key (kbd "C-c p")       'smart-compile)
+(global-set-key (kbd "C-c q")       'comment-region)
+;; switch in the windows
+;; Replace sexp under cursor with sexp previously copied into register
+;; with above function "copy-word-under-cursor". I needed this so I
+;; could do same paste operation without having first kill replace
+;; what I wanted to paste
+(global-set-key (kbd "C-c r")       'replace-word-under-cursor)
+(fset 'replace-word-under-cursor [?\C-\M-b ?\C-  ?\C-\M-f ?\C-w ?\C-x ?r ?i ?l])
+(global-set-key (kbd "C-c s")       'eshell)
+(global-set-key (kbd "C-c t")       'term)
+(global-set-key (kbd "C-c u")       'uncomment-region)
+(global-set-key (kbd "C-c v")       'view-file-other-window)
+;(global-set-key (kbd "C-c w")       ')
+;; When I yank a piece of code ( known as paste in Windows lingo )
+;; into an existing function, I like to have it indent itself to the
+;; proper level automatically. This simple macro runs yank ( C-y )
+;; followed by an indent current function. ( C-c C-q )
+(fset 'do-smart-yank "\C-y\C-c\C-q")
+(global-set-key (kbd "C-c y")       'do-smart-yank)
+;; resize window
+(global-set-key (kbd "C-c =")       'enlarge-window)
+(global-set-key (kbd "C-c -")       'shrink-window)
+;; switch window
+(global-set-key (kbd "C-o")         'other-window)
+;; "C-x k" kill the buffer immediately
+(global-set-key (kbd "C-x k")       'kill-this-buffer)
+
+;;; === META Key ===
+(global-set-key "\M-{"              'my-insert-braces)
+(global-set-key (kbd "M-1")         'delete-other-windows)
+(global-set-key (kbd "M-4")         'yic-kill-current-buffer)
+;; dired mode
+(global-set-key "\M-d"              'dired)
+
+;; Alt-G to jump to certain line number
+(global-set-key "\M-g"              'goto-line)
+
+;; copy line
+(global-set-key "\M-l"              'my-copy-line)
+(global-set-key "\M-w"              'my-copy-word)
+(global-set-key "\M-r"              'my-copy-paragraph)
+
+;; Alt-S Alt-N for tagged searches
+(global-set-key "\M-s"              'tags-search)
+(global-set-key "\M-n"              'tags-loop-continue)
+
+;; similar to C-o/C-i in vim
+(require 'recent-jump nil t)
+(when (featurep 'recent-jump)
+  (global-set-key (kbd "M-o")       'recent-jump-jump-backward)
+  (global-set-key (kbd "M-i")       'recent-jump-jump-forward)
+)
+
+
+;;; === Shift Key ===
+;;
+;;
+;;; === Function Key ===
+;; map Home and End keys to move within current line
+(global-set-key [home]    'beginning-of-line)
+(global-set-key [end]     'end-of-line)
+(global-set-key [delete]  'delete-char)
+
+(global-set-key [f1]      'help)
+(global-set-key [S-f1]    'man)
+(global-set-key [f2]      'undo)
+(global-set-key [S-f2]    'save-buffer)
+(global-set-key [f3]      'redo)
+(global-set-key [S-f3]    'find-file)
+(global-set-key [f4]      'browse-kill-ring)
+(global-set-key [S-f4]    'lpr-buffer)
+
+(global-set-key [f5]      'compile)
+(global-set-key [f6]      'first-error)
+(global-set-key [f7]      'previous-error)
+(global-set-key [f8]      'next-error)
+
+(global-set-key [f9]      'new-frame)
+(global-set-key [S-f9]    'delete-frame)
+(global-set-key [f10]     'split-window-vertically)
+(global-set-key [S-f10]   'delete-other-windows)
+(global-set-key [f11]     'kill-this-buffer)
+(global-set-key [S-f11]   'kill-buffer)
+(global-set-key [f12]     'kill-buffer-and-window)
+(global-set-key [S-f12]   'delete-window)
+
+;;; === misc ===
+(global-set-key "%"       'goto-match-paren)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; [ session ]--------------------------------------------------------
+;; session
+;;  (message ">>>>> Loading [ session ] Customizations ....")
+;;  (add-to-list 'load-path "<path to session>")
+;;  (require 'session)
+;;  (add-hook 'after-init-hook 'session-initialize)
+
+;; [ desktop ]--------------------------------------------------------
+(message ">>>>> Loading [ desktop ] Customizations ....")
+(require 'desktop)
+(setq desktop-load-locked-desktop t)
+(desktop-load-default)
+;;  (desktop-save-mode 1)
+(desktop-read)
+;;
+;;
+;; =====================================================================
+;; USEFUL NOTES AND OTHER STUFF
+;; =====================================================================
+
+;; == How to record and display a keyboard macro ==
+
+;; Just open a buffer and type C-x ( Then start typing in your macro.
+;; Once you are finished defining your macro type C-x ) Then type M-x
+;; name-last-kbd-macro. This will allow you to call your macro
+;; whatever you want. Next open up your .emacs file and position your
+;; cursor where you want the code for the macro to appear.  Type M-x
+;; insert-kbd-macro and type in the name.  The code will automatically
+;; be generated.
+
+;; =====================================================================
+
+;; Use shell-command-on-region M-| to send region to external
+;; process. If you use a prefix argument , C-u M-| this will replace
+;; the region with the output of the external process. Good for
+;; sending something to stdin and reading from stdout.
+
+;; =====================================================================
+
+;; To copy to named register: C-x r s a - Where a is the name of the
+;; register ( a - z ) to save the text to.
+
+;; To paste from named register: C-x r i a - Where a is the name of
+;; the register ( a - z ) to paste the saved text from.
+
+;; To remember current point: C-x r spc a - Where a is the name of the
+;; register to save point to.
+
+;; To jump to named point: C-x r j a - Where a is the name of the
+;; register holding desired point to jump to
+
+;; =====================================================================
+
