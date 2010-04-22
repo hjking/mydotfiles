@@ -2,7 +2,7 @@
 ;; File Name : .emacs
 ;; Emacs customization file
 ;; Auther : Hong Jin
-;; Last Change: 2010/04/22-12:44 .
+;; Last Change: 2010/04/22-19:29 .
 ;; Email : hon9jin@gmail.com
 ;; History:
 ;; +--------+-------------+------------------------------------+
@@ -170,6 +170,7 @@
 
 ;; load-path
 (setq load-path (cons "~/.emacs.d/plugin" load-path))
+(setq load-path (cons "~/.emacs.d/conf" load-path))
 ;;  (setq emacs-dir (expand-file-name "~/.emacs.d/"))
 ;;  (add-to-list 'load-path emacs-dir)
 ;;  (setq plugin-dir (concat emacs-dir "plugin/"))
@@ -237,9 +238,10 @@
 (setq track-eol t)
 ;; use mouse wheel
 (mouse-wheel-mode t)
-;;(global-set-key (kbd "<mouse-1>") 'mouse-set-point)           ;;default
-;;(global-set-key (kbd "<down-mouse-1>") 'mouse-drag-region)    ;;default
-;;(global-set-key (kbd "<mouse-2>") 'mouse-yank-at-click)       ;;default
+;; default setting
+;;(global-set-key (kbd "<mouse-1>") 'mouse-set-point)
+;;(global-set-key (kbd "<down-mouse-1>") 'mouse-drag-region)
+;;(global-set-key (kbd "<mouse-2>") 'mouse-yank-at-click)
 ;;(global-set-key (kbd "<C-down-mouse-1>") 'mouse-buffer-menu)
 ;;(global-set-key (kbd "<mouse-3>") 'mouse-save-then-kill)
 ;;(global-set-key (kbd "<S-down-mouse-1>") 'mouse-set-font)
@@ -264,8 +266,6 @@
 
 ;; display file name on the frame title
 ;;(setq frame-title-format "%n%F/%b")
-;;(setq frame-title-format '((:eval (getenv-internal "LOGNAME"))
-;;(setq frame-title-format '((:eval (getenv-internal "USER"))
 (setq frame-title-format '(
    "Emacs:"
    (:eval ( user-full-name))
@@ -310,6 +310,7 @@
         (machine "-a-zA-Z0-9." "" ".")
         (math-mode ",-:$+<>@-Z_a-z~`" "<" "@>;.,!?`:")))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;-------------P L U G I N----S E T T I N G----S T A R T------------
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -333,78 +334,9 @@
 )
 
 
-
 ;; [ ibuffer ]-----------------------------------------------------------
 ;; buffer switch
-(message ">>>>> Loading [ ibuffer ] Customizations ....")
-(require 'ibuffer)
-(require 'ibuf-ext nil t)
-(when (featurep 'ibuffer)
-  (global-set-key (kbd "C-x C-b")   'ibuffer)
-  (define-key ibuffer-mode-map "r"  'ywb-ibuffer-rename-buffer)
-  (define-key ibuffer-mode-map (kbd "C-x C-f")  'ywb-ibuffer-find-file)
-  (define-key ibuffer-mode-map " "  'scroll-up)
-  (add-hook 'ibuffer-mode-hook
-            (lambda ()
-              (setq ibuffer-filter-groups
-                    '(
-                      ("*buffer*" (name . "\\*.*\\*"))
-                      ("TAGS" (name . "^TAGS\\(<[0-9]+>\\)?$"))
-                      ("dired" (mode . dired-mode))
-                      ("perl" (mode . cperl-mode))
-                      ("elisp" (or (mode . emacs-lisp-mode)
-                                   (mode . lisp-interaction-mode)))
-                      ))))
-  (setq ibuffer-saved-filters
-      '(("t" ((or (mode . latex-mode)
-                 (mode . plain-tex-mode))))
-        ("c" ((or (mode . c-mode)
-                 (mode . c++-mode))))
-        ("p" ((mode . cperl-mode)))
-        ("e" ((or (mode . emacs-lisp-mode)
-                  (mode . lisp-interaction-mode))))
-        ("d" ((mode . dired-mode)))
-        ("s" ((mode . shell-mode)))
-        ("i" ((mode . image-mode)))
-        ("h" ((mode . html-mode)))
-        ("gnus" ((or (mode . message-mode)
-                     (mode . mail-mode)
-                     (mode . gnus-group-mode)
-                     (mode . gnus-summary-mode)
-                     (mode . gnus-article-mode))))
-        ("pr" ((or (mode . emacs-lisp-mode)
-                   (mode . cperl-mode)
-                   (mode . c-mode)
-                   (mode . c++-mode)
-                   (mode . php-mode)
-                   (mode . java-mode)
-                   (mode . idl-mode)
-                   (mode . lisp-interaction-mode))))
-        ("m" ((mode . muse-mode)))
-        ("w" ((or (mode . emacs-wiki-mode)
-                  (mode . muse-mode))))
-        ("*" ((name . "*")))
-        ))
-  )
-;;;###autoload
-(defun ywb-ibuffer-rename-buffer ()
-  (interactive)
-  (call-interactively 'ibuffer-update)
-  (let* ((buf (ibuffer-current-buffer))
-         (name (generate-new-buffer-name
-                (read-from-minibuffer "Rename buffer(to new name): "
-                                      (buffer-name buf)))))
-    (with-current-buffer buf
-      (rename-buffer name)))
-  (call-interactively 'ibuffer-update))
-(defun ywb-ibuffer-find-file ()
-  (interactive)
-  (let ((default-directory (let ((buf (ibuffer-current-buffer)))
-      (if (buffer-live-p buf)
-        (with-current-buffer buf
-          default-directory)
-        default-directory))))
-    (call-interactively 'ido-find-file)))
+(load "ibuffer-conf")
 
 
 ;; [ ido ]-----------------------------------------------------------
@@ -477,18 +409,8 @@
 
 
 ;; [ multi-term ]-------------------------------------------------------
-;; conflict with Emacs Info: with-selected-window void
-;;  (message ">>>>> Loading [ mutil-term ] Customizations ....")
-;;  (require 'multi-term)
-;;  (setq multi-term-program "/bin/tcsh")
-;;  (setq multi-term-switch-after-close nil)
-;;  (defun term-mode-settings ()
-;;    "Settings for term-mode"
-;;    (make-local-variable 'scroll-margin)
-;;    (setq-default scroll-margin 0)
-;;  )
-;;  (add-hook 'term-mode-hook 'term-mode-settings)
-;;  (global-set-key "\M-t"              'multi-term)
+;; available for Emacs 23
+;; (load "multi-term-conf")
 
 
 ;; [ hide-lines ]----------------------------------------------------------
@@ -556,6 +478,16 @@
 )
 
 
+;; [ highlight-symbol ]---------------------------------------------
+(message ">>>>> Loading [ highlight-symbol ] Customizations ....")
+(require 'highlight-symbol)
+(highlight-symbol-mode 1)
+(global-set-key [C-f3]    'highlight-symbol-at-point)
+(global-set-key [M-f3]    'highlight-symbol-next)
+(global-set-key [C-M-f3]  'highlight-symbol-prev)
+;;(global-set-key [(shift f3)]    'highlight-symbol-prev)
+
+
 ;; [ auto insert ]-------------------------------------------------------
 (message ">>>>> Loading [ auto-insert ] Customizations ....")
 (require 'autoinsert)
@@ -569,20 +501,24 @@
 
 
 ;; [ goto change ]-------------------------------------------------------
+(message ">>>>> Loading [ goto-change ] Customizations ....")
 (require 'goto-chg)
 
 
-;; [ auto complete ]-------------------------------------------------------
-;;  (message ">>>>> Loading [ auto-compression ] Customizations ....")
-;;  (add-to-list 'load-path "~/.emacs.d/plugin/auto-complete")
-;;  (require 'auto-complete)
-;;  (require 'auto-complete-config)
-;;  (global-auto-complete-mode t)
-;;  (setq ac-menu-height 20)
-;;  (ac-set-trigger-key "TAB")
-;;  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-;;  (setq-default ac-sources '(ac-source-words-in-all-buffer))
-;;(load "ac-conf")
+;; [ dabbrev-expand-multiple ]-------------------------------------------------------
+(message ">>>>> Loading [ dabbrev-expand-multiple ] Customizations ....")
+(require 'dabbrev-expand-multiple)
+(global-set-key "\M-/" 'dabbrev-expand-multiple)
+
+
+;; [ anything ]-------------------------------------------------------
+;; available for Emacs 22/23
+;;  (load "anything-conf")
+
+
+;; [ auto-complete ]-------------------------------------------------------
+;; available for Emacs 22/23
+;;  (load "ac-conf")
 
 
 ;; [ ffap ]--------------------------------------------------------------
@@ -594,42 +530,10 @@
 
 
 ;; [ EMMS ]--------------------------------------------------------------
-;;  (message ">>>>> Loading [ EMMS ] Customizations ....")
-;;  (add-to-list 'load-path "~/.emacs.d/plugin/emms/")
-;;  (require 'emms-setup)
-;;  (emms-standard)
-;;  (emms-default-players)
-;;  (setq emms-repeat-playlist t
-;;        emms-source-file-default-directory "/home/music/"
-;;        emms-lyrics-coding-system nil     ;; let emacs to identify the encode of lyrics
-;;        emms-lyrics-dir "/home/music/lyrics")
-;;  ;; show info at mode-line
-;;  (require 'emms-mode-line)
-;;  (emms-mode-line 1)
-;;  ;; show time of music
-;;  (require 'emms-playing-time)
-;;  (emms-playing-time 1)
-;;  ;; show lyrics
-;;  (require 'emms-lyrics)
-;;  (emms-lyrics 1)
-;;  ;; auto identify encode
-;;  (require 'emms-i18n)
-;;  ;; auto save and import playlist
-;;  (require 'emms-history)
-;;  (emms-history-load)
-;;  (global-set-key (kbd "<f6>") 'emms-play-directory)
-;;  (global-set-key (kbd "<f5>") 'emms-playlist-mode-go)
+;;  (load "emms-conf")
 
 ;; [ VM ]-------------------------------------------------------------
-;;  (message ">>>>> Loading [ VM ] Customizations ....")
-;;(setq load-path (append load-path '("~/.emacs.d/plugin/vm") load-path))
-;;(autoload 'vm "vm" "Start VM on your primary inbox." t)
-;;(autoload 'vm-other-frame "vm" "Like `vm' but starts in another frame." t)
-;;(autoload 'vm-visit-folder "vm" "Start VM on an arbitrary folder." t)
-;;(autoload 'vm-visit-virtual-folder "vm" "Visit a VM virtual folder." t)
-;;(autoload 'vm-mode "vm" "Run VM major mode on a buffer" t)
-;;(autoload 'vm-mail "vm" "Send a mail message using VM." t)
-;;(autoload 'vm-submit-bug-report "vm" "Send a bug report about VM." t)
+;;  (load "vm-conf")
 
 
 ;; [ Hide-Show ]----------------------------------------------------------
@@ -666,16 +570,7 @@
 
 
 ;; [ org ]---------------------------------------------------------
-;;  (message ">>>>> Loading [ org ] Customizations ....")
-;;  (setq load-path (cons "~/.emacs.d/plugin/org/lisp" load-path))
-;;  (require 'org-install)
-;;  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-;;  (global-set-key "\C-cl" 'org-store-link)
-;;  (global-set-key "\C-ca" 'org-agenda)
-;;  (global-set-key "\C-cb" 'org-iswitchb)
-;;  (add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
-;;
-;;
+;;  (load "org-conf")
 
 
 
@@ -827,8 +722,7 @@
             (function (lambda () ;; Set buffer-local variables here.  For example:
                         (setq dired-omit-files-p t))))
   (setq dired-omit-extensions
-        '(
-          ".svn/" "CVS/" ".o" "~" ".bin" ".bak" ".obj" ".map" ".ico"
+        '(".svn/" "CVS/" ".o" "~" ".bin" ".bak" ".obj" ".map" ".ico"
           ".pif" ".lnk" ".a" ".ln" ".blg" ".bbl" ".dll" ".drv" ".vxd"
           ".386" ".elc" ".lof" ".glo" ".idx" ".lot" ".fmt" ".tfm"
           ".class" ".lib" ".mem" ".x86f" ".sparcf" ".fasl"
@@ -838,7 +732,7 @@
           ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".cps" ".fn"
           ".fns" ".ky" ".kys" ".pg" ".pgs" ".tp" ".tps" ".vr" ".vrs"
           ".pdb" ".ilk"
-          )
+         )
   )
   (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.\\|^~")
   (setq dired-omit-size-limit 1000000)
@@ -851,13 +745,13 @@
 (require 'dired-single)
 (add-hook 'dired-mode-hook
           (lambda ()
-            (define-key dired-mode-map (kbd "RET")        'dired-single-buffer)
+            (define-key dired-mode-map [return]           'dired-single-buffer)
             (define-key dired-mode-map (kbd "<mouse-1>")  'dired-single-buffer-mouse)
             (define-key dired-mode-map (kbd "^")
                     (lambda () (interactive) (dired-single-buffer "..")))
             (setq dired-use-magic-buffer t)
             (setq dired-magic-buffer-name "*Dired*")))
-(global-set-key (kbd "C-x d") 'dired-magic-buffer)
+(global-set-key (kbd "C-x d") 'dired-single-magic-buffer)
 
 ;;  (defun my-dired-init ()
 ;;    "Bunch of stuff to run for dired, either immediately or when it's loaded."
@@ -920,10 +814,10 @@
 (autoload 'verilog-mode "verilog-mode" "Verilog mode" t );; load verilog mode only when needed
 (add-to-list 'auto-mode-alist '("\\.[ds]?v\\'" . verilog-mode))
 (add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)));;any file in verilog mode should have their keywords colorized
-(setq verilog-indent-level             3
-      verilog-indent-level-module      3
-      verilog-indent-level-declaration 3
-      verilog-indent-level-behavioral  3
+(setq verilog-indent-level             2
+      verilog-indent-level-module      2
+      verilog-indent-level-declaration 2
+      verilog-indent-level-behavioral  2
       verilog-indent-level-directive   1
       verilog-case-indent              2
       verilog-auto-newline             t
@@ -970,8 +864,7 @@
                          (list (concat hash-bang "\n\n"))
   )
   (push (cons (concat "\\." file-extension "$")
-              (intern (concat "tempo-template-" file-extension "startup"))
-        )
+              (intern (concat "tempo-template-" file-extension "startup")))
         auto-insert-alist
   )
   ;; Make the script executable on save
@@ -1161,7 +1054,7 @@
 
 (message ">>>>> Loading [ Function Defination ] ....")
 ;;; === load .emacs ===
-(defun my-load-dotemacs ()
+(defun reload-dotemacs ()
   "Load ~/.emacs."
   (interactive)
   (load-file "~/.emacs")
@@ -1189,7 +1082,7 @@
 )
 (add-hook 'after-save-hook 'my-autocompile)
 
-;; To overcome the fact that that we canâ€™t bytecompile the .emacs while it is being read
+;; To overcome the fact that that we canft bytecompile the .emacs while it is being read
 ;;  (when (file-newer-than-file-p "~/.emacs" "~/.emacs.elc")
 ;;    (defun byte-compile-dotemacs-if-needed ()
 ;;      (when (y-or-n-p "byte-compiling .emacs to .emacs.elc?")
@@ -1258,6 +1151,31 @@
           ((string-match "[\]})>]" prev-char) (backward-sexp 1))
           (t (self-insert-command (or arg 1))))
   )
+)
+
+(defun match-parenthesis (arg)
+     "Match the current character according to the syntax table.
+   Based on the freely available match-paren.el by Kayvan Sylvan.
+   I merged code from goto-matching-paren-or-insert and match-it.
+   You can define new \"parentheses\" (matching pairs).
+   Example: angle brackets. Add the following to your .emacs file:
+      (modify-syntax-entry ?< \"(>\" )
+      (modify-syntax-entry ?> \")<\" )
+   You can set hot keys to perform matching with one keystroke.
+   Example: f6 and Control-C 6.
+      (global-set-key \"\\C-c6\" 'match-parenthesis)
+      (global-set-key [f6] 'match-parenthesis)
+   Simon Hawkin <cema@cs.umd.edu> 03/14/1998"
+     (interactive "p")
+     (let ((syntax (char-syntax (following-char))))
+     (cond
+      ((= syntax ?\()
+       (forward-sexp 1) (backward-char))
+      ((= syntax ?\))
+       (forward-char) (backward-sexp 1))
+      (t (message "No match"))
+      )
+     )
 )
 
 ;;; === insert filename ===
@@ -1442,8 +1360,7 @@ occurence of CHAR."
   (interactive)
   (progn
     (save-excursion
-      (goto-line 1) (replace-regexp "
-+" "")
+      (goto-line 1) (replace-regexp "+" "")
     )
   )
 )
@@ -1624,6 +1541,30 @@ it and its frame."
 )
 (setq popup-terminal-command '("/bin/tcsh"))
 
+;; Behave like vi's o command
+(defun open-next-line (arg)
+  "Move to the next line and then opens a line.
+  See also `newline-and-indent'."
+  (interactive "p")
+  (end-of-line)
+  (open-line arg)
+  (next-line 1)
+  (when newline-and-indent
+    (indent-according-to-mode)))
+
+;; Behave like vi's O command
+(defun open-previous-line (arg)
+  "Open a new line before the current one. 
+   See also `newline-and-indent'."
+  (interactive "p")
+  (beginning-of-line)
+  (open-line arg)
+  (when newline-and-indent
+    (indent-according-to-mode)))
+
+;; Autoindent open-*-lines
+(defvar newline-and-indent t
+  "Modify the behavior of the open-*-line functions to cause them to autoindent.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; ==== Gloabal Key Binding ====
@@ -1655,17 +1596,21 @@ it and its frame."
 (global-set-key (kbd "C-c <right>") 'windmove-right)
 (global-set-key (kbd "C-c SPC")     'my-goto-last-edit-pos)
 ;; This binds word completions to Shift-Tab, and Ctrl+Space
-(global-set-key [S-iso-lefttab]     'dabbrev-completion)
-(global-unset-key [?\C-\040])
-(global-set-key [?\C-\040]          'dabbrev-completion)
+;;  (global-set-key [S-iso-lefttab]     'dabbrev-completion)
+;;  (global-unset-key [?\C-\040])
+;;  (global-set-key [?\C-\040]          'dabbrev-completion)
 (global-set-key "\C-\\"             'compare-windows)
+;(global-set-key (kbd "M-/")     'dabbrev-expand) ;;(default)
+(global-set-key (kbd "C-<tab>")     'dabbrev-expand)
+(define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
+
 ;; Copy sexp under cursor into register. Somewhat of a hack since
 ;; marked region remains active following copy. Macro will call
 ;; unmark-region. If there's a better way, show me!
 (fset 'copy-word-under-cursor
    [?\C-\M-b ?\C-  ?\C-\M-f ?\C-x ?r ?s ?l ?\M-x ?t ?i ?: ?: ?t ?- ?u ?n ?m ?a ?r ?k ?- ?r ?e ?g ?i ?o ?n return])
 ;(global-set-key (kbd "C-c a")       ')
-;(global-set-key (kbd "C-c b")       ')
+(global-set-key (kbd "C-c b")       'my-copy-paragraph)
 (global-set-key (kbd "C-c c")       'copy-word-under-cursor)
 ;;Open the currently selected file / directory in the same buffer as this one.
 (global-set-key (kbd "C-c d")       'my-dired-open-in-current-buffer) ;; not working
@@ -1678,9 +1623,9 @@ it and its frame."
 ;(global-set-key (kbd "C-c i")       ')
 ;; jump to char,similar to "f" in vim
 (global-set-key (kbd "C-c j")       'my-go-to-char)
-;(global-set-key (kbd "C-c k")      'browse-kill-ring)
+;(global-set-key (kbd "C-c k")      'browse-kill-ring) ;; (default)
 ;; load .emacs
-(global-set-key (kbd "C-c l")       'my-load-dotemacs)
+(global-set-key (kbd "C-c l")       'my-copy-line)
 ;; switch mode
 (global-set-key (kbd "C-c m")       'my-switch-major-mode)
 (global-set-key (kbd "C-c n")       'mouse-tear-off-window)
@@ -1700,7 +1645,7 @@ it and its frame."
 (global-set-key (kbd "C-c t")       'term)
 (global-set-key (kbd "C-c u")       'uncomment-region)
 (global-set-key (kbd "C-c v")       'view-file-other-window)
-;(global-set-key (kbd "C-c w")       ')
+(global-set-key (kbd "C-c w")       'my-copy-word)
 ;; When I yank a piece of code ( known as paste in Windows lingo )
 ;; into an existing function, I like to have it indent itself to the
 ;; proper level automatically. This simple macro runs yank ( C-y )
@@ -1710,25 +1655,26 @@ it and its frame."
 ;; resize window
 (global-set-key (kbd "C-c =")       'enlarge-window)
 (global-set-key (kbd "C-c -")       'shrink-window)
+;; start a new line like vim o/O
+(global-set-key (kbd "C-o")         'open-next-line)
+(global-set-key (kbd "M-o")         'open-previous-line)
 ;; switch window
-(global-set-key (kbd "C-o")         'other-window)
+;;  (global-set-key (kbd "C-o")         'other-window) ;; use "C-x o"
 ;; "C-x k" kill the buffer immediately
 (global-set-key (kbd "C-x k")       'kill-this-buffer)
 
 ;;; === META Key ===
 (global-set-key "\M-{"              'my-insert-braces)
+;;(global-set-key "\M-%"              'query-replace) ;; (default)
 (global-set-key (kbd "M-1")         'delete-other-windows)
 (global-set-key (kbd "M-4")         'yic-kill-current-buffer)
-;; dired mode
-(global-set-key "\M-d"              'dired)
+
+;;(global-set-key "\M-d"              'kill-word) ;;(default)
 
 ;; Alt-G to jump to certain line number
 (global-set-key "\M-g"              'goto-line)
 
-;; copy line
-(global-set-key "\M-l"              'my-copy-line)
-(global-set-key "\M-w"              'my-copy-word)
-(global-set-key "\M-r"              'my-copy-paragraph)
+;;  (global-set-key "\M-r"              'my-copy-paragraph)
 
 ;; Alt-S Alt-N for tagged searches
 (global-set-key "\M-s"              'tags-search)
@@ -1802,14 +1748,15 @@ it and its frame."
 
 ;; == How to record and display a keyboard macro ==
 
-;; Just open a buffer and type C-x ( Then start typing in your macro.
-;; Once you are finished defining your macro type C-x ) Then type M-x
+;; Just open a buffer and type "C-x (" Then start typing in your macro.
+;; Once you are finished defining your macro type "C-x )" Then type M-x
 ;; name-last-kbd-macro. This will allow you to call your macro
 ;; whatever you want. Next open up your .emacs file and position your
 ;; cursor where you want the code for the macro to appear.  Type M-x
 ;; insert-kbd-macro and type in the name.  The code will automatically
 ;; be generated.
-
+;; "C-x e" : execute keyboard macro
+;; "C-u 37 C-x e" : execute 37 times
 ;; =====================================================================
 
 ;; Use shell-command-on-region M-| to send region to external
@@ -1818,7 +1765,7 @@ it and its frame."
 ;; sending something to stdin and reading from stdout.
 
 ;; =====================================================================
-
+;; C-x z : repeat
 ;; To copy to named register: C-x r s a - Where a is the name of the
 ;; register ( a - z ) to save the text to.
 
@@ -1831,5 +1778,13 @@ it and its frame."
 ;; To jump to named point: C-x r j a - Where a is the name of the
 ;; register holding desired point to jump to
 
+;; =====================================================================
+;; Working with balanced expressions
+;; C-M-f    Move forward over a balanced expression
+;; C-M-b    Move backward over a balanced expression
+;; C-M-k    Kill a balanced expression forward
+;; C-M-SPC  Put the mark at the end of the sexp
+;; C-M-n    Move forward over a parenthetical group
+;; C-M-p    Move backward over a parenthetical group
 ;; =====================================================================
 
