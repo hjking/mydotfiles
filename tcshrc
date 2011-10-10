@@ -1,0 +1,262 @@
+#!/bin/tcsh
+
+setenv LANG en_US.utf8
+set history=2000
+set savehist=(2000 merge)
+set savedirs=20
+set killring=50
+set killdup=all
+set autocorrect
+set filec
+set autolist=ambiguous
+set ignoreeof
+set rmstar
+set color
+set colorcat
+set nobeep
+set correct=cmd
+set complete=enhance   # ignore case and consider periods, hyphens and underscores
+#set complete=1  # ignore case
+#set term=xterm-color
+#set echo # echo each cmd and args before executed
+set histdup=erase  #all, prev
+
+set listjobs=long
+set echo_style=both
+set inputmode=insert
+set matchbeep=ambiguous
+
+set nobeep
+
+#set promptchars='$#'
+
+#alias cwdcmd 'echo -n "ˆ[]2;${HOST}:$cwdˆGˆ[]1;${HOST}ˆG"'
+#alias precmd 'echo -n "\033[0;35;40mTCSH\033[0;36;40m["`date +%F\ %T`"] "; echo "\033[4;37;40m`pwd`"'
+alias precmd 'echo -n "\033[0;35;40mTCSH\033[0;36;40m["`date +%F\ %T`"] "; echo "\033[0;37;40m`pwd`"'
+
+setenv PRINTER qms
+setenv SVN_EDITOR vim
+#setenv TERM kterm
+setenv TERM rxvt
+setenv COLORTERM rxvt
+umask 066
+
+limit     coredumpsize 0
+limit -h  coredumpsize 0
+
+set CW_SHLVL=$SHLVL
+set NOCOLOR=1
+set promptchars='>#'
+#xmodmap ~/.xmodmaprc
+# emacs binding
+#bindkey -e
+# vi binding
+#bindkey -v
+set FG_RED="%{\033[0;31;40m%}"
+set FG_GREEN="%{\033[0;32;40m%}"
+set FG_YELLOW="%{\033[0;33;40m%}"
+set FG_BLUE="%{\033[0;34;40m%}"
+set FG_PURPLE="%{\033[0;35;40m%}"
+set FG_CYAN="%{\033[0;36;40m%}"
+set FG_WHITE="%{\033[0;37;40m%}"
+set FG_YELLOW_BG_RED="%{\033[1;33;41m%}"
+set FG_YELLOW_BG_GREEN="%{\033[1;33;42m%}"
+set NO_COLOR="%{\033[0m%}"
+#set prompt = "%{\033[0;31;40m%}[%{\033[1;4;5;33;41m%}%M%{\033[0;31;40m%}]%{\033[0;32;40m%}>%{\033[0;37;40m%}>%{\033[0m%}"
+#set prompt = "%{\033[0;35;40m%}[%{\033[1;33;40m%}%n%{\033[0;37;40m%}@%{\033[1;33;41m%}%M%{\033[0;37;40m%}:%{\033[4;36;40m%}%~%{\033[0;35;40m%}]-%{\033[0;31;40m%}[%Y-%W-%D %d %T]%{\033[0;32;40m%}\n>> "
+#set prompt = "%{\033[0;31;40m%}[%T]%{\033[0;35;40m%}[%{\033[1;33;40m%}%n%{\033[0;37;40m%}@%{\033[1;33;41m%}%M%{\033[0;37;40m%}:%{\033[4;36;40m%}%~%{\033[0;35;40m%}]%{\033[0;32;40m%}\n>> "
+#set prompt = "%{\033[0;31;40m%}[%T]%{\033[0;35;40m%}[%{\033[1;33;40m%}%n%{\033[0;37;40m%}@%{\033[1;33;41m%}%M%{\033[0;37;40m%}:%{\033[4;36;40m%}%~%{\033[0;35;40m%}]%{\033[0;32;40m%}>> "
+#set prompt = "%{\033[1;33;41m%}%M %{\033[0;32;40m%}>> "
+set prompt = "${FG_YELLOW_BG_GREEN}%M${NO_COLOR} ${FG_PURPLE}\!${FG_CYAN} >> "
+#set prompt = "${FG_YELLOW_BG_RED}%M${NO_COLOR} ${FG_PURPLE}\!${NO_COLOR} >> "
+#set rprompt = "%{\033[0;31;40m%}[%T]%{\033[0;35;40m%}[%{\033[4;36;40m%}%~%{\033[0;35;40m%}]%{\033[0m%}"
+#set prompt = "%{\033[0;31;40m%}[%{\033[4;33;45m%}%M%{\033[0;31;40m%}]%{\033[0;32;40m%}>>%{\033[0m%}"
+#set rprompt = "%{\033[0m%}"
+
+############################
+# ##### KEY BINDINGS ##### #
+############################
+# bindkey "^[j" complete-word-back
+# bindkey "^[k" complete-word-fwd
+# bindkey "^[m" list-glob
+# bindkey "^[e" expand-line
+# bindkey "^[g" expand-glob
+# bindkey "^[v" expand-variables
+# bindkey "^[z" normalize-path
+# bindkey "^[x" normalize-command
+# bindkey "^[i" i-search-fwd
+# bindkey "^[I" i-search-back
+# bindkey "^[a" spell-line
+bindkey ^[[2~ overwrite-mode
+# bindkey "^[q" keyboard-quit
+bindkey ^[[5~ history-search-backward
+bindkey ^[[6~ history-search-forward
+
+
+#######################################
+# DISPLAY SETTING
+#######################################
+if ( $?DISPLAY ) then
+    env | grep DISPLAY > ~/.display.conf ;
+    perl -pi -e 's/=/ /g' ~/.display.conf ;
+    perl -pi -e 's/^/setenv /g' ~/.display.conf ;
+else
+        source ~/.display.conf ;
+endif
+
+#######################################
+# CVS SETTING
+#######################################
+setenv CVS_RSH ssh
+# KMC-to-FISW CVS
+setenv CVSROOT :ext:bkn_fndr_cvs_mngr@asiccvs:/home/ASIC/fbkn/CVS_DB
+# setenv CVSROOT :ext:bkn_fndr_cvs_mngr@10.181.127.75:/home/ASIC/fbkn/CVS_DB
+########################################
+# MY CVS
+########################################
+# setenv CVSROOT ~/MY_CVS/CVS_DB
+
+#######################################
+# Screen
+#######################################
+# set path = (~/tool/ $path)
+alias sc 'screen -AdR -h 1000'
+
+#######################################
+# Alias
+#######################################
+alias his       history
+alias vi        vim
+alias view      'vim -R'
+alias cd.       'cd ..; pwd; ls'
+alias cd..      'cd ../..; pwd; ls'
+alias cd...     'cd ../../..; pwd; ls'
+alias cd-       'cd -; pwd; ls'
+alias ls        'ls --color=always'
+alias ll        'ls -lahF --time-style="long-iso" --color="always"'
+alias lt        'ls -ltahF --time-style="long-iso" --color="always"'
+#alias ll        'ls -lahF --color="auto"'
+alias la        'ls -aF'
+alias cls       'clear'
+#alias cls       'clear;pwd'
+alias zz        exit
+alias xx        exit
+alias cp        cp -r
+alias mv        mv -f
+alias rm        rm -r
+alias md        mkdir -p 
+alias ln        ln -s
+alias ps        ps xf -f
+alias lo        logout
+alias grep      grep -i
+alias gwave     gtkwave
+
+alias pdf       '/opt/Adobe/Reader8/bin/acroread &'
+
+alias so        source
+alias src       source ~/.tcshrc
+alias virc      vim ~/.tcshrc
+alias cm755     chmod 755 -R
+alias cm777     chmod 777 -R
+alias cm700     chmod 700 -R
+alias cm600     chmod 600 -R
+
+alias art10     rlogin art10
+alias art11     rlogin art11
+alias art20     rlogin art20
+alias art21     rlogin art21
+alias art22     rlogin art22
+alias art23     rlogin art23
+alias art24     rlogin art24
+alias art25     rlogin art25
+alias art26     rlogin art26
+alias art27     rlogin art27
+alias art28     rlogin art28
+alias art29     rlogin art29
+alias fusion1   rlogin fusion1
+alias where     'echo -n "$HOST : "; pwd;'
+#alias du        du -sh
+alias du        du -h
+##########################################
+# PJ Location Setting
+##########################################
+alias aes       'cd ~/workspace/7AES; ls'
+alias amc       'cd ~/workspace/6AMC_PLUS; ls'
+alias ddci      'cd ~/workspace/5DDCI; ls'
+alias meteor    'cd ~/workspace/8METEOR; ls'
+alias lsu       'cd ~/workspace/8METEOR/2LSU2IF; ls'
+alias input     'cd ~/workspace/8METEOR/1INPUT2IF; ls'
+alias atom      'cd ~/workspace/9Alphard2/1Atom; ls'
+alias uran      'cd ~/workspace/9Alphard2/2Uran; ls'
+alias tiger     'cd ~/workspace/9Alphard2/3Tiger; ls'
+alias caxi_lmc  'cd ~/workspace/9Alphard2/3Tiger/1CAXI_LMC; ls'
+alias plb_lmc   'cd ~/workspace/9Alphard2/3Tiger/2PLB_LMC; ls'
+alias p2l       'cd ~/workspace/9Alphard2/3Tiger/2PLB_LMC/3sim/PLB2LMC; ls'
+alias l2p       'cd ~/workspace/9Alphard2/3Tiger/2PLB_LMC/3sim/LMC2PLB; ls'
+alias dbox      'cd /DropBox/z000023061/; ls'
+alias config    'cd ~/workspace/CONFIG; pwd; ls; svn status'
+
+# alias emacs     'emacs $* &'
+alias em        'emacs --debug-init $* &'
+# alias kterm     'kterm -n $HOST -T $HOST -fn 9x15 -sb -sl 3000 &'
+alias k9        'kterm -n $HOST -T $HOST -fn 9x15 -sn -sb -cr green -vb -sl 30000 &'
+alias k8        'kterm -n $HOST -T $HOST -fn clR8x16 -sn -sb -cr green -vb -sl 30000 &'
+alias kt        'kterm -n $HOST -T $HOST -fn clR8x16 -sn -sb -cr green -vb -sl 30000 &'
+alias kr        'kterm -n $HOST -T $HOST -bg red4 -fg white -cr green -sb -fn 9x15 -sn -sl 30000 -vb &'
+alias kg        'kterm -n $HOST -T $HOST -bg darkgreen -fg white -cr yellow2 -sb -fn 9x15 -sn -sl 3000 -vb &'
+alias kb        'kterm -n $HOST -T $HOST -bg lightblue -fg black -cr red -sb -fn 9x15 -sn -sl 30000 -vb &'
+alias kw        'kterm -n $HOST -T $HOST -bg white -fg black -cr red -sb -fn 9x15 -sn -sl 30000 -vb &'
+alias kd        'kterm -n $HOST -T $HOST -bg darkgray -fg black -cr green -sb -fn 9x15 -sn -sl 30000 -vb &'
+
+alias 2XVerdi   '2XVerdi $* &'
+
+##########################################
+# Synopsys LICENSE Setting
+##########################################
+#setenv LM_LICENSE_FILE 27000@fusion1:27001@earth
+setenv LM_LICENSE_FILE 27000@fusion1:27001@earth:1717@earth:5219@fusion1:1718@fusion1
+
+##########################################
+# DC Setting
+##########################################
+setenv DC_HOME /cadtools/dc/B-2008.09-SP4
+setenv DC_BIN $DC_HOME/linux/syn/bin
+set path = ($path $DC_BIN)
+
+##########################################
+# Modelsim Setting
+##########################################
+setenv MODELSIM_HOME /cadtools/modelsim6.5b/modeltech
+setenv MODELSIM_BIN  $MODELSIM_HOME/linux_x86_64
+set path = ($path $MODELSIM_BIN )
+
+##########################################
+# VCS Setting
+##########################################
+setenv VCS_HOME /cadtools/vcs/vcsD-2009.12
+setenv VCS_BIN $VCS_HOME/bin
+set path = ( $path $VCS_BIN )
+
+##########################################
+# Verdi Setting
+##########################################
+setenv VERDI_HOME /cadtools/novas/Novas-201001
+setenv VERDI_BIN $VERDI_HOME/bin
+set path = ( $path $VERDI_BIN)
+setenv FSDB_ENV_DISABLE_OLD_FSDB_VER_MSG
+
+##########################################
+# SpyGlass Setting
+##########################################
+setenv SPYGLASS_HOME /cadtools/spyglass/SpyGlass-4.0.1.2jp2/SPYGLASS_HOME
+##########################################
+# SpyGlass LICEMSE Setting
+##########################################
+setenv ATRENTA_LICENSE_FILE 1700@earth
+
+##########################################
+# Path Setting
+##########################################
+set path = (. $path)
+set path = ($path ~/bin/cvs ~/bin/bin ~/bin /usr/X11R6/lib)
+

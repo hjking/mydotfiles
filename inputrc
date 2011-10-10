@@ -1,0 +1,16 @@
+# ignore case
+set completion-ignore-case on
+
+# use "..." replace the same matching part in auto-complete
+set completion-prefix-display-length 2
+
+# C-j C-k to choose file
+Control-j: menu-complete
+Control-k: menu-complete-backward
+
+# one pressing TAB to auto-complete
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+# treat "-" "_" the same
+set completion-map-case on
