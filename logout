@@ -1,2 +1,3 @@
-clear
-echo "Good-Bye..."
+# logout
+rm -rf ~/.history
+touch ~/.history

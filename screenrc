@@ -1,14 +1,65 @@
-#-----------------
-defencoding eucJP
-escape ^z^z
-hardstatus alwayslastline "%w"
- 
- shelltitle "$ |bash"
- hardstatus alwayslastline "%`%-w%{=b bw}%n %t%{-}%+w"
- bind s
- startup_message off  # おまけ: 起動画面OFF
- autodetach on        # おまけ: 回線切断時に自動でdetach
- defscrollback 1024   # おまけ: スクロールバッファ行数を増やす
- bind ' ' windowlist -b
- #-----------------
+#=================== Basic setting =================
+escape ^\^\
+time "%c:%s %M %d %H%? %|%?"
+#term screen-256color
+#terminfo kterm ti@:te@:
+#termcapinfo * 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+termcapinfo * xn:hs@
+windows
+altscreen on
+startup_message off     # turn off splash screen
+autodetach on           # autodetach session on hangup instead of terminating
+defscrollback 102400     # scrollback buffer
+vbell off               # turn off visual bell
+shell -${SHELL}
+# shelltitle '> |Tcsh'
+# screen 1
+# caption always "%n(%t) : %C"
+# caption always "%3n %t%? @%u%?%? [%h]%?%=%c"
+# caption always "%{= kc}%H (system load: %l)%-21=%{= .m}%D %Y-%m-%d %0c" 
+# caption always "%{= RW}%H (System Load: %l)%-21=%{= BW}%D %Y-%m-%d %0c" 
+# caption always "%{= RW}%H (System Load: %l)%-21=%D %Y-%m-%d %0c" 
+# caption always "%{= kb}[ %=%{w}%?%-Lw%?%{b}(%{W}%n*%f %t%?(%u)%?%{b})%{w}%?%+Lw%?%?%= %{b}][%{B} %H %{W}%l %{b}][%{B} %d.%m.%Y %{W}%0c %{b}]"
+# caption always "%{= wb}$USER @ %H >> %-Lw%{= r}%50>%n* %t%{-}%+Lw%< %-=<< (%c.%s)"
+# caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= %c"
+# caption always "%{= R}[ %{=b b}%-w%{=rb db}%>%n %t%{-}%+w%{-b}%< %=%{R}][%{M}%D %M %d %{G}%c%{R}]"
 
+#================= Status Line ================
+hardstatus on
+hardstatus alwayslastline
+# " %{..G} %H [%l] %{..Y} %m/%d %C %a %{bk}[ %{W}%H %{b}][ %{w}%l%{b} ]   %{b}[%{w} %D %m-%d %c%{b} ]"
+#hardstatus string "%{= M} [ %H:%{= G} %l ] [%= %{= w}%-w%{+b r}%n*%t%{-b r}%{w}%+w  %=] [ %{w}%m-%d %D %{G}%c ]"
+hardstatus string "%{= M}[%{G}%H:%l%{= M}] [%= %{= w}%-w%{+b r}(%n*%f%t%?)%{-b r}%{w}%+w  %= %{= M}] [%{w}%m-%d %D %{G}%c%{= M}]"
+#hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{W}%c %{g}]'
+#hardstatus string '%{= kG}%-Lw%{= kR}%50> %n*%f %t%{= kG}%+Lw%< %{= kB}%-=%D %m/%d/%y | %C:%s %A | %1`%{-}'
+#hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}% w %=%{..G} %H %{..Y} %m/%d %C%a "
+#hardstatus string '%{= kg}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?% Lw%?%?%= %{g}]%{=b C}[ %d %M %c ]%{W}'
+#hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%+w %=%c %d/%m/%Y" #black+white+bold
+#hardstatus string "%{.kw}%-w%{.Kw}%n %t%{-}%+w %=%c %d/%m/%Y" #black+grey+normal
+#hardstatus string "%{.kc}%-w%{.kc}%n*%t%{-}%+w %=%c %d/%m/%Y" #black+cyan+normal
+#hardstatus string "%{.kc}%-w%{.kw}%n*%t%{-}%+w %= %2` %3`/%4` %6`/%7` %5`/%9` %c %d/%m/%Y" #black+cyan+normal+white selected
+#hardstatus string "%{.kc}%-w%{.kw}%n*%t%{-}%+w %= | %1` | %2`C | %3`/%4` | %6`/%7` | %5` | %c %d/%m/%Y" #with dwm status bar
+#hardstatus string '%{= kB}%-Lw%{+r}%50> %n%f* %t%{= kB}%+Lw%< %{= kB}%-= %{-}'
+#hardstatus alwayslastline '%{bk}[ %{W}%H %{b}][ %{w}%l%{b} ]   %{b}[%{w} %D %m-%d %c%{b} ]'
+#hardstatus alwayslastline '%{= M} %H%{= G} %l %= %{= w}%-w%{+b r}%n*%t%{-b r}%{w}%+w %= %{c}%d %D %{B}%c '
+#hardstatus string "%{+b wk} %-w%{+b wk} %n %t %{-}%+w %41=%H @ %l %-= %= %D,%c:%s "
+#
+#
+
+#============= Bind keys ===============
+bind ' ' windowlist -b
+bind ',' prev
+bind '.' next
+bind s
+# Bind F11 and F12 (NOT F1 and F2) to previous and next screen window
+bindkey -k F1 prev
+bindkey -k F2 next
+
+#============= Session ===============
+screen -t PJ_1 1
+screen -t PJ_2 2
+screen -t ref 3
+# select focus on which
+select 1
+
+#-----------------
