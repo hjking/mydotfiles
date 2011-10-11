@@ -51,7 +51,7 @@
 (defvar ac-verilog-sources
   '(verilog-keywords))
 
-(ac-define-dictionary-source
+(ac-define-source
  verilog-keywords '(
 ;; verilog-type-font-keywords
 	     "and" "bit" "buf" "bufif0" "bufif1" "cmos" "defparam"

@@ -32,8 +32,7 @@ hi Character       guifg=#E6DB74
 hi Number          guifg=#AE81FF
 hi String          guifg=#E6DB74
 hi Conditional     guifg=#F92672               gui=bold
-"hi Constant        guifg=#AE81FF               gui=bold
-hi Constant        guifg=#AE81FF
+hi Constant        guifg=#AE81FF               gui=bold
 hi Cursor          guifg=#000000 guibg=#F8F8F0
 hi Debug           guifg=#BCA3A3               gui=bold
 hi Define          guifg=#66D9EF
@@ -49,8 +48,7 @@ hi ErrorMsg        guifg=#F92672 guibg=#232526 gui=bold
 hi Exception       guifg=#A6E22E               gui=bold
 hi Float           guifg=#AE81FF
 hi FoldColumn      guifg=#465457 guibg=#000000
-"hi Folded          guifg=#465457 guibg=#000000
-hi Folded          guifg=#DDB8DD guibg=#000000
+hi Folded          guifg=#465457 guibg=#000000
 hi Function        guifg=#A6E22E
 hi Identifier      guifg=#FD971F
 hi Ignore          guifg=#808080 guibg=bg
@@ -60,7 +58,7 @@ hi Keyword         guifg=#F92672               gui=bold
 hi Label           guifg=#E6DB74               gui=none
 hi Macro           guifg=#C4BE89               gui=italic
 "hi SpecialKey      guifg=#66D9EF               gui=italic
-"hi SpecialKey      guifg=#66D9EF
+hi SpecialKey      guifg=#66D9EF
 
 hi MatchParen      guifg=#000000 guibg=#FD971F gui=bold
 hi ModeMsg         guifg=#E6DB74
@@ -77,16 +75,12 @@ hi PreCondit       guifg=#A6E22E               gui=bold
 hi PreProc         guifg=#A6E22E
 hi Question        guifg=#66D9EF
 hi Repeat          guifg=#F92672               gui=bold
-"hi Search          guifg=#FFFFFF guibg=#455354
-hi Search          guifg=#FFFFFF guibg=#707000
+hi Search          guifg=#FFFFFF guibg=#455354
 " marks column
 hi SignColumn      guifg=#A6E22E guibg=#232526
-"hi SpecialChar     guifg=#F92672               gui=bold
-hi SpecialChar     guifg=#F92672
-"hi SpecialComment  guifg=#465457               gui=bold
-hi SpecialComment  guifg=#465457
-"hi Special         guifg=#66D9EF guibg=bg      gui=italic
-hi Special         guifg=#66D9EF
+hi SpecialChar     guifg=#F92672               gui=bold
+hi SpecialComment  guifg=#465457               gui=bold
+hi Special         guifg=#66D9EF guibg=bg
 "hi SpecialKey      guifg=#888A85               gui=italic
 hi SpecialKey      guifg=#888A85
 if has("spell")
@@ -109,28 +103,21 @@ hi Type            guifg=#66D9EF               gui=none
 hi Underlined      guifg=#808080               gui=underline
 
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
-"hi VisualNOS                     guibg=#403D3D
-"hi Visual                        guibg=#403D3D
-hi VisualNOS                     guibg=#005900
-hi Visual                        guibg=#005900
-hi WarningMsg      guifg=#FFFFFF guibg=#333333 gui=bold
+hi VisualNOS                     guibg=#403D3D
+hi Visual                        guibg=#403D3D
 hi WarningMsg      guifg=#FFFFFF guibg=#333333 gui=bold
 hi WildMenu        guifg=#66D9EF guibg=#000000
 
 if s:molokai_original == 1
    hi Normal          guifg=#F8F8F2 guibg=#272822
-"   hi Comment         guifg=#75715E                 gui=italic
    hi Comment         guifg=#75715E
    hi CursorLine                    guibg=#3E3D32
    hi CursorColumn                  guibg=#3E3D32
    hi LineNr          guifg=#BCBCBC guibg=#3B3A32
    hi NonText         guifg=#BCBCBC guibg=#3B3A32
 else
-"   hi Normal          guifg=#F8F8F2 guibg=#1B1D1E
-   hi Normal          guifg=#F8F8F2 guibg=#000000
-"   hi Comment         guifg=#465457
-   hi Comment         guifg=#006699                 gui=italic
-"   hi Comment         guifg=#006699
+   hi Normal          guifg=#F8F8F2 guibg=#1B1D1E
+   hi Comment         guifg=#465457
    hi CursorLine                    guibg=#293739
    hi CursorColumn                  guibg=#293739
    hi LineNr          guifg=#BCBCBC guibg=#232526

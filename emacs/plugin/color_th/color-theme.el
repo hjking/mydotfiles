@@ -510,7 +510,7 @@ of `color-theme-history-max-length'.")
     (color-theme-pok-wob "White On Black" "S. Pokrovsky <pok@nbsp.nsk.su>")
     (color-theme-pok-wog "White On Grey" "S. Pokrovsky <pok@nbsp.nsk.su>")
     (color-theme-word-perfect "WordPerfect" "Thomas Gehrlein <Thomas.Gehrlein@t-online.de>")
-    (color-theme-hongjin "Beauty Black" "Hong Jin <hon9jin@gmail.com>")
+;;    (color-theme-hongjin "Beauty Black" "Hong Jin <hon9jin@gmail.com>")
     (color-theme-xp "XP" "Girish Bharadwaj <girishb@gbvsoft.com>"))
   "List of color themes.
 
@@ -15172,32 +15172,6 @@ bold))))
      (widget-inactive-face ((t (:foreground "dim gray"))))
      (widget-single-line-field-face ((t (:background "gray85")))))))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun color-theme-hongjin ()
-  (interactive)
-  (color-theme-install
-   '(color-theme-hongjin
-      ((background-color . "#070808")
-      (background-mode . light)
-      (border-color . "#1a1a1a")
-      (cursor-color . "#fce94f")
-      (foreground-color . "#eeeeec")
-      (mouse-color . "black"))
-     (fringe ((t (:background "#1a1a1a"))))
-;;     (mode-line ((t (:foreground "#eeeeec" :background "#555753"))))
-     (mode-line ((t (:foreground "#14f04d" :background "#555753"))))
-     (region ((t (:background "#0d4519"))))
-     (font-lock-builtin-face ((t (:bold t :foreground "#f02470" :weight semi-bold))))
-     (font-lock-comment-face ((t (:foreground "#888a85"))))
-     (font-lock-function-name-face ((t (:foreground "#edd400"))))
-     (font-lock-keyword-face ((t (:bold t :foreground "#c572cf" :weight semi-bold))))
-     (font-lock-string-face ((t (:foreground "#09afce"))))
-     (font-lock-type-face ((t (:foreground"#8ae234"))))
-     (font-lock-variable-name-face ((t (:foreground "#eeeeec"))))
-     (minibuffer-prompt ((t (:foreground "#729fcf" :bold t))))
-     (font-lock-warning-face ((t (:foreground "Red" :bold t))))
-     )))
 
 
 (provide 'color-theme)

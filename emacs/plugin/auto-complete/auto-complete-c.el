@@ -7,7 +7,7 @@
 (defvar ac-c-sources
   '(ac-source-c-keywords))
 
-(ac-define-dictionary-source
+(ac-define-source
  ac-source-c-keywords
  '("and" "bool" "do" "export" "goto" "return"
    "struct" "try" "xor" "break" "const" "double" "extern"

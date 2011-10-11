@@ -1,6 +1,9 @@
 
-;; ibuffer setting
-;;
+;; Filename: ibuffer-conf.el
+;; Description: Setting for ibuffer.el
+;; Author: Hong Jin
+;; Created: 2010-12-09 10:00
+;; Last Updated: 2011-01-17 15:36:36
 ;;
 (message ">>>>> Loading [ ibuffer ] Customizations File ....")
 (require 'ibuffer)
@@ -14,18 +17,23 @@
             (lambda ()
               (setq ibuffer-filter-groups
                     '(
-                      ("*buffer*" (name . "\\*.*\\*"))
-                      ("TAGS" (name . "^TAGS\\(<[0-9]+>\\)?$"))
-                      ("dired" (mode . dired-mode))
-                      ("perl" (mode . cperl-mode))
-                      ("elisp" (or (mode . emacs-lisp-mode)
-                                   (mode . lisp-interaction-mode)))
+                      ("*buffer*"   (name . "\\*.*\\*"))
+                      ("TAGS"       (name . "^TAGS\\(<[0-9]+>\\)?$"))
+                      ("dired"      (mode . dired-mode))
+                      ("Org"        (mode . org-mode))
+                      ("Perl"       (mode . cperl-mode))
+                      ("Python"     (mode . python-mode))
+                      ("Shell"      (mode . shell-script-mode))
+                      ("Verilog"    (mode . verilog-mode))
+                      ("Elisp"      (or (mode . emacs-lisp-mode)
+                                        (mode . lisp-interaction-mode)))
                       ))))
+
   (setq ibuffer-saved-filters
       '(("t" ((or (mode . latex-mode)
-                 (mode . plain-tex-mode))))
+                  (mode . plain-tex-mode))))
         ("c" ((or (mode . c-mode)
-                 (mode . c++-mode))))
+                  (mode . c++-mode))))
         ("p" ((mode . cperl-mode)))
         ("e" ((or (mode . emacs-lisp-mode)
                   (mode . lisp-interaction-mode))))
@@ -52,6 +60,7 @@
         ("*" ((name . "*")))
         ))
   )
+
 ;;;###autoload
 (defun ywb-ibuffer-rename-buffer ()
   (interactive)
@@ -63,6 +72,7 @@
     (with-current-buffer buf
       (rename-buffer name)))
   (call-interactively 'ibuffer-update))
+
 (defun ywb-ibuffer-find-file ()
   (interactive)
   (let ((default-directory (let ((buf (ibuffer-current-buffer)))

@@ -3,12 +3,12 @@
 ;; Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
 ;;   2005, 2006, 2007, 2008, 2009, 2010  Free Software Foundation, Inc.
 
-;; Author: Michael McNamara (mac@verilog.com)
-;;  http://www.verilog.com
+;; Author: Michael McNamara (mac@verilog.com),
+;;    Wilson Snyder (wsnyder@wsnyder.org)
+;; Please see our web sites:
+;;    http://www.verilog.com
+;;    http://www.veripool.org
 ;;
-;; AUTO features, signal, modsig; by: Wilson Snyder
-;;	(wsnyder@wsnyder.org)
-;;	http://www.veripool.org
 ;; Keywords: languages
 
 ;; Yoni Rabkin <yoni@rabkins.net> contacted the maintainer of this
@@ -118,9 +118,9 @@
 ;;; Code:
 
 ;; This variable will always hold the version number of the mode
-(defconst verilog-mode-version (substring "$$Revision: 614 $$" 12 -3)
+(defconst verilog-mode-version (substring "$$Revision: 621 $$" 12 -3)
   "Version of this Verilog mode.")
-(defconst verilog-mode-release-date (substring "$$Date: 2010-04-20 14:36:19 +0000 (Tue, 20 Apr 2010) $$" 8 -3)
+(defconst verilog-mode-release-date (substring "$$Date: 2010-05-24 10:00:43 -0700 (Mon, 24 May 2010) $$" 8 -3)
   "Release date of this Verilog mode.")
 (defconst verilog-mode-release-emacs nil
   "If non-nil, this version of Verilog mode was released with Emacs itself.")
@@ -213,7 +213,14 @@ STRING should be given if the last search was by `string-match' on STRING."
       ;; We have an intermediate custom-library, hack around it!
       (defmacro customize-group (var &rest args)
         `(customize ,var))
-      ))
+      )
+
+    (unless (boundp 'inhibit-point-motion-hooks)
+      (defvar inhibit-point-motion-hooks nil))
+    (unless (boundp 'deactivate-mark)
+      (defvar deactivate-mark nil))
+    )
+  ;;
   ;; OK, do this stuff if we are NOT XEmacs:
   (unless (featurep 'xemacs)
     (unless (fboundp 'region-active-p)
@@ -259,6 +266,13 @@ STRING should be given if the last search was by `string-match' on STRING."
         )
     ;; Emacs.
     (defalias 'verilog-regexp-opt 'regexp-opt)))
+
+(eval-and-compile
+  ;; Both xemacs and emacs
+  (condition-case nil
+      (unless (fboundp 'buffer-chars-modified-tick)  ;; Emacs 22 added
+	(defmacro buffer-chars-modified-tick () (buffer-modified-tick)))
+    (error nil)))
 
 (eval-when-compile
   (defun verilog-regexp-words (a)
@@ -341,6 +355,9 @@ This function may be removed when Emacs 21 is no longer supported."
 (defgroup verilog-mode-auto nil
   "Customize AUTO actions when expanding Verilog source text."
   :group 'verilog-mode)
+
+(defvar verilog-debug nil
+  "If set, enable debug messages for `verilog-mode' internals.")
 
 (defcustom verilog-linter
   "echo 'No verilog-linter set, see \"M-x describe-variable verilog-linter\"'"
@@ -575,6 +592,23 @@ grouping constructs allow the structure of the code to be understood at a glance
   :group 'verilog-mode-indent
   :type 'boolean)
 (put 'verilog-highlight-grouping-keywords 'safe-local-variable 'verilog-booleanp)
+
+(defcustom verilog-highlight-modules nil
+  "*True means highlight module statements for `verilog-load-file-at-point'.
+When true, mousing over module names will allow jumping to the
+module definition.  If false, this is not supported.  Setting
+this is experimental, and may lead to bad performance."
+  :group 'verilog-mode-indent
+  :type 'boolean)
+(put 'verilog-highlight-modules 'safe-local-variable 'verilog-booleanp)
+
+(defcustom verilog-highlight-includes t
+  "*True means highlight module statements for `verilog-load-file-at-point'.
+When true, mousing over include file names will allow jumping to the
+file referenced.  If false, this is not supported."
+  :group 'verilog-mode-indent
+  :type 'boolean)
+(put 'verilog-highlight-includes 'safe-local-variable 'verilog-booleanp)
 
 (defcustom verilog-auto-endcomments t
   "*True means insert a comment /* ... */ after 'end's.
@@ -1307,6 +1341,20 @@ If set will become buffer local.")
 ;;  Macros
 ;;
 
+(defsubst verilog-get-beg-of-line (&optional arg)
+  (save-excursion
+    (beginning-of-line arg)
+    (point)))
+
+(defsubst verilog-get-end-of-line (&optional arg)
+  (save-excursion
+    (end-of-line arg)
+    (point)))
+
+(defsubst verilog-within-string ()
+  (save-excursion
+    (nth 3 (parse-partial-sexp (verilog-get-beg-of-line) (point)))))
+
 (defsubst verilog-string-replace-matches (from-string to-string fixedcase literal string)
   "Replace occurrences of FROM-STRING with TO-STRING.
 FIXEDCASE and LITERAL as in `replace-match`.  STRING is what to replace.
@@ -1423,20 +1471,6 @@ This speeds up complicated regexp matches."
     done))
 ;;(verilog-re-search-backward-substr "-end" "get-end-of" nil t) ;;-end (test bait)
 
-(defsubst verilog-get-beg-of-line (&optional arg)
-  (save-excursion
-    (beginning-of-line arg)
-    (point)))
-
-(defsubst verilog-get-end-of-line (&optional arg)
-  (save-excursion
-    (end-of-line arg)
-    (point)))
-
-(defsubst verilog-within-string ()
-  (save-excursion
-    (nth 3 (parse-partial-sexp (verilog-get-beg-of-line) (point)))))
-
 (defvar compile-command)
 
 ;; compilation program
@@ -1541,11 +1575,13 @@ find the errors."
 (if (featurep 'emacs) (add-hook 'compilation-mode-hook 'verilog-error-regexp-add-emacs))
 
 (defconst verilog-directive-re
-  ;; "`case" "`default" "`define" "`define" "`else" "`elsif" "`endfor" "`endif"
-  ;; "`endprotect" "`endswitch" "`endwhile" "`for" "`format" "`if" "`ifdef"
-  ;; "`ifndef" "`include" "`let" "`protect" "`switch" "`timescale"
-  ;; "`time_scale" "`undef" "`while"
-  "\\<`\\(case\\|def\\(ault\\|ine\\(\\)?\\)\\|e\\(lse\\|nd\\(for\\|if\\|protect\\|switch\\|while\\)\\)\\|for\\(mat\\)?\\|i\\(f\\(def\\|ndef\\)?\\|nclude\\)\\|\\(elsif\\)?\\|let\\|protect\\|switch\\|time\\(_scale\\|scale\\)\\|undef\\|while\\)\\>")
+  (eval-when-compile
+    (verilog-regexp-words
+     '(
+   "`case" "`default" "`define" "`else" "`elsif" "`endfor" "`endif"
+   "`endprotect" "`endswitch" "`endwhile" "`for" "`format" "`if" "`ifdef"
+   "`ifndef" "`include" "`let" "`protect" "`switch" "`timescale"
+   "`time_scale" "`undef" "`while" ))))
 
 (defconst verilog-directive-re-1
   (concat "[ \t]*"  verilog-directive-re))
@@ -2157,7 +2193,7 @@ find the errors."
 (defconst verilog-fork-wait-re "fork\\s-+wait\\>")
 (defconst verilog-extended-case-re "\\(unique\\s-+\\|priority\\s-+\\)?case[xz]?")
 (defconst verilog-extended-complete-re
-  (concat "\\(\\<extern\\s-+\\|\\<virtual\\s-+\\|\\<protected\\s-+\\)*\\(\\<function\\>\\|\\<task\\>\\)"
+  (concat "\\(\\<extern\\s-+\\|\\<\\(\\<pure\\>\\s-+\\)?virtual\\s-+\\|\\<protected\\s-+\\)*\\(\\<function\\>\\|\\<task\\>\\)"
 	  "\\|\\(\\<typedef\\>\\s-+\\)*\\(\\<struct\\>\\|\\<union\\>\\|\\<class\\>\\)"
 	  "\\|\\(\\<import\\>\\s-+\\)?\"DPI-C\"\\s-+\\(function\\>\\|task\\>\\)"
 	  "\\|" verilog-extended-case-re ))
@@ -2518,75 +2554,137 @@ See also `verilog-font-lock-extra-types'.")
 		   )))))
 
 ;;
+;; Buffer state preservation
+
+(defmacro verilog-save-buffer-state (&rest body)
+  "Execute BODY forms, saving state around insignificant change.
+Changes in text properties like `face' or `syntax-table' are
+considered insignificant.  This macro allows text properties to
+be changed, even in a read-only buffer.
+
+A change is considered significant if it affects the buffer text
+in any way that isn't completely restored again.  Any
+user-visible changes to the buffer must not be within a
+`verilog-save-buffer-state'."
+  ;; From c-save-buffer-state
+  `(let* ((modified (buffer-modified-p))
+	  (buffer-undo-list t)
+	  (inhibit-read-only t)
+	  (inhibit-point-motion-hooks t)
+	  before-change-functions
+	  after-change-functions
+	  deactivate-mark
+	  buffer-file-name ; Prevent primitives checking
+	  buffer-file-truename)	; for file modification
+     (unwind-protect
+	 (progn ,@body)
+       (and (not modified)
+	    (buffer-modified-p)
+	    (set-buffer-modified-p nil)))))
+
+(defmacro verilog-save-no-change-functions (&rest body)
+  "Execute BODY forms, disabling all change hooks in BODY.
+For insigificant changes, see instead `verilog-save-buffer-state'."
+  `(let* ((inhibit-point-motion-hooks t)
+	  before-change-functions
+	  after-change-functions)
+     (progn ,@body)))
+
+;;
 ;; Comment detection and caching
 
 (defvar verilog-scan-cache-preserving nil
   "If set, the specified buffer's comment properties are static.
-Buffer changes will be ignored. See `verilog-inside-comment-p'
+Buffer changes will be ignored.  See `verilog-inside-comment-p'
 and `verilog-scan'.")
 
 (defvar verilog-scan-cache-tick nil
   "Modification tick at which `verilog-scan' was last completed.")
 (make-variable-buffer-local 'verilog-scan-cache-tick)
 
+(defun verilog-scan-cache-ok-p ()
+  "Return t iff the scan cache is up to date."
+  (or (and verilog-scan-cache-preserving
+	   (eq verilog-scan-cache-preserving (current-buffer))
+	   verilog-scan-cache-tick)
+      (equal verilog-scan-cache-tick (buffer-chars-modified-tick))))
+
+(defmacro verilog-save-scan-cache (&rest body)
+  "Execute the BODY forms, allowing scan cache preservation within BODY.
+This requires that insertions must use `verilog-insert'."
+  ;; If the buffer is out of date, trash it, as we'll not check later the tick
+  ;; Note this must work properly if there's multiple layers of calls
+  ;; to verilog-save-scan-cache even with differing ticks.
+  `(progn
+     (unless (verilog-scan-cache-ok-p)  ;; Must be before let
+       (setq verilog-scan-cache-tick nil))
+     (let* ((verilog-scan-cache-preserving (current-buffer)))
+       (progn ,@body))))
+
 (defun verilog-scan-region (beg end)
-  "Parse comments between BEG and END for `verilog-inside-comment-p'."
+  "Parse comments between BEG and END for `verilog-inside-comment-p'.
+This creates v-cmt properties where comments are in force."
+  ;; Why properties and not overlays?  Overlays have much slower non O(1)
+  ;; lookup times.
+  ;; This function is warm - called on every verilog-insert
   (save-excursion
     (save-match-data
-      (let ((after-change-functions nil)
-	    pt)
-	(goto-char beg)
-	(while (< (point) end)
-	  (cond ((looking-at "//")
-		 (setq pt (point))
-		 (or (search-forward "\n" end t)
-		     (goto-char end))
-		 ;; "1+": The leading // or /* itself isn't considered as
-		 ;; being "inside" the comment, so that a (search-backward)
-		 ;; that lands at the start of the // won't mis-indicate
-		 ;; it's inside a comment
-		 (put-text-property (1+ pt) (point) 'v-cmt t))
-		((looking-at "/\\*")
-		 (setq pt (point))
-		 (or (search-forward "*/" end t)
-		     ;; No error - let later code indicate it so we can
-		     ;; use inside functions on-the-fly
-		     ;;(error "%s: Unmatched /* */, at char %d"
-		     ;;       (verilog-point-text) (point))
-		     (goto-char end))
-		 (put-text-property (1+ pt) (point) 'v-cmt t))
-		(t
-		 (forward-char 1)
-		 (if (search-forward "/" end t)
-		     (backward-char 1)
-		   (goto-char end)))))))))
+      (verilog-save-buffer-state
+       (let (pt)
+	 (goto-char beg)
+	 (while (< (point) end)
+	   (cond ((looking-at "//")
+		  (setq pt (point))
+		  (or (search-forward "\n" end t)
+		      (goto-char end))
+		  ;; "1+": The leading // or /* itself isn't considered as
+		  ;; being "inside" the comment, so that a (search-backward)
+		  ;; that lands at the start of the // won't mis-indicate
+		  ;; it's inside a comment
+		  (put-text-property (1+ pt) (point) 'v-cmt t))
+		 ((looking-at "/\\*")
+		  (setq pt (point))
+		  (or (search-forward "*/" end t)
+		      ;; No error - let later code indicate it so we can
+		      ;; use inside functions on-the-fly
+		      ;;(error "%s: Unmatched /* */, at char %d"
+		      ;;       (verilog-point-text) (point))
+		      (goto-char end))
+		  (put-text-property (1+ pt) (point) 'v-cmt t))
+		 (t
+		  (forward-char 1)
+		  (if (re-search-forward "/[/*]" end t)
+		      (backward-char 2)
+		    (goto-char end))))))))))
 
 (defun verilog-scan ()
   "Parse the buffer, marking all comments with properties.
 Also assumes any text inserted since `verilog-scan-cache-tick'
 either is ok to parse as a non-comment, or `verilog-insert' was used."
-  (unless (or (and verilog-scan-cache-preserving
-		   (eq verilog-scan-cache-preserving (current-buffer))
-		   verilog-scan-cache-tick)
-	      (equal verilog-scan-cache-tick (buffer-modified-tick)))
+  (unless (verilog-scan-cache-ok-p)
     (save-excursion
-      (let ((was-mod (buffer-modified-p))
-	    (buffer-read-only nil))
+      (verilog-save-buffer-state
+	(when verilog-debug
+	  (message "Scanning %s cache=%s cachetick=%S tick=%S" (current-buffer)
+		   verilog-scan-cache-preserving verilog-scan-cache-tick
+		   (buffer-chars-modified-tick)))
 	(remove-text-properties (point-min) (point-max) '(v-cmt nil))
 	(verilog-scan-region (point-min) (point-max))
-	(unless was-mod (set-buffer-modified-p nil))
-	;; Set tick last, as the property adds modify the buffer
-	(setq verilog-scan-cache-tick (buffer-modified-tick))))))
+	(setq verilog-scan-cache-tick (buffer-chars-modified-tick))
+	(when verilog-debug (message "Scaning... done"))))))
 
 (defun verilog-inside-comment-p ()
   "Check if point inside a comment.
 This may require a slow pre-parse of the buffer with `verilog-scan'
 to establish comment properties on all text."
+  ;; This function is very hot
   (verilog-scan)
   (get-text-property (point) 'v-cmt))
 
 (defun verilog-insert (&rest stuff)
-  "Insert arguments, tracking comments for `verilog-inside-comment-p'."
+  "Insert STUFF arguments, tracking comments for `verilog-inside-comment-p'.
+Any insert that includes a comment must have the entire commente
+inserted using a single call to `verilog-insert'."
   (let ((pt (point)))
     (while stuff
       (insert (car stuff))
@@ -3015,16 +3113,16 @@ Key bindings specific to `verilog-mode-map' are:
 	      nil
 	    'verilog-beg-of-defun)))
   ;;------------------------------------------------------------
-  ;; now hook in 'verilog-colorize-include-files (eldo-mode.el&spice-mode.el)
+  ;; now hook in 'verilog-highlight-include-files (eldo-mode.el&spice-mode.el)
   ;; all buffer local:
   (unless noninteractive  ;; Else can't see the result, and change hooks are slow
     (when (featurep 'xemacs)
       (make-local-hook 'font-lock-mode-hook)
       (make-local-hook 'font-lock-after-fontify-buffer-hook); doesn't exist in Emacs
       (make-local-hook 'after-change-functions))
-    (add-hook 'font-lock-mode-hook 'verilog-colorize-buffer t t)
-    (add-hook 'font-lock-after-fontify-buffer-hook 'verilog-colorize-buffer t t) ; not in Emacs
-    (add-hook 'after-change-functions 'verilog-colorize-region t t))
+    (add-hook 'font-lock-mode-hook 'verilog-highlight-buffer t t)
+    (add-hook 'font-lock-after-fontify-buffer-hook 'verilog-highlight-buffer t t) ; not in Emacs
+    (add-hook 'after-change-functions 'verilog-highlight-region t t))
 
   ;; Tell imenu how to handle Verilog.
   (make-local-variable 'imenu-generic-expression)
@@ -3462,34 +3560,43 @@ With ARG, first kill any existing labels."
 	;; or the token before us unambiguously ends a statement,
 	;; then move back a token and test again.
 	(not (or
-	      (bolp) ; stop if beginning of buffer
-	      (= (preceding-char) ?\;) ; stop if we find a ;
+          ;; stop if beginning of buffer
+	      (bolp)
+          ;; stop if we find a ;
+	      (= (preceding-char) ?\;) 
+          ;; stop if we see a named coverpoint
 	      (looking-at "\\w+\\W*:\\W*\\(coverpoint\\|cross\\|constraint\\)")
-	      (not (or
-		    (looking-at "\\<")
-		    (forward-word -1)))
+          ;; keep going if we are in the middle of a word
+	      (not (or (looking-at "\\<") (forward-word -1)))
+          ;; stop if we see an assertion (perhaps labled)
 	      (and
 	       (looking-at "\\(\\<\\(assert\\|assume\\|cover\\)\\>\\s-+\\<property\\>\\)\\|\\(\\<assert\\>\\)")
 	       (progn
-		 (setq h (point))
-		 (save-excursion
-		   (verilog-backward-token)
-		   (if (looking-at verilog-label-re)
-		       (setq h (point))))
-		 (goto-char h)))
+             (setq h (point))
+             (save-excursion
+               (verilog-backward-token)
+               (if (looking-at verilog-label-re)
+                   (setq h (point))))
+             (goto-char h)))
+          ;; stop if we see a complete reg, perhaps an extended one
 	      (and
-	       (looking-at verilog-complete-reg)
-	       (not (save-excursion
-		      (verilog-backward-token)
-		      (looking-at verilog-extended-complete-re))))
+           (looking-at verilog-complete-reg)
+           (let* ((p (point)))
+             (while (and (looking-at verilog-extended-complete-re)
+                         (progn (setq p (point))
+                                (verilog-backward-token)
+                                (/= p (point)))))
+             (goto-char p)))
+          ;; stop if we see a complete reg (previous found extended ones)
 	      (looking-at verilog-basic-complete-re)
+          ;; stop if previous token is an ender
 	      (save-excursion
-		(verilog-backward-token)
-		(or
-		 (looking-at verilog-end-block-re)
-		 (looking-at verilog-preprocessor-re)))))
-      (verilog-backward-syntactic-ws)
-      (verilog-backward-token))
+            (verilog-backward-token)
+            (or
+             (looking-at verilog-end-block-re)
+             (looking-at verilog-preprocessor-re))))) ;; end of test
+    (verilog-backward-syntactic-ws)
+    (verilog-backward-token))
     ;; Now point is where the previous line ended.
     (verilog-forward-syntactic-ws)))
 
@@ -6958,7 +7065,7 @@ Return a array of [outputs inouts inputs wire reg assign const]."
 	  (search-forward "\n"))
 	 ((looking-at "/\\*")
 	  (forward-char 2)
-	  (if (looking-at "[^*]*synopsys\\s +enum\\s +\\([a-zA-Z0-9_]+\\)")
+	  (if (looking-at "[^\n]*synopsys\\s +enum\\s +\\([a-zA-Z0-9_]+\\)")
 	      (setq enum (match-string 1)))
 	  (or (search-forward "*/")
 	      (error "%s: Unmatched /* */, at char %d" (verilog-point-text) (point))))
@@ -8239,6 +8346,13 @@ Use `verilog-preserve-modi-cache' to set it.")
 (defvar verilog-modi-cache-current-max nil
   "Current endmodule point for `verilog-modi-cache-current', if any.")
 
+(defsubst verilog-modi-name (modi)
+  (aref modi 0))
+(defsubst verilog-modi-file-or-buffer (modi)
+  (aref modi 1))
+(defsubst verilog-modi-point (modi)
+  (aref modi 2))
+
 (defun verilog-modi-current ()
   "Return the modi structure for the module currently at point, possibly cached."
   (cond ((and verilog-modi-cache-current
@@ -8274,7 +8388,7 @@ Use `verilog-preserve-modi-cache' to set it.")
 (defvar verilog-modi-lookup-cache nil "Hash of (modulename modi).")
 (make-variable-buffer-local 'verilog-modi-lookup-cache)
 (defvar verilog-modi-lookup-last-current nil "Cache of `current-buffer' at last lookup.")
-(defvar verilog-modi-lookup-last-tick nil "Cache of `buffer-modified-tick' at last lookup.")
+(defvar verilog-modi-lookup-last-tick nil "Cache of `buffer-chars-modified-tick' at last lookup.")
 
 (defun verilog-modi-lookup (module allow-cache &optional ignore-error)
   "Find the file and point at which MODULE is defined.
@@ -8290,7 +8404,7 @@ Return modi if successful, else print message unless IGNORE-ERROR is true."
 		(setq modi (gethash module verilog-modi-lookup-cache))
 		(equal verilog-modi-lookup-last-current current)
 		;; Iff hit is in current buffer, then tick must match
-		(or (equal verilog-modi-lookup-last-tick (buffer-modified-tick))
+		(or (equal verilog-modi-lookup-last-tick (buffer-chars-modified-tick))
 		    (not (equal current (verilog-modi-file-or-buffer modi)))))
 	   ;;(message "verilog-modi-lookup: HIT %S" modi)
 	   modi)
@@ -8319,15 +8433,8 @@ Return modi if successful, else print message unless IGNORE-ERROR is true."
 			 (make-hash-table :test 'equal :rehash-size 4.0)))
 		 (puthash module modi verilog-modi-lookup-cache))
 	       (setq verilog-modi-lookup-last-current current
-		     verilog-modi-lookup-last-tick (buffer-modified-tick)))))
+		     verilog-modi-lookup-last-tick (buffer-chars-modified-tick)))))
     modi))
-
-(defsubst verilog-modi-name (modi)
-  (aref modi 0))
-(defsubst verilog-modi-file-or-buffer (modi)
-  (aref modi 1))
-(defsubst verilog-modi-point (modi)
-  (aref modi 2))
 
 (defun verilog-modi-filename (modi)
   "Filename of MODI, or name of buffer if it's never been saved."
@@ -8364,7 +8471,7 @@ Cache the output of function so next call may have faster access."
 				 verilog-modi-cache-list))
 	       ;; Destroy caching when incorrect; Modified or file changed
 	       (not (and verilog-cache-enabled
-			 (or (equal (buffer-modified-tick) (nth 1 fass))
+			 (or (equal (buffer-chars-modified-tick) (nth 1 fass))
 			     (and verilog-modi-cache-preserve-tick
 				  (<= verilog-modi-cache-preserve-tick  (nth 1 fass))
 				  (equal  verilog-modi-cache-preserve-buffer (current-buffer))))
@@ -8387,7 +8494,7 @@ Cache the output of function so next call may have faster access."
 	       ;; Cache for next time
 	       (setq verilog-modi-cache-list
 		     (cons (list (list modi function)
-				 (buffer-modified-tick)
+				 (buffer-chars-modified-tick)
 				 (visited-file-modtime)
 				 func-returns)
 			   verilog-modi-cache-list))
@@ -8413,7 +8520,7 @@ flushed.  If the changes affect the modsig state, they must call the
 modsig-cache-add-* function, else the results of later calls may be
 incorrect.  Without this, changes are assumed to be adding/removing signals
 and invalidating the cache."
-  `(let ((verilog-modi-cache-preserve-tick (buffer-modified-tick))
+  `(let ((verilog-modi-cache-preserve-tick (buffer-chars-modified-tick))
 	 (verilog-modi-cache-preserve-buffer (current-buffer)))
      (progn ,@body)))
 
@@ -8805,42 +8912,44 @@ called before and after this function, respectively."
   (save-excursion
     (if (buffer-file-name)
 	(find-file-noselect (buffer-file-name)))	;; To check we have latest version
-    ;; Allow user to customize
-    (run-hooks 'verilog-before-delete-auto-hook)
+    (verilog-save-no-change-functions
+     (verilog-save-scan-cache
+      ;; Allow user to customize
+      (run-hooks 'verilog-before-delete-auto-hook)
 
-    ;; Remove those that have multi-line insertions, possibly with parameters
-    (verilog-auto-re-search-do
-     (concat "/\\*"
-	     (eval-when-compile
-	       (verilog-regexp-words
-		`("AUTOASCIIENUM" "AUTOCONCATCOMMENT" "AUTODEFINEVALUE"
-		  "AUTOINOUT" "AUTOINOUTCOMP" "AUTOINOUTMODULE"
-		  "AUTOINPUT" "AUTOINSERTLISP" "AUTOOUTPUT" "AUTOOUTPUTEVERY"
-		  "AUTOREG" "AUTOREGINPUT" "AUTORESET" "AUTOTIEOFF"
-		  "AUTOUNUSED" "AUTOWIRE")))
-	     ;; Optional parens or quoted parameter or .* for (((...)))
-	     "\\(\\|([^)]*)\\|(\"[^\"]*\")\\).*?"
-	     "\\*/")
-     'verilog-delete-autos-lined)
-    ;; Remove those that are in parenthesis
-    (verilog-auto-re-search-do
-     (concat "/\\*"
-	     (eval-when-compile
-	       (verilog-regexp-words
-		`("AS" "AUTOARG" "AUTOCONCATWIDTH" "AUTOINST" "AUTOINSTPARAM"
-		  "AUTOSENSE")))
-	     "\\*/")
-     'verilog-delete-to-paren)
-    ;; Do .* instantiations, but avoid removing any user pins by looking for our magic comments
-    (verilog-auto-re-search-do "\\.\\*"
-			       'verilog-delete-auto-star-all)
-    ;; Remove template comments ... anywhere in case was pasted after AUTOINST removed
-    (goto-char (point-min))
-    (while (re-search-forward "\\s-*// \\(Templated\\|Implicit \\.\\*\\)[ \tLT0-9]*$" nil t)
-      (replace-match ""))
+      ;; Remove those that have multi-line insertions, possibly with parameters
+      (verilog-auto-re-search-do
+       (concat "/\\*"
+	       (eval-when-compile
+		 (verilog-regexp-words
+		  `("AUTOASCIIENUM" "AUTOCONCATCOMMENT" "AUTODEFINEVALUE"
+		    "AUTOINOUT" "AUTOINOUTCOMP" "AUTOINOUTMODULE"
+		    "AUTOINPUT" "AUTOINSERTLISP" "AUTOOUTPUT" "AUTOOUTPUTEVERY"
+		    "AUTOREG" "AUTOREGINPUT" "AUTORESET" "AUTOTIEOFF"
+		    "AUTOUNUSED" "AUTOWIRE")))
+	       ;; Optional parens or quoted parameter or .* for (((...)))
+	       "\\(\\|([^)]*)\\|(\"[^\"]*\")\\).*?"
+	       "\\*/")
+       'verilog-delete-autos-lined)
+      ;; Remove those that are in parenthesis
+      (verilog-auto-re-search-do
+       (concat "/\\*"
+	       (eval-when-compile
+		 (verilog-regexp-words
+		  `("AS" "AUTOARG" "AUTOCONCATWIDTH" "AUTOINST" "AUTOINSTPARAM"
+		    "AUTOSENSE")))
+	       "\\*/")
+       'verilog-delete-to-paren)
+      ;; Do .* instantiations, but avoid removing any user pins by looking for our magic comments
+      (verilog-auto-re-search-do "\\.\\*"
+				 'verilog-delete-auto-star-all)
+      ;; Remove template comments ... anywhere in case was pasted after AUTOINST removed
+      (goto-char (point-min))
+      (while (re-search-forward "\\s-*// \\(Templated\\|Implicit \\.\\*\\)[ \tLT0-9]*$" nil t)
+	(replace-match ""))
 
-    ;; Final customize
-    (run-hooks 'verilog-delete-auto-hook)))
+      ;; Final customize
+      (run-hooks 'verilog-delete-auto-hook)))))
 
 ;;
 ;; Auto inject
@@ -8979,14 +9088,14 @@ Typing \\[verilog-inject-auto] will make this into:
 	((eq verilog-auto-save-policy 'force)
 	 (verilog-auto))
 	((not (buffer-modified-p)))
-	((eq verilog-auto-update-tick (buffer-modified-tick))) ; up-to-date
+	((eq verilog-auto-update-tick (buffer-chars-modified-tick))) ; up-to-date
 	((eq verilog-auto-save-policy 'detect)
 	 (verilog-auto))
 	(t
 	 (when (yes-or-no-p "AUTO statements not recomputed, do it now? ")
 	   (verilog-auto))
 	 ;; Don't ask again if didn't update
-	 (set (make-local-variable 'verilog-auto-update-tick) (buffer-modified-tick))))
+	 (set (make-local-variable 'verilog-auto-update-tick) (buffer-chars-modified-tick))))
   (when (not verilog-auto-star-save)
     (verilog-delete-auto-star-implicit))
   nil)	;; Always return nil -- we don't write the file ourselves
@@ -11029,102 +11138,101 @@ Wilson Snyder (wsnyder@wsnyder.org)."
 		      t))
 	;; Cache directories; we don't write new files, so can't change
 	(verilog-dir-cache-preserving t)
-	(verilog-scan-cache-preserving (current-buffer))
-	(verilog-scan-cache-tick nil)
 	;; Cache current module
 	(verilog-modi-cache-current-enable t)
 	(verilog-modi-cache-current-max (point-min)) ; IE it's invalid
 	verilog-modi-cache-current)
-    (unwind-protect
-	(let ;; Disable change hooks for speed
-	    ;; This let can't be part of above let; must restore
-	    ;; before font-lock resumes
-	    ((after-change-functions nil))
-	  (save-excursion
-	    ;; If we're not in verilog-mode, change syntax table so parsing works right
-	    (unless (eq major-mode `verilog-mode) (verilog-mode))
-	    ;; Allow user to customize
-	    (run-hooks 'verilog-before-auto-hook)
-	    ;; Try to save the user from needing to revert-file to reread file local-variables
-	    (verilog-auto-reeval-locals)
-	    (verilog-read-auto-lisp-present)
-	    (verilog-read-auto-lisp (point-min) (point-max))
-	    (verilog-getopt-flags)
-	    ;; From here on out, we can cache anything we read from disk
-	    (verilog-preserve-dir-cache
-	     ;; These two may seem obvious to do always, but on large includes it can be way too slow
-	     (when verilog-auto-read-includes
-	       (verilog-read-includes)
-	       (verilog-read-defines nil nil t))
-	     ;; This particular ordering is important
-	     ;; INST: Lower modules correct, no internal dependencies, FIRST
-	     (verilog-preserve-modi-cache
-	      ;; Clear existing autos else we'll be screwed by existing ones
-	      (verilog-delete-auto)
-	      ;; Injection if appropriate
-	      (when inject
-		(verilog-inject-inst)
-		(verilog-inject-sense)
-		(verilog-inject-arg))
-	      ;;
-	      ;; Do user inserts first, so their code can insert AUTOs
-	      ;; We may provide a AUTOINSERTLISPLAST if another cleanup pass is needed
-	      (verilog-auto-re-search-do "/\\*AUTOINSERTLISP(.*?)\\*/"
-					 'verilog-auto-insert-lisp)
-	      ;; Expand instances before need the signals the instances input/output
-	      (verilog-auto-re-search-do "/\\*AUTOINSTPARAM\\*/" 'verilog-auto-inst-param)
-	      (verilog-auto-re-search-do "/\\*AUTOINST\\*/" 'verilog-auto-inst)
-	      (verilog-auto-re-search-do "\\.\\*" 'verilog-auto-star)
-	      ;; Doesn't matter when done, but combine it with a common changer
-	      (verilog-auto-re-search-do "/\\*\\(AUTOSENSE\\|AS\\)\\*/" 'verilog-auto-sense)
-	      (verilog-auto-re-search-do "/\\*AUTORESET\\*/" 'verilog-auto-reset)
-	      ;; Must be done before autoin/out as creates a reg
-	      (verilog-auto-re-search-do "/\\*AUTOASCIIENUM([^)]*)\\*/" 'verilog-auto-ascii-enum)
-	      ;;
-	      ;; first in/outs from other files
-	      (verilog-auto-re-search-do "/\\*AUTOINOUTMODULE([^)]*)\\*/" 'verilog-auto-inout-module)
-	      (verilog-auto-re-search-do "/\\*AUTOINOUTCOMP([^)]*)\\*/" 'verilog-auto-inout-comp)
-	      ;; next in/outs which need previous sucked inputs first
-	      (verilog-auto-re-search-do "/\\*AUTOOUTPUT\\((\"[^\"]*\")\\)\\*/"
-					 '(lambda () (verilog-auto-output t)))
-	      (verilog-auto-re-search-do "/\\*AUTOOUTPUT\\*/" 'verilog-auto-output)
-	      (verilog-auto-re-search-do "/\\*AUTOINPUT\\((\"[^\"]*\")\\)\\*/"
-					 '(lambda () (verilog-auto-input t)))
-	      (verilog-auto-re-search-do "/\\*AUTOINPUT\\*/"  'verilog-auto-input)
-	      (verilog-auto-re-search-do "/\\*AUTOINOUT\\((\"[^\"]*\")\\)\\*/"
-					 '(lambda () (verilog-auto-inout t)))
-	      (verilog-auto-re-search-do "/\\*AUTOINOUT\\*/" 'verilog-auto-inout)
-	      ;; Then tie off those in/outs
-	      (verilog-auto-re-search-do "/\\*AUTOTIEOFF\\*/" 'verilog-auto-tieoff)
-	      ;; Wires/regs must be after inputs/outputs
-	      (verilog-auto-re-search-do "/\\*AUTOWIRE\\*/" 'verilog-auto-wire)
-	      (verilog-auto-re-search-do "/\\*AUTOREG\\*/" 'verilog-auto-reg)
-	      (verilog-auto-re-search-do "/\\*AUTOREGINPUT\\*/" 'verilog-auto-reg-input)
-	      ;; outputevery needs AUTOOUTPUTs done first
-	      (verilog-auto-re-search-do "/\\*AUTOOUTPUTEVERY\\*/" 'verilog-auto-output-every)
-	      ;; After we've created all new variables
-	      (verilog-auto-re-search-do "/\\*AUTOUNUSED\\*/" 'verilog-auto-unused)
-	      ;; Must be after all inputs outputs are generated
-	      (verilog-auto-re-search-do "/\\*AUTOARG\\*/" 'verilog-auto-arg)
-	      ;; Fix line numbers (comments only)
-	      (when verilog-auto-inst-template-numbers
-		(verilog-auto-templated-rel))))
-	    ;;
-	    (run-hooks 'verilog-auto-hook)
-	    ;;
-	    (set (make-local-variable 'verilog-auto-update-tick) (buffer-modified-tick))
-	    ;;
-	    ;; If end result is same as when started, clear modified flag
-	    (cond ((and oldbuf (equal oldbuf (buffer-string)))
-		   (set-buffer-modified-p nil)
-		   (unless noninteractive (message "Updating AUTOs...done (no changes)")))
-		  (t (unless noninteractive (message "Updating AUTOs...done"))))
-	    ;; End of after-change protection
-	    ))
-      ;; Unwind forms
-      (progn
-	;; Restore font-lock
-	(when fontlocked (font-lock-mode t))))))
+     (unwind-protect
+	 ;; Disable change hooks for speed
+	 ;; This let can't be part of above let; must restore
+	 ;; after-change-functions before font-lock resumes
+	 (verilog-save-no-change-functions
+	  (verilog-save-scan-cache
+	   (save-excursion
+	     ;; If we're not in verilog-mode, change syntax table so parsing works right
+	     (unless (eq major-mode `verilog-mode) (verilog-mode))
+	     ;; Allow user to customize
+	     (run-hooks 'verilog-before-auto-hook)
+	     ;; Try to save the user from needing to revert-file to reread file local-variables
+	     (verilog-auto-reeval-locals)
+	     (verilog-read-auto-lisp-present)
+	     (verilog-read-auto-lisp (point-min) (point-max))
+	     (verilog-getopt-flags)
+	     ;; From here on out, we can cache anything we read from disk
+	     (verilog-preserve-dir-cache
+	      ;; These two may seem obvious to do always, but on large includes it can be way too slow
+	      (when verilog-auto-read-includes
+		(verilog-read-includes)
+		(verilog-read-defines nil nil t))
+	      ;; This particular ordering is important
+	      ;; INST: Lower modules correct, no internal dependencies, FIRST
+	      (verilog-preserve-modi-cache
+	       ;; Clear existing autos else we'll be screwed by existing ones
+	       (verilog-delete-auto)
+	       ;; Injection if appropriate
+	       (when inject
+		 (verilog-inject-inst)
+		 (verilog-inject-sense)
+		 (verilog-inject-arg))
+	       ;;
+	       ;; Do user inserts first, so their code can insert AUTOs
+	       ;; We may provide a AUTOINSERTLISPLAST if another cleanup pass is needed
+	       (verilog-auto-re-search-do "/\\*AUTOINSERTLISP(.*?)\\*/"
+					  'verilog-auto-insert-lisp)
+	       ;; Expand instances before need the signals the instances input/output
+	       (verilog-auto-re-search-do "/\\*AUTOINSTPARAM\\*/" 'verilog-auto-inst-param)
+	       (verilog-auto-re-search-do "/\\*AUTOINST\\*/" 'verilog-auto-inst)
+	       (verilog-auto-re-search-do "\\.\\*" 'verilog-auto-star)
+	       ;; Doesn't matter when done, but combine it with a common changer
+	       (verilog-auto-re-search-do "/\\*\\(AUTOSENSE\\|AS\\)\\*/" 'verilog-auto-sense)
+	       (verilog-auto-re-search-do "/\\*AUTORESET\\*/" 'verilog-auto-reset)
+	       ;; Must be done before autoin/out as creates a reg
+	       (verilog-auto-re-search-do "/\\*AUTOASCIIENUM([^)]*)\\*/" 'verilog-auto-ascii-enum)
+	       ;;
+	       ;; first in/outs from other files
+	       (verilog-auto-re-search-do "/\\*AUTOINOUTMODULE([^)]*)\\*/" 'verilog-auto-inout-module)
+	       (verilog-auto-re-search-do "/\\*AUTOINOUTCOMP([^)]*)\\*/" 'verilog-auto-inout-comp)
+	       ;; next in/outs which need previous sucked inputs first
+	       (verilog-auto-re-search-do "/\\*AUTOOUTPUT\\((\"[^\"]*\")\\)\\*/"
+					  '(lambda () (verilog-auto-output t)))
+	       (verilog-auto-re-search-do "/\\*AUTOOUTPUT\\*/" 'verilog-auto-output)
+	       (verilog-auto-re-search-do "/\\*AUTOINPUT\\((\"[^\"]*\")\\)\\*/"
+					  '(lambda () (verilog-auto-input t)))
+	       (verilog-auto-re-search-do "/\\*AUTOINPUT\\*/"  'verilog-auto-input)
+	       (verilog-auto-re-search-do "/\\*AUTOINOUT\\((\"[^\"]*\")\\)\\*/"
+					  '(lambda () (verilog-auto-inout t)))
+	       (verilog-auto-re-search-do "/\\*AUTOINOUT\\*/" 'verilog-auto-inout)
+	       ;; Then tie off those in/outs
+	       (verilog-auto-re-search-do "/\\*AUTOTIEOFF\\*/" 'verilog-auto-tieoff)
+	       ;; Wires/regs must be after inputs/outputs
+	       (verilog-auto-re-search-do "/\\*AUTOWIRE\\*/" 'verilog-auto-wire)
+	       (verilog-auto-re-search-do "/\\*AUTOREG\\*/" 'verilog-auto-reg)
+	       (verilog-auto-re-search-do "/\\*AUTOREGINPUT\\*/" 'verilog-auto-reg-input)
+	       ;; outputevery needs AUTOOUTPUTs done first
+	       (verilog-auto-re-search-do "/\\*AUTOOUTPUTEVERY\\*/" 'verilog-auto-output-every)
+	       ;; After we've created all new variables
+	       (verilog-auto-re-search-do "/\\*AUTOUNUSED\\*/" 'verilog-auto-unused)
+	       ;; Must be after all inputs outputs are generated
+	       (verilog-auto-re-search-do "/\\*AUTOARG\\*/" 'verilog-auto-arg)
+	       ;; Fix line numbers (comments only)
+	       (when verilog-auto-inst-template-numbers
+		 (verilog-auto-templated-rel))))
+	     ;;
+	     (run-hooks 'verilog-auto-hook)
+	     ;;
+	     (set (make-local-variable 'verilog-auto-update-tick) (buffer-chars-modified-tick))
+	     ;;
+	     ;; If end result is same as when started, clear modified flag
+	     (cond ((and oldbuf (equal oldbuf (buffer-string)))
+		    (set-buffer-modified-p nil)
+		    (unless noninteractive (message "Updating AUTOs...done (no changes)")))
+		   (t (unless noninteractive (message "Updating AUTOs...done"))))
+	     ;; End of after-change protection
+	     )))
+       ;; Unwind forms
+       (progn
+	 ;; Restore font-lock
+	 (when fontlocked (font-lock-mode t))))))
 
 
 ;;
@@ -11516,14 +11624,14 @@ and the case items."
   "Map containing mouse bindings for `verilog-mode'.")
 
 
-(defun verilog-colorize-region (beg end old-len)
+(defun verilog-highlight-region (beg end old-len)
   "Colorize included files and modules in the (changed?) region.
 Clicking on the middle-mouse button loads them in a buffer (as in dired)."
-  (save-excursion
-    (save-match-data
-      (let (;; Cached scanning
-	    (verilog-scan-cache-preserving (current-buffer))
-	    (verilog-scan-cache-tick nil))
+  (when (or verilog-highlight-includes
+	    verilog-highlight-modules)
+    (save-excursion
+      (verilog-save-buffer-state
+       (verilog-save-scan-cache
 	(let (end-point)
 	  (goto-char end)
 	  (setq end-point (verilog-get-end-of-line))
@@ -11540,48 +11648,50 @@ Clicking on the middle-mouse button loads them in a buffer (as in dired)."
 	      (setq overlays (cdr overlays))))
 	  ;;
 	  ;; make new include overlays
-	  (while (search-forward-regexp verilog-include-file-regexp end-point t)
-	    (goto-char (match-beginning 1))
-	    (let ((ov (make-overlay (match-beginning 1) (match-end 1))))
-	      (overlay-put ov 'start-closed 't)
-	      (overlay-put ov 'end-closed 't)
-	      (overlay-put ov 'evaporate 't)
-	      (overlay-put ov 'verilog-include-file 't)
-	      (overlay-put ov 'mouse-face 'highlight)
-	      (overlay-put ov 'local-map verilog-mode-mouse-map)))
+	  (when verilog-highlight-includes
+	    (while (search-forward-regexp verilog-include-file-regexp end-point t)
+	      (goto-char (match-beginning 1))
+	      (let ((ov (make-overlay (match-beginning 1) (match-end 1))))
+		(overlay-put ov 'start-closed 't)
+		(overlay-put ov 'end-closed 't)
+		(overlay-put ov 'evaporate 't)
+		(overlay-put ov 'verilog-include-file 't)
+		(overlay-put ov 'mouse-face 'highlight)
+		(overlay-put ov 'local-map verilog-mode-mouse-map))))
 	  ;;
 	  ;; make new module overlays
 	  (goto-char beg)
 	  ;; This scanner is syntax-fragile, so don't get bent
-	  (condition-case nil
-	      (while (verilog-re-search-forward "\\(/\\*AUTOINST\\*/\\|\\.\\*\\)" end-point t)
-		(save-excursion
-		  (goto-char (match-beginning 0))
-		  (unless (verilog-inside-comment-p)
-		    (verilog-read-inst-module-matcher)   ;; sets match 0
-		    (let* ((ov (make-overlay (match-beginning 0) (match-end 0))))
-		      (overlay-put ov 'start-closed 't)
-		      (overlay-put ov 'end-closed 't)
-		      (overlay-put ov 'evaporate 't)
-		      (overlay-put ov 'verilog-inst-module 't)
-		      (overlay-put ov 'mouse-face 'highlight)
-		      (overlay-put ov 'local-map verilog-mode-mouse-map)))))
-	    (error nil))
+	  (when verilog-highlight-modules
+	    (condition-case nil
+		(while (verilog-re-search-forward "\\(/\\*AUTOINST\\*/\\|\\.\\*\\)" end-point t)
+		  (save-excursion
+		    (goto-char (match-beginning 0))
+		    (unless (verilog-inside-comment-p)
+		      (verilog-read-inst-module-matcher)   ;; sets match 0
+		      (let* ((ov (make-overlay (match-beginning 0) (match-end 0))))
+			(overlay-put ov 'start-closed 't)
+			(overlay-put ov 'end-closed 't)
+			(overlay-put ov 'evaporate 't)
+			(overlay-put ov 'verilog-inst-module 't)
+			(overlay-put ov 'mouse-face 'highlight)
+			(overlay-put ov 'local-map verilog-mode-mouse-map)))))
+	      (error nil)))
 	  ;;
 	  ;; Future highlights:
 	  ;;  variables - make an Occur buffer of where referenced
 	  ;;  pins - make an Occur buffer of the sig in the declaration module
-	  )))))
+	  ))))))
 
-(defun verilog-colorize-buffer ()
+(defun verilog-highlight-buffer ()
   "Colorize included files and modules across the whole buffer."
   ;; Invoked via verilog-mode calling font-lock then `font-lock-mode-hook'
   (interactive)
   ;; delete and remake overlays
-  (verilog-colorize-region (point-min) (point-max) nil))
+  (verilog-highlight-region (point-min) (point-max) nil))
 
 ;; Deprecated, but was interactive, so we'll keep it around
-(defalias 'verilog-colorize-include-files-buffer 'verilog-colorize-buffer)
+(defalias 'verilog-colorize-include-files-buffer 'verilog-highlight-buffer)
 
 ;; ffap-at-mouse isn't useful for Verilog mode. It uses library paths.
 ;; so define this function to do more or less the same as ffap-at-mouse
