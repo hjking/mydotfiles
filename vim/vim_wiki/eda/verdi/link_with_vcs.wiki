@@ -1,0 +1,201 @@
+
+== Verdi version before 201001 ==
+
+=== VCS (2006.06 or Later Versions) ===
+
+You can only statically link the Novas object file for FSDB dumping with VCS for 
+pure Verilog designs. You must specify the PLI table file and the library file of 
+the FSDB dumper when using vcs to compile the design.
+
+==== Manually Linking the Version-specific Novas Object Files ====
+
+To support new functions in different versions of *VCS*, there are several _vcs_ prefix 
+sub-directories under the *<NOVAS_INST_DIR>/share/PLI* directory.  Each directory 
+supports a specific version of VCS and later versions. You must link the FSDB dumper 
+for a VCS version that is closest to the version of VCS you are using.
+
+*NOTE*: Do not link the Novas object file for FSDB dumping that supports a newer 
+VCS version than the one you are using.
+
+The VCS command line option _-line_ is optional. It is used to turn on the VCS 
+line-debugging mode. It must be included if you want to set line break points 
+or run the design step by step using interactive mode in Novas.
+
+For example, if you are using VCS 2006.06, you must link the FSDB dumper under 
+*<NOVAS_INST_DIR>/share/PLI/vcs2006.06*:
+
+{{{
+> vcs -line -P ${NOVAS_INST_DIR}/share/PLI/vcs2006.06/
+${PLATFORM}/novas.tab \
+${NOVAS_INST_DIR}/share/PLI/vcs2006.06/${PLATFORM}/pli.a design.v 
+}}}
+
+The table file, _novas.tab_, contains the definitions of the FSDB dumping commands.
+
+The archive file, _pli.a_, is the library file of the FSDB dumper.
+
+*NOTE*: The _novas.tab_ file associated with the command line option -P must be 
+the most recently updated file that came with _pli.a_.
+
+==== Automatically Linking the Version-specific Novas Object Files ====
+
+On Solaris or Linux platforms, you can automatically link the correct version 
+specific Novas object files for FSDB dumping regardless of the VCS version you 
+are running. You must first set the *VERDI_HOME* system environment variable to 
+the root directory of the Verdi installation you are running. For example,
+`> setenv VERDI_HOME /tools/verdi/verdi2009.01`
+
+Specify the common table file, fsdb_vcs.tab, and common library file, *fsdb_vcs.a*, 
+under the *${VERDI_HOME}/share/PLI/vcs/{$PLATFORM}/* directory when using vcs or 
+vcsi to compile the design. For example,
+
+*Solaris Platforms*
+{{{
+> vcs -line +cli+3 \
+      -P ${VERDI_HOME}/share/PLI/vcs/${PLATFORM}/fsdb_vcs.tab \
+      ${VERDI_HOME}/share/PLI/vcs/${PLATFORM}/fsdb_vcs.a \
+      design.v
+}}}
+
+*Linux Platforms*
+{{{
+> vcs -line +cli+3 -LDFLAGS -rdynamic \
+      -P ${VERDI_HOME}/share/PLI/vcs/${PLATFORM}/fsdb_vcs.tab \
+      ${VERDI_HOME}/share/PLI/vcs/${PLATFORM}/fsdb_vcs.a \
+      design.v
+}}}
+
+*NOTE*: On Linux, you must also include the additional _-LDFLAGS_ _-rdynamic_ options with the vcs compiler.
+
+The FSDB dumper will automatically load the correct dumper kernel library libfsdb_core.so 
+from the sub-directory $VERDI_HOME points to and according to the VCS version 
+and the platform you are running.
+
+Alternatively, you can set the FSDB_DUMPER_PATH system environment variable to 
+the full directory of a specific FSDB dumper (for example, in case you receive 
+a patch dumper from Novas). For example,
+
+`> setenv FSDB_DUMPER_PATH /tools/verdi/verdi2009.01/share/PLI/vcs200606/LINUX`
+
+The FSDB dumper will always load the dumper kernel library libfsdb_core.so from 
+the directory FSDB_DUMPER_PATH points to.
+
+
+=== VCS Direct Kernel Interface (2006.06 or Later Versions) ===
+
+VCS Direct Kernel Interface (DKI) is a dumping interface that is only specific 
+to VCS. The DKI-based Novas object file for FSDB dumping employs this interface 
+to speed up dumping. Some FSDB dumping commands for SystemVerilog design dumping 
+are only available in the DKI-based Novas object files for FSDB dumping.
+
+You can only statically link the DKI-based Novas object file for FSDB dumping 
+with VCS for pure Verilog designs. You have to specify the PLI table file and 
+the library file of the FSDB dumper when using vcsd to compile the design.
+
+==== Manually Linking the Version-specific Novas Object Files ====
+
+To support new functions in different versions of VCS, there are several vcsd 
+prefix sub-directories under the <NOVAS_INST_DIR>/share/PLI directory.  Each 
+directory supports a specific version of VCS and later versions. You must 
+link the DKI-based FSDB dumper for a VCS version that is closest to the version 
+of VCS you are using.
+
+*NOTE*: Do not link the DKI-based Novas object file for FSDB dumping that supports 
+a newer VCS version than the one you are using.
+
+You also need to include the +vcsd option with the vcs compiler to enable the DKI 
+interface. The VCS command line options -line and +cli+3 are optional.  They are 
+used to turn on the VCS line-debugging mode and the command-line interactive mode. 
+They must be included if you want to run the VCS DKI simulation using interactive 
+mode in Novas.
+
+For example, if you are using VCS 2006.06, you must link the DKI-based FSDB dumper 
+under <NOVAS_INST_DIR>/share/PLI/vcsd2006.06:
+{{{
+> vcs +vcsd \
+      -P ${NOVAS_INST_DIR}/share/PLI/vcsd2006.06/${PLATFORM}/
+      vcsd.tab \
+      ${NOVAS_INST_DIR}/share/PLI/vcsd2006.06/${PLATFORM}/pli.a \
+      design.v
+}}}
+
+The table file, _vcsd.tab_, contains the definitions of the DKI-based FSDB dumping 
+commands. The archive file, pli.a, is the library file of the FSDB dumper.
+
+*NOTE*: The vcsd.tab file associated with the command line option -P must be the 
+most recently updated file that came with pli.a.
+
+==== Automatically Linking the Version-specific Novas Object Files ====
+
+On Solaris or Linux platforms, you can automatically link the correct version 
+specific Novas object files for FSDB dumping regardless of the VCS version you 
+are running. You must first set the VERDI_HOME system environment variable to 
+the root directory of the Verdi installation you are running. For example,
+
+`> setenv VERDI_HOME /tools/verdi/verdi2009.01`
+
+Specify the common table file, fsdb_vcsd.tab, and the common library file, 
+*fsdb_vcsd.a*, under the ${VERDI_HOME}/share/PLI/vcsd/{$PLATFORM}/ directory 
+when using vcs or vcsi to compile the design. For example,
+
+*Solaris Platforms*
+{{{
+> vcs +vcsd \
+      -P ${VERDI_HOME}/share/PLI/vcsd/${PLATFORM}/fsdb_vcsd.tab \
+      ${VERDI_HOME}/share/PLI/vcsd/${PLATFORM}/fsdb_vcsd.a \
+      design.v
+}}}
+
+*Linux Platforms*
+{{{
+> vcs +vcsd -LDFLAGS -rdynamic \
+      -P ${VERDI_HOME}/share/PLI/vcsd/${PLATFORM}/fsdb_vcsd.tab \
+      ${VERDI_HOME}/share/PLI/vcsd/${PLATFORM}/fsdb_vcsd.a \
+      design.v
+}}}
+
+*NOTE*: On Linux, you must also include the additional -LDFLAGS -rdynamic options 
+with the vcs compiler.
+
+The FSDB dumper will automatically load the correct dumper kernel library 
+*libfsdb_core.so* from the sub-directory $VERDI_HOME points to and according 
+to the VCS version and the platform you are running.
+
+Alternatively, you can set the FSDB_DUMPER_PATH system environment variable to 
+the full directory of a specific FSDB dumper (for example, in case you receive 
+a patch dumper from Novas). For example,
+
+`> setenv FSDB_DUMPER_PATH /tools/verdi/verdi2009.01/share/PLI/vcsd200606/LINUX`
+
+The FSDB dumper will always load the dumper kernel library libfsdb_core.so from 
+the directory FSDB_DUMPER_PATH points.
+
+
+== Verdi version after 201001 ==
+
+*NOTE*: A novas_dump.log file gets created during simulation to record some essential 
+simulation/dumping information, such as simulation options used, environment variable 
+settings, and Novas object directories linked. This log file is needed to report a new 
+unified dumper related issue effectively.
+
+=== VCS(2006.06 or Later Version) ===
+
+For the VCS usage flow, the pli.a and coordinating novas.tab files need to be specified 
+following the "*-P*" option. Before running the simulation (_simv_) the *LD_LIBRARY_PATH* 
+environment variable must be set and point to the directory where the FSDB dumper engine 
+(_libsscore__vcsXXX.so_) located. For example:
+
+`> setenv NOVAS_INST_DIR /tools/verdi/verdi2010.01`
+`> setenv LD_LIBRARY_PATH ${NOVAS_INST_DIR}share/PLI/VCS/${PLATFORM}`
+`> setenv PLATFORM LINUX`
+
+The directory containing the _novas.tab_ and _pli.a_ files is specified in *LD_LIBRARY_PATH*.
+
+The table file _novas.tab_, contains the definitions of the FSDB dumping
+commands.
+
+The archive file _pli.a_, is the library file of the FSDB dumper.
+
+The libsscore_vcsXXXX.so, located in ${NOVAS_INST_DIR}/share/PLI/lib/${PLATFORM}, 
+is the FSDB dumper engine which will be automatically selected when running the simulation.
+

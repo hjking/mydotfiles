@@ -1,0 +1,46 @@
+
+== SATA VIP ==
+
+=== Requirement ===
+
+=== Documents ===
+
+=== Milestone ===
+ * 2010-11-17 first official release: RTL only
+
+=== Achievement ===
+ * 2010-11-17: RTL
+ * 2010-11-18: Document, version 1.2
+ * 2010-12-01: RTL, Fix inserting ALIGN after every 254 Dwords.
+
+=== Testcase ===
+==== PIO ====
+ * 201
+ * 202
+ * 203
+ * 204
+ * 205
+ * 206
+ * 211
+ * 212
+ * 213
+ * 214
+ * 215
+ * 216
+ * 217
+ * 220
+
+=== ECN (Engineering Change Notes) ===
+ * 2010-11-18
+   * Command layer:
+     # [X] comment " `SATA_DEVICE_TOP.ptr    = 0; ", which will cause overwrite memory data when multiple write operation.
+   * Link Layer:
+     # [X] Change logic of O_LL2CL_TERM, make it work when received SYNC from HOST in read operation.
+     # [X] Change logic of O_LL2CL_LAST_FIS, avoid to assert it when CL already escaped in write operation
+ * 2010-11-29
+   * Link Layer:
+     # [X] change the logic of O_LL2CL_FIS_VLD
+     # [X] delete o_rx_fis_vld_1d
+ * 2010-12-01
+   * Link Layer:
+     # [X] change the logic of enc_scr and dec_scr

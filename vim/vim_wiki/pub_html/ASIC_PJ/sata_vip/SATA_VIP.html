@@ -1,0 +1,140 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>SATA_VIP</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+
+<h2 id="toc_0.1">SATA VIP</h2>
+
+<h3 id="toc_0.1.1">Requirement</h3>
+
+<h3 id="toc_0.1.2">Documents</h3>
+
+<h3 id="toc_0.1.3">Milestone</h3>
+<ul>
+<li>
+2010-11-17 first official release: RTL only
+</li>
+</ul>
+
+<h3 id="toc_0.1.4">Achievement</h3>
+<ul>
+<li>
+2010-11-17: RTL
+</li>
+<li>
+2010-11-18: Document, version 1.2
+</li>
+<li>
+2010-12-01: RTL, Fix inserting ALIGN after every 254 Dwords.
+</li>
+</ul>
+
+<h3 id="toc_0.1.5">Testcase</h3>
+<h4 id="toc_0.1.5.1">PIO</h4>
+<ul>
+<li>
+201
+</li>
+<li>
+202
+</li>
+<li>
+203
+</li>
+<li>
+204
+</li>
+<li>
+205
+</li>
+<li>
+206
+</li>
+<li>
+211
+</li>
+<li>
+212
+</li>
+<li>
+213
+</li>
+<li>
+214
+</li>
+<li>
+215
+</li>
+<li>
+216
+</li>
+<li>
+217
+</li>
+<li>
+220
+</li>
+</ul>
+
+<h3 id="toc_0.1.6">ECN (Engineering Change Notes)</h3>
+<ul>
+<li>
+2010-11-18
+</li>
+<ul>
+<li>
+Command layer:
+</li>
+<ol>
+<li><del><input type="checkbox" checked />
+comment " `SATA_DEVICE_TOP.ptr    = 0; ", which will cause overwrite memory data when multiple write operation.
+</del></li>
+</ol>
+<li>
+Link Layer:
+</li>
+<ol>
+<li><del><input type="checkbox" checked />
+Change logic of O_LL2CL_TERM, make it work when received SYNC from HOST in read operation.
+</del></li>
+<li><del><input type="checkbox" checked />
+Change logic of O_LL2CL_LAST_FIS, avoid to assert it when CL already escaped in write operation
+</del></li>
+</ol>
+</ul>
+<li>
+2010-11-29
+</li>
+<ul>
+<li>
+Link Layer:
+</li>
+<ol>
+<li><del><input type="checkbox" checked />
+change the logic of O_LL2CL_FIS_VLD
+</del></li>
+<li><del><input type="checkbox" checked />
+delete o_rx_fis_vld_1d
+</del></li>
+</ol>
+</ul>
+<li>
+2010-12-01
+</li>
+<ul>
+<li>
+Link Layer:
+</li>
+<ol>
+<li><del><input type="checkbox" checked />
+change the logic of enc_scr and dec_scr
+</del></li>
+</ol>
+</ul>
+</ul>
+
+</body>
+</html>

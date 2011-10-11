@@ -1,0 +1,4 @@
+
+try diary in vimwiki
+
+seems good integration with Calendar plugin

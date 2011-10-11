@@ -1,0 +1,5 @@
+ @ 2010-11-26 18:11
+    add camelcasemotion.vim
+    netrwPlugin.vim
+    view_diff.vim
+    ZoomWin.vim

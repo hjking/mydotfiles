@@ -1,0 +1,163 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>dc_setup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+<h1 id="toc_1">Setup, Libraries and Objects</h1>
+
+<h2 id="toc_1.1">Variables</h2>
+<ul>
+<li>
+Target Library Variable
+</li>
+<ul>
+<li>
+The target library is the library used by DC for building a circuit during compile
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+During mapping, DC will:
+    Choose functionally-correct gates from this library
+    Calculate the timing of  the circuit using vendor-supplied timing data for these gates
+</li>
+</ul>
+
+<ul>
+<li>
+target_library is a reserved variable in DC:
+    Set it to point to the library file provided by your silicon vendor
+            set target_library my_tech.db
+</li>
+</ul>
+
+<ul>
+<li>
+Link Library Variable
+</li>
+<ul>
+<li>
+Used to resolve leaf-cells and subdesign references:
+        set link_library "* my_tech.db"
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+DC reads the libraries specified in the <code>link_library</code> variable during a read command
+</li>
+</ul>
+
+<ul>
+<li>
+When linking a design, DC searches memory first, then searches the library files specified in the <code>link_library</code> variable
+</li>
+</ul>
+
+<ul>
+<li>
+DC searches all Unix directories defined in the <code>search_path</code> variable
+</li>
+</ul>
+
+<ul>
+<li>
+Search Path Variable
+</li>
+</ul>
+
+
+<h2 id="toc_1.2">Setup</h2>
+<ul>
+<li>
+Initialization Files
+  Commands in .synopsys_dc.setup are executed upon tool startup.
+</li>
+<ul>
+<li>
+Standard Setup
+    $/SYNOPSYS/admin/setup/.synopsys_dc.setup
+</li>
+<li>
+User's General Setup
+    $HOME/.synopsys_dc.setup
+</li>
+<li>
+User's Specific Project Setup
+    PJ_Dir/.synopsys_dc.setup
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+
+</li>
+</ul>
+
+<h2 id="toc_1.3">Object</h2>
+<p>
+  Design, Cell, Net, Pin, Port, Clock
+</p>
+
+<ul>
+<li>
+<code>get_*</code> command
+</li>
+<ul>
+<li>
+Return objects in the <code>current_design</code>
+    Can be used stand-alone or composed with other functions
+</li>
+<li>
+Objects may be used together with the * wildcard
+    set_load 5 [get_ports addr_bus*]
+    set_load 6 [get_ports "A* B*"]
+</li>
+<li>
+"get_*" commands return a collection of design objects
+    If no matching, an empty collection is returned
+</li>
+<li>
+Other primary get commands:
+    <code>get_cells</code>         cells or instances
+    <code>get_clocks</code>        clocks
+    <code>get_designs</code>       designs
+    <code>get_libs</code>          libraries
+    <code>get_lib_cells</code>     library cells
+    <code>get_lib_pins</code>      library cell pins
+    <code>get_nets</code>          nets
+    <code>get_pins</code>          pins
+    <code>get_ports</code>         ports
+</li>
+<li>
+Other handy list commands
+</li>
+<ol>
+<li>
+List all input and inout ports
+      <code>all_inputs</code>
+</li>
+<li>
+List all output and inout ports
+      <code>all_outputs</code>
+</li>
+<li>
+List all designs in DC memory
+      <code>get_design *</code>
+</li>
+<li>
+List all designs under the current design, but not the current design itself
+      <code>get_design -hierarchy *</code>
+</li>
+</ol>
+</ul>
+</ul>
+
+</body>
+</html>

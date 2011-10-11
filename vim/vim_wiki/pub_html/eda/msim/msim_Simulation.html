@@ -1,0 +1,196 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>msim_Simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+
+<h1 id="toc_1">ModelSim Simulation</h1>
+
+<h2 id="toc_1.1">Simulation Flow</h2>
+<p>
+The following table provides a reference for the tasks required for compiling, optimizing, loading, and simulating a design in <a href="../msim.html">ModelSim</a>.
+</p>
+<blockquote>
+Simulation Flow
+<table>
+<tr>
+<th>Step</th>
+<th>CLI Entry</th>
+</tr>
+<tr>
+<td>Step 1: Map libraries</td>
+<td>vlib &lt;lib_name&gt;; vmap work &lt;lib_name&gt;</td>
+</tr>
+<tr>
+<td>Step 2: Compile design</td>
+<td>vlog file1.v file2.v ...</td>
+</tr>
+<tr>
+<td>Step 3: Optimize design</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>Step 4: Load design</td>
+<td>vsim</td>
+</tr>
+<tr>
+<td>Step 5: Run simulation</td>
+<td>run or step</td>
+</tr>
+<tr>
+<td>Step 6: Debug</td>
+<td>bp/describe/drivers/examine/force...</td>
+</tr>
+</table>
+</blockquote>
+
+<h2 id="toc_1.2">Basic Steps for Simulation</h2>
+<h3 id="toc_1.2.1">Step 1 -- Collecting Files and Mapping Libraries</h3>
+<ol>
+<li>
+Design Files(verilog, etc)
+</li>
+<li>
+Libraries(working and resource)
+</li>
+<ul>
+<li>
+Creating the logical library(vlib)
+      <code>vlib work</code>
+</li>
+<li>
+Mapping the logical work to the physical work library(vmap)
+     <code>vmap &lt;logical_lib&gt; &lt;dir_path_name&gt;</code>
+</li>
+</ul>
+<li>
+Stimulus for the design
+    Stimulus can be provided in several ways:
+</li>
+<ul>
+<li>
+Language based test bench
+</li>
+<li>
+Tcl-based <a href="../msim.html">ModelSim</a> interactive command
+</li>
+<li>
+VCD files/command
+</li>
+<li>
+3rd party test bench generation tools
+</li>
+</ul>
+</ol>
+
+<h3 id="toc_1.2.2">Step 2 -- Compiling the Design</h3>
+<ol>
+<li>
+Compiling Verilog(<a href="vlog.html">vlog</a>)
+</li>
+<li>
+Compiling VHDL(vcom)
+</li>
+<li>
+Compiling SystemC(sccom)
+</li>
+</ol>
+
+<h3 id="toc_1.2.3">Step 3 -- Load the Design for Simulation</h3>
+<p>
+  Invoke <a href="vsim.html">vsim</a> with the names of the top-level modules
+</p>
+
+<p>
+  <code>vsim top_module</code>
+</p>
+
+<p>
+  The design can be optimized with <a href="vopt.html">vopt</a>.
+</p>
+
+<h3 id="toc_1.2.4">Step 4 -- Simulation the Design</h3>
+<p>
+  Once the design has been successfully loaded, the simulation time is set to zero, and you must enter a run command to begin simulation.
+</p>
+
+<p>
+  The basic simulator commands are:
+</p>
+<ul>
+<li>
+<a href="add_wave.html">add wave</a>
+</li>
+<li>
+<a href="force.html">force</a>
+</li>
+<li>
+<a href="bp.html">bp</a>
+</li>
+<li>
+<a href="run.html">run</a>
+</li>
+<li>
+<a href="step.html">step</a>
+</li>
+</ul>
+
+<h3 id="toc_1.2.5">Step 5 -- Debugging the Design</h3>
+<p>
+  The basic simulator debugging commands are:
+</p>
+<ul>
+<li>
+describe
+</li>
+<li>
+drivers
+</li>
+<li>
+examine
+</li>
+<li>
+force
+</li>
+<li>
+log
+</li>
+<li>
+checkpoint
+</li>
+<li>
+restore
+</li>
+<li>
+show
+</li>
+</ul>
+
+<h2 id="toc_1.3">Mode of Operation</h2>
+<ul>
+<li>
+GUI Mode(default)
+    Interactive; has graphical windows, push-buttons, menus, and a command line in the transcript.
+    via a desktop icon or input <strong>vsim</strong> in the OS command shell prompt.
+</li>
+</ul>
+
+<ul>
+<li>
+CLI Mode
+    Interactive command line
+    Input <strong>vsim -c</strong> in the OS command prompt.
+</li>
+</ul>
+
+<ul>
+<li>
+Batch Mode
+    Non-interactive batch script; no windows or interactive command line.
+</li>
+</ul>
+
+</body>
+</html>

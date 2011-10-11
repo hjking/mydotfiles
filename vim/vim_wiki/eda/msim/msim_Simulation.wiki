@@ -1,0 +1,76 @@
+
+= ModelSim Simulation =
+
+== Simulation Flow ==
+The following table provides a reference for the tasks required for compiling, optimizing, loading, and simulating a design in [[../msim][ModelSim]].
+
+                            Simulation Flow
+| Step                    | CLI Entry                             |
+|-------------------------+---------------------------------------|
+| Step 1: Map libraries   | vlib <lib_name>; vmap work <lib_name> |
+| Step 2: Compile design  | vlog file1.v file2.v ...              |
+| Step 3: Optimize design |                                       |
+| Step 4: Load design     | vsim                                  |
+| Step 5: Run simulation  | run or step                           |
+| Step 6: Debug           | bp/describe/drivers/examine/force...  |
+
+== Basic Steps for Simulation ==
+=== Step 1 -- Collecting Files and Mapping Libraries ===
+  # Design Files(verilog, etc)
+  # Libraries(working and resource)
+    - Creating the logical library(vlib)
+      `vlib work`
+    - Mapping the logical work to the physical work library(vmap)
+     `vmap <logical_lib> <dir_path_name>`
+  # Stimulus for the design
+    Stimulus can be provided in several ways:
+    - Language based test bench
+    - Tcl-based [[../msim][ModelSim]] interactive command
+    - VCD files/command
+    - 3rd party test bench generation tools
+
+=== Step 2 -- Compiling the Design ===
+  # Compiling Verilog([[vlog][vlog]])
+  # Compiling VHDL(vcom)
+  # Compiling SystemC(sccom)
+
+=== Step 3 -- Load the Design for Simulation ===
+  Invoke [[vsim][vsim]] with the names of the top-level modules
+
+  `vsim top_module`
+
+  The design can be optimized with [[vopt][vopt]].
+
+=== Step 4 -- Simulation the Design ===
+  Once the design has been successfully loaded, the simulation time is set to zero, and you must enter a run command to begin simulation.
+
+  The basic simulator commands are:
+    - [[add wave][add wave]]
+    - [[force][force]]
+    - [[bp][bp]]
+    - [[run][run]]
+    - [[step][step]]
+
+=== Step 5 -- Debugging the Design ===
+  The basic simulator debugging commands are:
+    - describe
+    - drivers
+    - examine
+    - force
+    - log
+    - checkpoint
+    - restore
+    - show
+
+== Mode of Operation ==
+  - GUI Mode(default)
+    Interactive; has graphical windows, push-buttons, menus, and a command line in the transcript.
+    via a desktop icon or input *vsim* in the OS command shell prompt.
+
+  - CLI Mode
+    Interactive command line
+    Input *vsim -c* in the OS command prompt.
+
+  - Batch Mode
+    Non-interactive batch script; no windows or interactive command line.
+

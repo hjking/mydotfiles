@@ -1,0 +1,2292 @@
+2006-08-06 02:32:41 GMT	Michael Olson <mwolson@gnu.org>	patch-71
+
+    Summary:
+      Minor Makefile tweaks.
+    Revision:
+      planner-el--devel--0--patch-71
+
+    * Makefile: Abstract some mentions of Planner so that this can be more
+      easily re-used by other projects.
+
+    modified files:
+     Makefile
+
+
+2006-07-29 04:21:50 GMT	Michael Olson <mwolson@gnu.org>	patch-70
+
+    Summary:
+      Manual: Fix syntax error introduced in last patch.
+    Revision:
+      planner-el--devel--0--patch-70
+
+    * planner-el.texi (Installing from Arch): Fix syntax error introduced in
+      last patch.
+
+    modified files:
+     planner-el.texi
+
+
+2006-07-29 04:16:59 GMT	Michael Olson <mwolson@gnu.org>	patch-69
+
+    Summary:
+      Update maintainer info.
+    Revision:
+      planner-el--devel--0--patch-69
+
+    * AUTHORS: Mention that John Sullivan is the new maintainer.
+    
+    * planner-el.texi (Preface), Getting Help, Acknowledgements): Ditto.
+      (Installing from Arch): Update the ArchZoom link for the new
+      repository.
+
+    modified files:
+     AUTHORS planner-el.texi
+
+
+2006-07-09 22:03:24 GMT	Michael Olson <mwolson@gnu.org>	patch-68
+
+    Summary:
+      Manual: Heading fixes.
+    Revision:
+      planner-el--devel--0--patch-68
+
+    * planner-el.texi (Installing from a Source Archive) 
+      (Installing from Arch, Installing from Debian): Change a few
+      @subsubsections to @subheadings.
+
+    modified files:
+     planner-el.texi
+
+
+2006-07-09 21:04:18 GMT	John Sullivan <john@wjsullivan.net>	patch-67
+
+    Summary:
+      Fix the gnus Summary mode keybinding.
+    Revision:
+      planner-el--devel--0--patch-67
+
+
+    modified files:
+     planner-gnus.el
+
+
+2006-07-08 19:25:03 GMT	Michael Olson <mwolson@gnu.org>	patch-66
+
+    Summary:
+      Bring ChangeLog in sync.
+    Revision:
+      planner-el--devel--0--patch-66
+
+    * ChangeLog: Sync.
+
+    modified files:
+     ChangeLog
+
+
+2006-07-06 09:31:30 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-65
+
+    Summary:
+      planner-appt: fix match-string bug
+    Revision:
+      planner-el--devel--0--patch-65
+
+    * planner-appt.el (planner-appt-add-appts-from-schedule): wrap
+      planner-appt-format-description in save-match-data.  Fixes a bug where
+      the match data was lost [only seems to happen for Emacs <= 21.3.1].
+
+    modified files:
+     planner-appt.el
+
+
+2006-06-30 06:47:42 GMT	John Sullivan <john@wjsullivan.net>	patch-64
+
+    Summary:
+      Remove redundant parts about remember, and add missing index entries.
+    Revision:
+      planner-el--devel--0--patch-64
+
+
+    modified files:
+     planner-el.texi
+
+
+2006-06-30 03:31:22 GMT	Michael Olson <mwolson@gnu.org>	patch-63
+
+    Summary:
+      Really fix double-escaping issue and protect task/note content.
+    Revision:
+      planner-el--devel--0--patch-63
+
+    * planner-publish.el (planner-publish-markup-task): Remove bad patch.
+      Protect the task description from closing tags.
+      (planner-publish-markup-note): Protect the note content from closing
+      tags.
+      (planner-publish-task-tag): Remove bad patch.  Remove read-only
+      properties from task description so that it gets interpreted by Muse.
+      (planner-publish-note-tag): Remove read-only properties.
+
+    modified files:
+     planner-publish.el
+
+
+2006-06-29 05:36:17 GMT	Michael Olson <mwolson@gnu.org>	patch-62
+
+    Summary:
+      planner-authz: Update documentation.
+    Revision:
+      planner-el--devel--0--patch-62
+
+    * planner-authz.el: Update directions in header.
+      (planner-authz-markup-tags): Use "diary-section" instead of "diary".
+      (planner-authz-diary-section-tag): Rename from
+      `planner-authz-diary-tag'.
+    
+    * planner-el.texi (Authz Access Restriction): Add Getting started and
+      Diary markup sections.
+
+    modified files:
+     planner-authz.el planner-el.texi
+
+
+2006-06-29 03:30:57 GMT	Michael Olson <mwolson@gnu.org>	patch-61
+
+    Summary:
+      planner-publish: Fix double-escaping of task descriptions.
+    Revision:
+      planner-el--devel--0--patch-61
+
+    * planner-publish.el (planner-publish-task-tag): Fix double-escaping bug.
+
+    modified files:
+     planner-publish.el
+
+
+2006-06-29 03:03:58 GMT	Michael Olson <mwolson@gnu.org>	patch-60
+
+    Summary:
+      Quick grammar fix in README.
+    Revision:
+      planner-el--devel--0--patch-60
+
+    * README: Grammar fix.
+    
+
+    modified files:
+     README
+
+
+2006-06-28 21:03:18 GMT	Michael Olson <mwolson@gnu.org>	patch-59
+
+    Summary:
+      Add load-path example for Remember.
+    Revision:
+      planner-el--devel--0--patch-59
+
+    * scripts/planner-build.el: Add a load-path example for Remember.
+
+    modified files:
+     scripts/planner-build.el
+
+
+2006-06-28 20:49:58 GMT	Michael Olson <mwolson@gnu.org>	patch-58
+
+    Summary:
+      Explain a prerequisite for compilation.
+    Revision:
+      planner-el--devel--0--patch-58
+
+    * scripts/planner-build.el: Use a more standard default path for each of
+      the extensions.
+    
+    * planner-el.texi (Advanced Installation): Mention
+      scripts/planner-build.el.
+    
+    * README: Ditto.
+
+    modified files:
+     README planner-el.texi scripts/planner-build.el
+
+
+2006-06-28 01:48:09 GMT	Michael Olson <mwolson@gnu.org>	patch-57
+
+    Summary:
+      Mention Emacs Muse in README.
+    Revision:
+      planner-el--devel--0--patch-57
+
+    * README: Mention that Emacs Muse must be installed before compiling.
+    
+
+    modified files:
+     README
+
+
+2006-06-27 04:26:04 GMT	Michael Olson <mwolson@gnu.org>	patch-56
+
+    Summary:
+      Include autoloads file in the distribution.
+    Revision:
+      planner-el--devel--0--patch-56
+
+    * Makefile (distclean, dist): Include autoloads file in the distribution.
+
+    modified files:
+     Makefile
+
+
+2006-06-27 03:56:26 GMT	Michael Olson <mwolson@gnu.org>	patch-54
+
+    Summary:
+      Fix mailing list instructions in README.
+    Revision:
+      planner-el--devel--0--patch-54
+
+    * README: Fix URL for mailing list instructions.
+
+    modified files:
+     README
+
+
+2006-06-27 03:45:34 GMT	Michael Olson <mwolson@gnu.org>	patch-53
+
+    Summary:
+      Release Planner 3.41.
+    Revision:
+      planner-el--devel--0--patch-53
+
+    * Makefile.defs (VERSION): Set to 3.41.
+    
+    * NEWS: Update.
+    
+    * planner-el.texi: Set version to 3.41.
+      (Why Use Planner, Tasks, Example Page): Use new mailing list address.
+    
+    * planner.el (planner-version): Release Planner 3.41.
+
+    modified files:
+     ChangeLog Makefile.defs NEWS planner-el.texi planner.el
+
+
+2006-06-26 23:26:25 GMT	Michael Olson <mwolson@gnu.org>	patch-52
+
+    Summary:
+      Document planner2diary.py.
+    Revision:
+      planner-el--devel--0--patch-52
+
+    * planner-el.texi (Diary): Document planner2diary.py.  This completes the
+      documentation part of the release plans.
+    
+    * planner2diary.py: Require /usr/bin/python instead of
+      /usr/bin/python2.2.
+
+    modified files:
+     planner-el.texi planner2diary.py
+
+
+2006-06-26 23:18:05 GMT	Michael Olson <mwolson@gnu.org>	patch-51
+
+    Summary:
+      Document planner-report.el.
+    Revision:
+      planner-el--devel--0--patch-51
+
+    * planner-el.texi: Mention filenames in menus as much as possible.
+      (Status Reports): Document planner-report.el.
+
+    modified files:
+     planner-el.texi
+
+
+2006-06-23 13:54:58 GMT	Michael Olson <mwolson@gnu.org>	patch-50
+
+    Summary:
+      Fix bug in last patch.
+    Revision:
+      planner-el--devel--0--patch-50
+
+    * planner.el (allout-mode-leaders): Make this use `add-hook' rather than
+      `add-to-list' to avoid load errors.
+
+    modified files:
+     planner.el
+
+
+2006-06-23 04:08:22 GMT	Michael Olson <mwolson@gnu.org>	patch-49
+
+    Summary:
+      Make allout and Planner work better together by default.
+    Revision:
+      planner-el--devel--0--patch-49
+
+    * planner.el: Make allout mode recognize our special note syntax.  Thanks
+      to Bill White and Steven Lumos for the code snippet and research.
+
+    modified files:
+     planner.el
+
+
+2006-06-22 03:29:38 GMT	Michael Olson <mwolson@gnu.org>	patch-48
+
+    Summary:
+      Document planner-registry.el.
+    Revision:
+      planner-el--devel--0--patch-48
+
+    * planner-el.texi (planner-registry): Document the planner-registry.el
+      file.
+    
+    * planner-registry.el: Clarify directions in header.
+
+    modified files:
+     planner-el.texi planner-registry.el
+
+
+2006-06-20 18:10:46 GMT	Michael Olson <mwolson@gnu.org>	patch-47
+
+    Summary:
+      Document through planner-publish.el.
+    Revision:
+      planner-el--devel--0--patch-47
+
+    * ChangeLog: Update.
+    
+    * planner-el.texi (Publishing Planner pages): New section that documents
+      planner-publish.el.
+      (PSVN): New section that documents planner-psvn.el.
+    
+    * planner-publish.el (planner-html-inner-header):
+      (planner-html-inner-footer): Docfix.
+
+    modified files:
+     ChangeLog planner-el.texi planner-publish.el
+
+
+2006-06-18 03:20:47 GMT	John Sullivan <john@wjsullivan.net>	patch-46
+
+    Summary:
+      Document planner-zoom.
+    Revision:
+      planner--main--1.0--patch-59
+
+    modified files:
+     planner-el.texi
+
+
+2006-06-16 03:59:59 GMT	Michael Olson <mwolson@gnu.org>	patch-58
+
+    Summary:
+      Spot check documentation through planner-gnus.el.
+    Revision:
+      planner--main--1.0--patch-58
+
+    * planner-el.texi (Planner-Diary Advanced Features): Add a few index
+      entries.  Document planner-export-diary.el.
+      (Emacs Relay Chat): Update the syntax.
+
+    modified files:
+     planner-el.texi
+
+
+2006-06-08 21:57:22 GMT	Michael Olson <mwolson@gnu.org>	patch-57
+
+    Summary:
+      planner-el.texi: Use shared Arch archive in instructions.
+    Revision:
+      planner--main--1.0--patch-57
+
+    * planner-el.texi (Installing from Arch): Use shared archive instead of
+      my personal archive.
+
+    modified files:
+     planner-el.texi
+
+
+2006-06-08 21:36:15 GMT	Michael Olson <mwolson@gnu.org>	patch-56
+
+    Summary:
+      Document new mailing lists in the manual.
+    Revision:
+      planner--main--1.0--patch-56
+
+    * planner-el.texi (Getting Help): Document new mailing
+      lists.
+      (Overview, Review, Sample Configuration Files): Point to Getting Help
+      section for mailing list information.
+
+    modified files:
+     planner-el.texi
+
+
+2006-06-08 20:54:08 GMT	Michael Olson <mwolson@gnu.org>	patch-55
+
+    Summary:
+      Update NEWS.
+    Revision:
+      planner--main--1.0--patch-55
+
+    * NEWS: Update.
+
+    modified files:
+     NEWS
+
+
+2006-06-08 20:26:57 GMT	Michael Olson <mwolson@gnu.org>	patch-54
+
+    Summary:
+      Move Debian stuff to its own branch.
+    Revision:
+      planner--main--1.0--patch-54
+
+
+    removed files:
+     debian/.arch-ids/=id debian/.arch-ids/NEWS.id
+     debian/.arch-ids/README.Debian.id
+     debian/.arch-ids/changelog.id debian/.arch-ids/compat.id
+     debian/.arch-ids/control.id debian/.arch-ids/copyright.id
+     debian/.arch-ids/emacsen-install.id
+     debian/.arch-ids/emacsen-remove.id
+     debian/.arch-ids/emacsen-startup.id
+     debian/.arch-ids/planner-el.docs.id
+     debian/.arch-ids/planner-el.info.id debian/.arch-ids/rules.id
+     debian/NEWS debian/README.Debian debian/changelog
+     debian/compat debian/control debian/copyright
+     debian/emacsen-install debian/emacsen-remove
+     debian/emacsen-startup debian/planner-el.docs
+     debian/planner-el.info debian/rules
+
+    removed directories:
+     debian debian/.arch-ids
+
+
+2006-06-05 15:52:57 GMT	Michael Olson <mwolson@gnu.org>	patch-53
+
+    Summary:
+      Make Planner's keymap inherit from Muse's keymap.
+    Revision:
+      planner--main--1.0--patch-53
+
+    * planner.el (planner-mode-map): Apply patch from Adrian Aichner that
+      inherits the keymap from Muse, rather than copying it.  We fall back to
+      copying it if the proper functionality does not exist in the user's
+      version of Emacs.
+
+    modified files:
+     AUTHORS planner.el
+
+
+2006-06-01 13:54:24 GMT	Michael Olson <mwolson@gnu.org>	patch-52
+
+    Summary:
+      Add explanation for timeclock.el error.
+    Revision:
+      planner--main--1.0--patch-52
+
+    * contrib/timeclock.el: Add an explanation of why we error out if the
+      person is not using XEmacs.
+    
+    * debian/emacsen-startup: Put Planner's contrib directory at the end of
+      the load-path.
+
+    modified files:
+     ChangeLog ChangeLog.2005 Makefile.defs contrib/timeclock.el
+     debian/changelog debian/emacsen-startup
+
+
+2006-05-30 21:14:09 GMT	Michael Olson <mwolson@gnu.org>	patch-51
+
+    Summary:
+      Avoid a backtrace when using planner-calendar and not publishing.
+    Revision:
+      planner--main--1.0--patch-51
+
+    * planner.el (planner-published-file): Avoid error when not publishing.
+      (planner-yesterday): Docfix.
+      (planner-tomorrow): New function that returns the date for tomorrow.
+
+    modified files:
+     planner.el
+
+
+2006-05-29 14:22:16 GMT	Michael Olson <mwolson@gnu.org>	patch-50
+
+    Summary:
+      Make ChangeLog conform to conventions better.
+    Revision:
+      planner--main--1.0--patch-50
+
+    * ChangeLog: Renamed from ChangeLog.2006 in order to follow Emacs
+      conventions better.  Specify the buffer encoding.  Add helpful notices
+      at the bottom of this and ChangeLog.2005.
+
+    modified files:
+     ChangeLog ChangeLog.2004 ChangeLog.2005 NEWS debian/rules
+
+    renamed files:
+     .arch-ids/ChangeLog.2006.id
+       ==> .arch-ids/ChangeLog.id
+     ChangeLog.2006
+       ==> ChangeLog
+
+
+2006-05-26 14:44:08 GMT	Michael Olson <mwolson@gnu.org>	patch-49
+
+    Summary:
+      Display a helpful message if muse-project-alist undefined.
+    Revision:
+      planner--main--1.0--patch-49
+
+    * planner.el (planner-display-warning): New function that displays a
+      warning window.  This is useful for longer explanations of errors.
+      (plan): Display a helpful message if `muse-project-alist' is not
+      defined.
+
+    modified files:
+     planner.el
+
+
+2006-05-25 01:20:42 GMT	Michael Olson <mwolson@gnu.org>	patch-48
+
+    Summary:
+      Fix lock up with old delegated task mark.
+    Revision:
+      planner--main--1.0--patch-48
+
+    * planner.el (planner-marks-regexp): Docfix.
+      (planner-task-regexp): Don't include marks; be more lenient, since
+      planner-id uses this as a metric for finding a task, and we don't want
+      tasks with strange marks to cause it not to find a task.
+      (plan): Indentation.
+
+    modified files:
+     planner.el
+
+
+2006-05-23 22:14:14 GMT	Michael Olson <mwolson@gnu.org>	patch-46
+
+    Summary:
+      Remove duplicate note links when publishing.
+    Revision:
+      planner--main--1.0--patch-46
+
+    * planner-publish.el (planner-publish-note-tag): Ensure that a page
+      cannot appear in both link and categories.
+
+    modified files:
+     planner-publish.el
+
+
+2006-05-23 16:19:01 GMT	Michael Olson <mwolson@gnu.org>	patch-45
+
+    Summary:
+      Remove task IDs when publishing.
+    Revision:
+      planner--main--1.0--patch-45
+
+    * planner-id.el ("planner-publish"): Remove Task IDs and anything else
+      that uses the ID syntax when publishing.
+
+    modified files:
+     planner-id.el
+
+
+2006-05-18 20:05:12 GMT	Michael Olson <mwolson@gnu.org>	patch-44
+
+    Summary:
+      Publish diary sections in a meaningful way.
+    Revision:
+      planner--main--1.0--patch-44
+
+    * planner-publish.el (planner-publish-markup-tags): Add entry for
+      diary-section.
+      (planner-xml-markup-strings, planner-html-markup-strings): Add strings
+      for diary section.
+      (planner-html-style-sheet): Add CSS elements for Diary section.
+      (planner-publish-diary-section-tag): New function that publishes the
+      diary in a way that preserves line breaks, using the verse tag
+      function.
+      (planner-section-tagnames): Transform Diary sections to diary-section
+      tags.
+
+    modified files:
+     planner-publish.el
+
+
+2006-05-18 16:40:36 GMT	Michael Olson <mwolson@gnu.org>	patch-43
+
+    Summary:
+      Make notes publish with nicer default CSS elements.
+    Revision:
+      planner--main--1.0--patch-43
+
+    * planner-publish.el (planner-html-style-sheet): Add style elements for
+      Notes section.  This causes the note anchors to be placed on the same
+      line as note headings, which is the way it used to be.
+
+    modified files:
+     planner-publish.el
+
+
+2006-05-17 21:43:59 GMT	Michael Olson <mwolson@gnu.org>	patch-42
+
+    Summary:
+      Work on calendar, manual, and index generation.
+    Revision:
+      planner--main--1.0--patch-42
+
+    * planner-calendar.el: Fix example in header.  Remove the word "wiki"
+      from everything, since "page" works better.
+      (planner-calendar-coerce-day-page): New function that determines which
+      day page to base the calendar on.
+      (planner-calendar-from-page): Use `planner-calendar-coerce-day-page'.
+      Check for null page name.
+      (planner-calendar-create-today-link): Make sure that the page we are
+      linking to actually exists.  This function should now be safe to add
+      globally to muse-after-publish-hook.
+      (planner-publish-calendar-tag): If no calendar is returned, don't
+      insert anything.
+      ("planner-publish-finalize-regexps"): Use a better regexp to match the
+      calendar tag, so that it is processed correctly.
+    
+    * planner-el.texi: Add subheadings for Keys, Options, and Functions, if
+      applicable.
+      (Publishing Calendars): Mention "page" and "arrows" options.  Mention
+      workaround for problem where the text in the arrows doesn't get
+      published correctly.  Give working example for
+      planner-calendar-create-today-link.
+    
+    * planner.el (planner-published-file): Try to figure out where the file
+      exists, if the output directory is not specified.  This could be more
+      elaborate to handle multiple source directories, but I haven't gotten
+      around to that yet.
+      (planner-index-as-string): Add exclude-daypages option for those who do
+      not want day pages to show up in the index.
+
+    modified files:
+     planner-calendar.el planner-el.texi planner.el
+
+
+2006-05-09 00:30:01 GMT	Michael Olson <mwolson@gnu.org>	patch-41
+
+    Summary:
+      planner-el.texi: Update location of schedule.el.
+    Revision:
+      planner--main--1.0--patch-41
+
+    * planner-el.texi (Timeclock): Note that timeclock.el comes with GNU
+      Emacs, and direct XEmacs users to use the version that comes with
+      Planner in the contrib directory.
+      (schedule.el): Use correct URL and note that this comes with Planner.
+      Thanks to Adrian Aichner for the report.
+
+    modified files:
+     ChangeLog.2006 Makefile.defs debian/changelog planner-el.texi
+
+
+2006-04-26 19:59:37 GMT	Michael Olson <mwolson@gnu.org>	patch-40
+
+    Summary:
+      planner-calendar: Default to today if not publishing a day page.
+    Revision:
+      planner--main--1.0--patch-40
+
+    * planner-calendar.el (planner-calendar-from-wiki): Default to current
+      day if we're not publishing a day page.
+
+    modified files:
+     planner-calendar.el
+
+
+2006-04-26 19:55:13 GMT	Michael Olson <mwolson@gnu.org>	patch-39
+
+    Summary:
+      Add default CSS elements for calendar stuff.
+    Revision:
+      planner--main--1.0--patch-39
+
+    * planner-publish.el (planner-html-style-sheet): Add some default CSS
+      elements for calendar stuff.
+
+    modified files:
+     planner-publish.el
+
+
+2006-04-26 19:35:10 GMT	Michael Olson <mwolson@gnu.org>	patch-38
+
+    Summary:
+      planner-calendar: Surround generated calendar with <div> tag.
+    Revision:
+      planner--main--1.0--patch-38
+
+    * planner-calendar.el: Fix example.
+      (planner-publish-calendar-tag): Surround in a <div> section for ease of
+      use.
+    
+    * planner-el.texi (Publishing Calendars): Make the example simpler.
+    
+    * planner-publish.el (planner-insert-markup): If we're using Muse 3.02.6,
+      manually make the region read-only.
+
+    modified files:
+     Makefile.defs debian/changelog planner-calendar.el
+     planner-el.texi planner-publish.el
+
+
+2006-04-26 18:09:14 GMT	Michael Olson <mwolson@gnu.org>	patch-37
+
+    Summary:
+      Minor docfix.
+    Revision:
+      planner--main--1.0--patch-37
+
+    * planner-publish.el (planner-publish-prepare-buffer) 
+      (planner-publish-finalize-buffer): Docfix.
+
+    modified files:
+     planner-publish.el
+
+
+2006-04-26 18:01:36 GMT	Michael Olson <mwolson@gnu.org>	patch-36
+
+    Summary:
+      Make publishing of calendars work better using a new method.
+    Revision:
+      planner--main--1.0--patch-36
+
+    * planner-calendar.el: Docfix.  Recognize <calendar> tags even in the
+      header and footer.
+      (planner-calendar-insert-calendar-maybe) 
+      (planner-calendar-move-calendar-to-top-of-page-maybe): Remove, since
+      they are not needed by the new method.
+    
+    * planner-el.texi (Publishing Calendars): Update.
+    
+    * planner-publish.el (planner-publish-prepare-regexps): New option that
+      specifies the publishing regexps to apply before doing other
+      publishing.
+      (planner-publish-finalize-regexps): New option that specifies the
+      publishing regexps to apply after doing other publishing.
+      (planner-publish-prepare-buffer): Use planner-publish-prepare-regexps.
+      (planner-publish-finalize-buffer): New function that finalizes Planner
+      buffers after publishing.
+      (planner-section-tagnames): Fix ordering error.
+
+    modified files:
+     planner-calendar.el planner-el.texi planner-publish.el
+
+
+2006-04-26 03:22:20 GMT	Michael Olson <mwolson@gnu.org>	patch-35
+
+    Summary:
+      Use h2, h3, ... for headings.
+    Revision:
+      planner--main--1.0--patch-35
+
+    * planner-publish.el (planner-publish-markup-tags) [title]: Accept
+      attributes.
+      (planner-html-markup-strings) [planner-begin-title, planner-end-title]:
+      Use normal style headings, i.e. h2.
+      (planner-html-style-sheet): Remove nested title hacks.
+      (planner-publish-markup-note): Use title level of 3.
+      (planner-publish-title-tag): Accept attributes.  Call muse-markup-text
+      with a level argument.
+      (planner-publish-section): Store level as heading level + 1, since the
+      topmost level heading should be h2.
+
+    modified files:
+     planner-publish.el
+
+
+2006-04-25 22:03:34 GMT	Michael Olson <mwolson@gnu.org>	patch-34
+
+    Summary:
+      Fix a paragraph publishing problem near end of file.
+    Revision:
+      planner--main--1.0--patch-34
+
+    * planner-publish.el (planner-html-markup-strings)
+      [planner-end-note-categories]: Remove newline.
+      (planner-publish-prepare-buffer): Rework to use the Muse markup engine.
+      (planner-publish-markup-note): Docfix.
+      (planner-publish-nested-section-tag): Docfix.
+      (planner-publish-notes-section-tag): Insert newline.
+      (planner-publish-note-tag): Insert newline.
+      (planner-sectionalize-delimiter, planner-sectionalize-page) 
+      (sectionalize-markup-tagname, sectionalize-markup-tagname) 
+      (sectionalize): Remove.
+      (planner-publish-section-close): New function that finds where the
+      closing tag of DEPTH should go, and inserts TEXT.
+      (planner-section-tagnames): Mapping of sections to their tag name.
+      (planner-publish-section-tagname): New function that finds the tag name
+      for the given section.
+      (planner-publish-section): New function that publishing the current
+      heading as a section.  This should fix a problem with sections at the
+      end of a file, given only one newline at end.
+
+    modified files:
+     planner-publish.el
+
+
+2006-04-09 19:29:19 GMT	Michael Olson <mwolson@gnu.org>	patch-33
+
+    Summary:
+      manual: Fix errors introduced in last patch.
+    Revision:
+      planner--main--1.0--patch-33
+
+    * planner-el.texi: Fix a couple of errors.
+
+    modified files:
+     planner-el.texi
+
+
+2006-04-09 19:27:03 GMT	Michael Olson <mwolson@gnu.org>	patch-32
+
+    Summary:
+      manual: Remove use of old Planner variables.
+    Revision:
+      planner--main--1.0--patch-32
+
+    * planner-el.texi: Remove use of old Planner variables.  Thanks to
+      Sebastian Luque for the report.
+      (Creating Your Planner): Clarify comment.
+      (Basic Configuration): Remove node, since its content is presented
+      elsewhere.
+      (Annotations, Publishing): Don't use old Planner variables in
+      explanation.
+      (iCal Task Publication): Give a more up-to-date example.
+
+    modified files:
+     planner-el.texi
+
+
+2006-04-08 02:57:43 GMT	Michael Olson <mwolson@gnu.org>	patch-31
+
+    Summary:
+      Prepare new Debian package for Arch snapshot.
+    Revision:
+      planner--main--1.0--patch-31
+
+    * ChangeLog.2006: Update.
+    
+    * debian/changelog: Prepare new Debian package for Arch snapshot.
+
+    modified files:
+     ChangeLog.2006 Makefile.defs debian/changelog
+
+
+2006-04-08 01:34:44 GMT	Michael Olson <mwolson@gnu.org>	patch-30
+
+    Summary:
+      planner-registry: Minor code cleanup.
+    Revision:
+      planner--main--1.0--patch-30
+
+    * planner-registry.el (planner-registry-show): Remove boundp check.
+
+    modified files:
+     planner-registry.el
+
+
+2006-04-08 01:32:20 GMT	Michael Olson <mwolson@gnu.org>	patch-29
+
+    Summary:
+      Include planner-registry.el.
+    Revision:
+      planner--main--1.0--patch-29
+
+    * planner-registry.el: New file that implements a registry of URLs and
+      Planner annotations.  This used to be called muse-registry.el, but it
+      has been renamed to planner-registry.el since it fits better with
+      Planner.
+
+    new files:
+     .arch-ids/planner-registry.el.id planner-registry.el
+
+    modified files:
+     AUTHORS
+
+
+2006-04-02 18:20:31 GMT	Michael Olson <mwolson@gnu.org>	patch-28
+
+    Summary:
+      Correct several regexps.
+    Revision:
+      planner--main--1.0--patch-28
+
+    If a regexp has a character set negation, make sure it includes the
+    newline, so that newlines aren't matched.
+
+    modified files:
+     planner-appt.el planner-bibtex.el planner-deadline.el
+     planner-erc.el planner-id.el planner-mhe.el planner-rdf.el
+     planner-tasks-overview.el planner-timeclock.el planner-vm.el
+     planner.el
+
+
+2006-03-29 20:23:27 GMT	Andrew J. Korty <ajk@iu.edu>	patch-25
+
+    Summary:
+      Merge some authz fixes.
+    Revision:
+      planner--main--1.0--patch-27
+
+    * planner-authz.el (planner-authz-fix-list-item): new function to move
+      the <li> tags to the inside to avoid a blank bullet when a list item is
+      totally access controlled
+      (planner-authz-markup-regexps): use it
+      (planner-authz-index-as-string): use <authz> tags to mark up the index
+      and rely on the new regexp entry to clean up the results
+      (planner-authz-multi-union): declare `sublist'
+
+    modified files:
+     planner-authz.el
+
+
+2006-03-27 23:52:31 GMT	Michael Olson <mwolson@gnu.org>	patch-25
+
+    Summary:
+      planner-erc: Improve greatly.
+    Revision:
+      planner--main--1.0--patch-25
+
+    * planner-erc.el: Update the syntax for IRC URLs.  Add warning for users
+      of old versions of ERC.
+      (planner-erc-url-regexp): New variable that specifies the syntax of IRC
+      URLs.
+      (planner-erc-annotation-from-erc): Use `erc-server-announced-name'.
+      (planner-erc-browse-url): Figure out the desired chat buffer.  If no
+      chat buffer exists for the given URL, connect to the server.
+
+    modified files:
+     planner-erc.el
+
+
+2006-03-25 04:46:53 GMT	Michael Olson <mwolson@gnu.org>	patch-24
+
+    Summary:
+      planner-zoom.el: New file used for navigating Planner pages.
+    Revision:
+      planner--main--1.0--patch-24
+
+    * AUTHORS: Bookkeeping.
+    
+    * planner.el (planner-remove-if-not): New function that implements a
+      simplified version of `remove-if-not'.
+    
+    * planner-zoom.el: New file by Gregory Novak that implements easy
+      navigation of Planner pages.
+
+    new files:
+     .arch-ids/planner-zoom.el.id planner-zoom.el
+
+    modified files:
+     AUTHORS planner.el
+
+
+2006-03-23 14:14:17 GMT	Michael Olson <mwolson@gnu.org>	patch-23
+
+    Summary:
+      planner-psvn.el: Install update from author.
+    Revision:
+      planner--main--1.0--patch-23
+
+    * planner-psvn.el: Apply modified patch from Stefan Reichör that improves
+      compatibility with newer versions of psvn.el and pops to the diff
+      buffer.
+
+    modified files:
+     planner-psvn.el
+
+
+2006-03-15 12:38:11 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-19
+
+    Summary:
+      Merged from jeho@jeho.org--2005 (patch 56-57), mwolson@gnu.org--2006-planner-el (patch 16-19)
+    Revision:
+      planner--main--1.0--patch-21
+
+    * planner-appt.el (planner-appt-forthcoming-show-day-names-flag): New
+      option that indicates whether to show day names in forthcoming
+      appointments.
+      (planner-appt-forthcoming-format): Add day name insertion.
+    
+    * planner-el.texi: Add documentation about new feature [and also for
+      planner-appt-forthcoming-repeat-date-string].
+
+    modified files:
+     planner-appt.el planner-el.texi
+
+
+2006-03-14 21:13:28 GMT	Michael Olson <mwolson@gnu.org>	patch-20
+
+    Summary:
+      planner-appt: Mention that documentation is available in Planner manual.
+    Revision:
+      planner--main--1.0--patch-20
+
+    * planner-appt.el: Mention that further details are available in the
+      Planner manual.
+
+    modified files:
+     planner-appt.el
+
+
+2006-03-14 20:03:31 GMT	Michael Olson <mwolson@gnu.org>	patch-19
+
+    Summary:
+      planner-calendar: Fix publishing bug.
+    Revision:
+      planner--main--1.0--patch-19
+
+    * planner-calendar.el (planner-calendar-html-tag-marker): Use the correct
+      value so that the calendar is published properly.  Thanks to Christian
+      Clercin and René.
+
+    modified files:
+     planner-calendar.el
+
+
+2006-03-11 15:29:42 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-15
+
+    Summary:
+      Merged from jeho@jeho.org--2005 (patch 54-55), mwolson@gnu.org--2006-planner-el (patch 14-15)
+    Revision:
+      planner--main--1.0--patch-18
+
+    * planner-appt.el (planner-fit-window-to-buffer): Use
+      shrink-window-if-large-than-buffer if fit-window-to-buffer is not
+      available.
+      (planner-appt-forthcoming-regexp): Remove the shyness from the groups:
+      this makes it match ok in XEmacs [don't know why it didn't before
+      though].
+
+    modified files:
+     planner-appt.el
+
+
+2006-03-13 03:43:23 GMT	Michael Olson <mwolson@gnu.org>	patch-17
+
+    Summary:
+      Add COPYING file; do bookkeeping.
+    Revision:
+      planner--main--1.0--patch-17
+
+    * COPYING: New file containing the GNU General Public License.
+    
+    * AUTHORS: Bookkeeping.
+    
+    * README: Add License section.
+    
+    * planner*.el: Update headers.
+
+    new files:
+     .arch-ids/COPYING.id COPYING
+
+    modified files:
+     AUTHORS README planner-accomplishments.el planner-appt.el
+     planner-authz.el planner-bbdb.el planner-bibtex.el
+     planner-bookmark.el planner-calendar.el planner-cyclic.el
+     planner-deadline.el planner-diary.el planner-el.texi
+     planner-erc.el planner-experimental.el planner-export-diary.el
+     planner-gnats.el planner-gnus.el planner-ical.el planner-id.el
+     planner-ledger.el planner-lisp.el planner-log-edit.el
+     planner-mhe.el planner-multi.el planner-notes-index.el
+     planner-psvn.el planner-publish.el planner-rank.el
+     planner-rdf.el planner-report.el planner-rmail.el
+     planner-rss.el planner-schedule.el planner-tasks-overview.el
+     planner-timeclock-summary-proj.el planner-timeclock-summary.el
+     planner-timeclock.el planner-trunk.el planner-unix-mail.el
+     planner-vm.el planner-w3m.el planner-wl.el planner-xtla.el
+     planner.el
+
+
+2006-03-06 15:49:19 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-13
+
+    Summary:
+      Merged from jeho@jeho.org--2005 (patch 51-53), mwolson@gnu.org--2006-planner-el (patch 13)
+    Revision:
+      planner--main--1.0--patch-16
+
+    * planner-appt.el: Revert to the old method of tracking appts added to
+      the schedule.  The text property method was simpler, but failed when
+      re-visiting today's plan page [since text properties don't get saved].
+      (planner-appt-update-appt-section): fix wrong side of bound error
+      (--planner-appt-lines-added-to-section): global variable tracking appts
+      added to the schedule
+      (planner-appt-task-schedule-item-p): use
+      --planner-appt-lines-added-to-section
+      (planner-appt-update-appt-section): revert to the old method
+      (planner-appt-forthcoming-get-appts): fix small bug where an appt
+      schedule item would fall through the conditional  and try to be parsed
+      as a task item.
+
+    modified files:
+     planner-appt.el
+
+
+2006-02-28 16:49:28 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-12
+
+    Summary:
+      Merged from mwolson@gnu.org--2006-planner-el (patch 12)
+    Revision:
+      planner--main--1.0--patch-15
+
+    * planner-appt.el (planner-appt-forthcoming-get-appts): Use
+      `insert-file-contents' instead of `insert-file-contents-literally'.
+
+    modified files:
+     planner-appt.el
+
+
+2006-02-27 19:38:45 GMT	Andrew J. Korty <ajk@iu.edu>	patch-10
+
+    Summary:
+      sort status report entries by plan page name
+    Revision:
+      planner-el--devel--0--patch-10
+
+    * planner-report.el (planner-report-generate): sort pages by name using
+      string<
+    
+
+    modified files:
+     planner-report.el
+
+
+2006-02-27 11:38:48 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-9
+
+    Summary:
+      small fix to README file
+    Revision:
+      planner-el--devel--0--patch-9
+
+    * README: remove (setq load-path ...) from the load-path example
+
+    modified files:
+     README
+
+
+2006-02-27 10:34:20 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-8
+
+    Summary:
+      planner-appt: fix highlighting in plan pages
+    Revision:
+      planner-el--devel--0--patch-8
+
+    * planner-appt.el (planner-appt-task-highlight): check that a task has
+      today's date
+
+    modified files:
+     planner-appt.el
+
+
+2006-02-27 04:46:50 GMT	Michael Olson <mwolson@gnu.org>	patch-13
+
+    Summary:
+      Prepare new Debian package.
+    Revision:
+      planner--main--1.0--patch-13
+
+
+    modified files:
+     Makefile.defs debian/changelog debian/control
+     debian/emacsen-install debian/rules
+
+
+2006-02-27 04:04:17 GMT	Michael Olson <mwolson@gnu.org>	patch-12
+
+    Summary:
+      Update NEWS and ChangeLog
+    Revision:
+      planner--main--1.0--patch-12
+
+
+    modified files:
+     ChangeLog.2006 NEWS
+
+
+2006-02-22 01:57:37 GMT	Andrew J. Korty <ajk@iu.edu>	patch-7
+
+    Summary:
+      only publish dependencies if they haven't already been published
+    Revision:
+      planner-el--devel--0--patch-7
+
+    * planner-authz.el (planner-authz-publishing-alist): alist to track
+      published pages and their dependencies
+      (planner-authz-after-markup): if planner-authz-publishing-alist
+      indicates this page has already been published, and here we are
+      publishing it again, the alist must be stale, so we replace it with
+      a single element for this page; otherwise, add an element for this page
+      to the list
+      (planner-authz-after-project-publish): use
+      planner-authz-publishing-alist to determine which dependencies need
+      publishing
+      (planner-authz-republish-dependencies-maybe): add linked pages to
+      planner-authz-publishing-alist as dependencies if they're not already
+      there
+
+    modified files:
+     planner-authz.el
+
+
+2006-02-22 01:55:02 GMT	Andrew J. Korty <ajk@iu.edu>	patch-6
+
+    Summary:
+      consider all of a note's links when building an access list
+    Revision:
+      planner-el--devel--0--patch-6
+
+    * planner-authz.el (planner-authz-note-tag): use "categories" attribute
+
+    modified files:
+     planner-authz.el
+
+
+2006-02-22 01:48:52 GMT	Andrew J. Korty <ajk@iu.edu>	patch-5
+
+    Summary:
+      enable multiple links with "categories" attribute
+    Revision:
+      planner-el--devel--0--patch-5
+
+    * planner-publish.el (planner-publish-note-tag): enable "categories"
+      attribute, which stores all of a note's links
+
+    modified files:
+     planner-publish.el
+
+
+2006-02-15 20:26:25 GMT	Andrew J. Korty <ajk@iu.edu>	patch-4
+
+    Summary:
+      add planner-multi support to planner-authz
+    Revision:
+      planner-el--devel--0--patch-4
+
+     - when multiple pages are linked to a task or note, merge the access
+       lists to the linked pages using a user-specified function
+    
+     - provide intersection and union functions for merging access lists
+    
+     - disable republishing *during* republishing to avoid indefinite
+       recursion
+
+    modified files:
+     planner-authz.el
+
+
+2006-02-15 20:12:41 GMT	Andrew J. Korty <ajk@iu.edu>	patch-3
+
+    Summary:
+      update to work with latest planner-publish.el
+    Revision:
+      planner-el--devel--0--patch-3
+
+     - catch up with function name change in planner-publish.el
+
+    modified files:
+     planner-authz.el
+
+
+2006-02-14 06:32:23 GMT	Michael Olson <mwolson@gnu.org>	patch-9
+
+    Summary:
+      Use debian/compat to determine debhelper compat level.
+    Revision:
+      planner--main--1.0--patch-9
+
+    * debian/compat: New file that sets the debhelper compatibility level to
+      4.
+    
+    * debian/rules: Remove DH_COMPAT line.
+
+    new files:
+     debian/.arch-ids/compat.id debian/compat
+
+    modified files:
+     debian/rules
+
+
+2006-02-10 22:53:52 GMT	Michael Olson <mwolson@gnu.org>	patch-8
+
+    Summary:
+      Fix Bug #5234: planner-gnus pseudo-article error.
+    Revision:
+      planner--main--1.0--patch-8
+
+    * planner-gnus.el (planner-gnus-browse-url): Apply patch from Sacha that
+      should fix Bug #5234: planner-gnus pseudo-article error.
+
+    modified files:
+     planner-gnus.el
+
+
+2006-01-30 11:55:00 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-45
+
+    Summary:
+      further fix for XEmacs initialization
+    Revision:
+      planner--jeho--1.1--patch-45
+
+    * planner-appt.el (planner-appt-insinuate): for XEmacs, create a diary
+      file if one doesn't already exist
+    
+
+    modified files:
+     planner-appt.el
+
+
+2006-01-28 10:42:04 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-44
+
+    Summary:
+      fix initialization for XEmacs
+    Revision:
+      planner--jeho--1.1--patch-44
+
+    * planner-appt.el (planner-appt-insinuate): try to fix initialization for
+      XEmacs: add (display-time).
+    
+
+    modified files:
+     planner-appt.el
+
+
+2006-01-26 00:38:24 GMT	Michael Olson <mwolson@gnu.org>	patch-6
+
+    Summary:
+      planner-gnus: Fix buggy browsing behavior.
+    Revision:
+      planner--main--1.0--patch-6
+
+    * planner-gnus.el (planner-gnus-browse-url): Prefer to use the
+      `gnus-find-matching-articles' function if it exists.  Thanks to John
+      Sullivan for the report.
+
+    modified files:
+     planner-gnus.el
+
+
+2006-01-25 12:51:16 GMT	Michael Olson <mwolson@gnu.org>	patch-5
+
+    Summary:
+      Don't insert too many spaces around task number.
+    Revision:
+      planner--main--1.0--patch-5
+
+    * planner.el (planner-task-format, planner-format-task): Apply patch from
+      Stefan Reichör that keeps extra spaces from being inserted when
+      planner-use-task-numbers is nil.
+
+    modified files:
+     planner.el
+
+
+2006-01-24 02:11:47 GMT	Michael Olson <mwolson@gnu.org>	patch-4
+
+    Summary:
+      planner-calendar: Make a <calendar> tag.
+    Revision:
+      planner--main--1.0--patch-4
+
+    * planner-calendar.el (planner-calendar-insert-calendar-maybe): Insert a
+      <calendar> tag, rather than using a <lisp> tag, since we can't yet tell
+      <lisp> to publish read-only.
+      (planner-calendar-move-calendar-to-top-of-page-maybe): Use
+      planner-insert-markup rather than `insert'.  Make sure we can snarf the
+      region safely, even if it is read-only.
+      (planner-publish-calendar-tag): New function that publishes a
+      <calendar> tag.
+    
+    * planner-publish.el (planner-publish-markup-tags): Docfix.
+
+    modified files:
+     planner-calendar.el planner-publish.el
+
+
+2006-01-23 17:22:16 GMT	Michael Olson <mwolson@gnu.org>	patch-3
+
+    Summary:
+      Make planner-visit-link more robust.
+    Revision:
+      planner--main--1.0--patch-3
+
+    * planner.el (planner-visit-link): Make this more robust by merging in
+      some changes from Muse.  Thanks to Seth Falcon for the sample fix.
+      Among other things, this correctly adds the file extension when
+      visiting a new Muse file.
+
+    modified files:
+     planner.el
+
+
+2006-01-21 01:55:13 GMT	Michael Olson <mwolson@gnu.org>	patch-2
+
+    Summary:
+      Debian package refinements.
+    Revision:
+      planner--main--1.0--patch-2
+
+    * Makefile (debrevision): New rule that causes a Debian package with a
+      revision to be built.  The main difference between this and
+      `debrelease' is that the .orig.tar.gz file is left alone.
+      (debbuild): New rule factored from debrelease.
+      (debclean): Removed, since we use slightly differing variations of this
+      in debrelease and debrevision.
+    
+    * debian/README.Debian: Add comments and my debian repo.
+    
+    * debian/emacsen-install: Make sure we symlink planner-autoloads.el.  Thanks to
+      Romain Francoise for noticing.
+    
+    * debian/rules: DTRT with NEWS and README.Debian.
+
+    modified files:
+     Makefile Makefile.defs debian/README.Debian debian/changelog
+     debian/emacsen-install debian/rules
+
+    renamed files:
+     debian/.arch-ids/NEWS.Debian.id
+       ==> debian/.arch-ids/NEWS.id
+     debian/NEWS.Debian
+       ==> debian/NEWS
+
+
+2006-01-19 01:57:47 GMT	Michael Olson <mwolson@gnu.org>	patch-1
+
+    Summary:
+      Debian fixups.
+    Revision:
+      planner--main--1.0--patch-1
+
+    * debian/emacsen-startup: Remove unnecessary path addition.
+    
+    * debian/rules: Explicitly install README.Debian and NEWS.Debian.
+
+    modified files:
+     debian/emacsen-startup debian/rules
+
+
+2006-01-17 01:16:25 GMT	Michael Olson <mwolson@gnu.org>	patch-184
+
+    Summary:
+      Release Planner 3.40.
+    Revision:
+      planner-muse--mwolson--1.0--patch-184
+
+    * planner-el.texi (Installing from a Source Archive) 
+      (Installing from Arch, Installing from Debian): Update.
+
+    modified files:
+     planner-el.texi planner.el
+
+
+2006-01-17 00:56:42 GMT	Michael Olson <mwolson@gnu.org>	patch-183
+
+    Summary:
+      Update Debian package instructions.  Install autoloads.
+    Revision:
+      planner-muse--mwolson--1.0--patch-183
+
+    * Makefile (install): Make sure autoloads are installed.
+    
+    * debian/README.Debian: Update.
+    
+    * debian/copyright: Update the Upstream Authors and Copyright sections.
+    
+    * debian/rules: Build autoloads.  Install extra files.
+    
+    * debian/emacsen-install (FILES): Filter out autoloads file.
+    
+    * debian/emacsen-startup: Add shared planner-el directory to path.  Load
+      autoloads file.
+    
+    * planner-el.texi (Appointment Hooks): Add space after @defvr to fix a
+      syntax error.
+      (Acknowledgements): Add a missing @end itemize.
+
+    new files:
+     .arch-ids/NEWS.id NEWS debian/.arch-ids/NEWS.Debian.id
+     debian/.arch-ids/planner-el.info.id debian/NEWS.Debian
+     debian/planner-el.info
+
+    modified files:
+     AUTHORS ChangeLog.2005 ChangeLog.2006 Makefile Makefile.defs
+     README debian/README.Debian debian/changelog debian/copyright
+     debian/emacsen-install debian/emacsen-startup
+     debian/planner-el.docs debian/rules planner-el.texi
+     planner-publish.el planner.el
+     {arch}/planner-muse/planner-muse--mwolson/planner-muse--mwolson--1.0/mwolson@gnu.org--2005/patch-log/patch-35
+
+
+2006-01-16 17:30:22 GMT	Michael Olson <mwolson@gnu.org>	patch-182
+
+    Summary:
+      Update FSF postal address.  Add README.
+    Revision:
+      planner-muse--mwolson--1.0--patch-182
+
+    * Update FSF postal address in headers of all Planner source files.
+    
+    * planner-el.texi: Update version information.  Use "XEmacs" rather than
+      "Xemacs".
+      (Getting Help): Document the official website and the bug-tracker.
+      (Acknowledgements): Remove list of contributors, since this is
+      contained in AUTHORS.
+
+    new files:
+     .arch-ids/README.id README
+
+    modified files:
+     planner-accomplishments.el planner-appt.el planner-authz.el
+     planner-bbdb.el planner-bibtex.el planner-bookmark.el
+     planner-calendar.el planner-cyclic.el planner-deadline.el
+     planner-diary.el planner-el.texi planner-erc.el
+     planner-experimental.el planner-export-diary.el
+     planner-gnats.el planner-gnus.el planner-ical.el planner-id.el
+     planner-ledger.el planner-lisp.el planner-log-edit.el
+     planner-mhe.el planner-multi.el planner-notes-index.el
+     planner-psvn.el planner-publish.el planner-rank.el
+     planner-rdf.el planner-report.el planner-rmail.el
+     planner-rss.el planner-schedule.el planner-tasks-overview.el
+     planner-timeclock-summary-proj.el planner-timeclock-summary.el
+     planner-timeclock.el planner-trunk.el planner-unix-mail.el
+     planner-vm.el planner-w3m.el planner-wl.el planner-xtla.el
+     planner.el
+
+
+2006-01-15 16:51:31 GMT	Michael Olson <mwolson@gnu.org>	patch-181
+
+    Summary:
+      planner-appt: Handle initialization of the appt system.
+    Revision:
+      planner-muse--mwolson--1.0--patch-181
+
+    * planner-appt.el (planner-appt-insinuate): Merged patch from Jim Ottaway
+      that initializes the appt system.
+    
+    * planner-el.texi (Appointments): Remove old kludge.
+
+    modified files:
+     planner-appt.el planner-el.texi
+
+
+2006-01-14 00:20:17 GMT	Michael Olson <mwolson@gnu.org>	patch-180
+
+    Summary:
+      planner-gnus: Make browsing Gnus URLs work with Emacs21, hopefully.
+    Revision:
+      planner-muse--mwolson--1.0--patch-180
+
+    * planner-gnus.el (planner-gnus-browse-url): Try some ideas from Dale
+      Smith that might make this work with Emacs21.
+
+    modified files:
+     AUTHORS planner-gnus.el
+
+
+2006-01-14 00:06:14 GMT	Michael Olson <mwolson@gnu.org>	patch-179
+
+    Summary:
+      Finish copyright notices and AUTHORS file.
+    Revision:
+      planner-muse--mwolson--1.0--patch-179
+
+
+    modified files:
+     AUTHORS ChangeLog.2005 planner-appt.el planner-authz.el
+     planner-bbdb.el planner-bibtex.el planner-calendar.el
+     planner-deadline.el planner-diary.el planner-export-diary.el
+     planner-id.el planner-ledger.el planner-log-edit.el
+     planner-mhe.el planner-multi.el planner-notes-index.el
+     planner-psvn.el planner-publish.el planner-report.el
+     planner-tasks-overview.el planner-unix-mail.el planner.el
+
+
+2006-01-13 17:00:44 GMT	Michael Olson <mwolson@gnu.org>	patch-178
+
+    Summary:
+      Progress: planner.el (2005)
+    Revision:
+      planner-muse--mwolson--1.0--patch-178
+
+
+    modified files:
+     AUTHORS planner-rmail.el planner-rss.el planner-schedule.el
+     planner-tasks-overview.el planner-timeclock-summary-proj.el
+     planner-timeclock-summary.el planner-timeclock.el
+     planner-trunk.el planner-unix-mail.el planner-vm.el
+     planner-w3m.el planner-wl.el planner-xtla.el planner.el
+     planner2diary.py
+
+
+2006-01-12 16:32:51 GMT	Michael Olson <mwolson@gnu.org>	patch-177
+
+    Summary:
+      Progress: planner-rmail.el
+    Revision:
+      planner-muse--mwolson--1.0--patch-177
+
+
+    modified files:
+     AUTHORS planner-el.texi planner-multi.el
+     planner-notes-index.el planner-psvn.el planner-publish.el
+     planner-rank.el planner-rdf.el planner-report.el
+
+
+2006-01-11 10:43:30 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-40
+
+    Summary:
+      planner.el: excessive highlighting
+    Revision:
+      planner--jeho--1.1--patch-40
+
+    * planner.el (with-planner-update-setup): remove highlight inhibition to
+      see whether the problem is really with planner-mode
+      (planner-mode): don't explicitly call muse-colors-buffer
+    
+
+    modified files:
+     planner.el
+
+
+2006-01-11 01:40:40 GMT	Michael Olson <mwolson@gnu.org>	patch-174
+
+    Summary:
+      Progress: planner-multi.el
+    Revision:
+      planner-muse--mwolson--1.0--patch-174
+
+
+    modified files:
+     AUTHORS ChangeLog.2005 planner-id.el planner-ledger.el
+     planner-lisp.el planner-log-edit.el planner-mhe.el
+     planner-multi.el
+
+
+2006-01-11 01:28:32 GMT	Peter K. Lee <saint@corenova.com>	patch-17
+
+    Summary:
+      (planner-publish.el) properly derives "xml" to form "planner-xml" style!
+    Revision:
+      planner-muse--peter--1.0--patch-17
+
+    * planner-publish.el (muse-xml): add require for 'muse-xml
+    (planner-xml-extension): no longer needed since 'muse-xml-extension exists.
+    (planner-publish-markup-tags): changed to nested-section and
+    tasks-section to match notes-section precedent.
+    (planner-xml-markup-strings): revamped to behave similar to
+    `planner-html-markup-strings'
+    (planner-xml-header): mimics `muse-xml-header', but the root
+    element is PLANNER not MUSE.
+    (planner-html-markup-strings): resort to using the TITLE tag to
+    generate static html code, instead of using H2, H3, etc. like
+    before.
+    (planner-html-style-sheet): added some defaults for nested
+    .section .title style differentiation.
+    (planner-publish-markup-note): there's no LEVEL in TITLE anymore.
+    (planner-publish-nested-section-tag): naming changes
+    (planner-publish-title-tag): simplify title tag generation.  use a
+    static markup string, instead of drawing from 'section,
+    'subsection variables.  The reason for this change, although I
+    _did_ like the former behavior of using H2, H3, etc. for HTML
+    markup is that the 'section, 'subsection variables of muse-xml do
+    NOT behave the same way as muse-html does (where muse-html acts
+    more like just a title).
+    (sectionalize): generate title tag w/o LEVEL attribute.
+    (muse-derive-style): the REAL reason for all the changes above!
+    Now planner-publish takes in the new muse-xml style and derives a
+    new planner specific style, "planner-xml" style.
+
+    modified files:
+     planner-publish.el
+
+
+2006-01-10 21:47:47 GMT	Jim Ottaway <j.ottaway@lse.ac.uk>	patch-38
+
+    Summary:
+      with-planner-update-setup: fix typo
+    Revision:
+      planner--jeho--1.1--patch-38
+
+
+    modified files:
+     planner.el
+
+
+2006-01-09 17:19:23 GMT	Michael Olson <mwolson@gnu.org>	patch-173
+
+    Summary:
+      More copyright twiddling.  Progress: planner-ical.el
+    Revision:
+      planner-muse--mwolson--1.0--patch-173
+
+
+    modified files:
+     AUTHORS ChangeLog.2004 planner-accomplishments.el
+     planner-appt.el planner-bbdb.el planner-bibtex.el
+     planner-calendar.el planner-cyclic.el planner-deadline.el
+     planner-diary.el planner-erc.el planner-experimental.el
+     planner-export-diary.el planner-gnats.el planner-gnus.el
+
+
+2006-01-09 13:32:58 GMT	Michael Olson <mwolson@gnu.org>	patch-172
+
+    Summary:
+      Fix some more copyright headers.
+    Revision:
+      planner-muse--mwolson--1.0--patch-172
+
+
+    modified files:
+     AUTHORS planner-el.texi planner-erc.el planner-xtla.el
+
+
+2006-01-09 02:34:36 GMT	Michael Olson <mwolson@gnu.org>	patch-171
+
+    Summary:
+      Edit more copyright notices.  Add AUTHORS.
+    Revision:
+      planner-muse--mwolson--1.0--patch-171
+
+    * AUTHORS: New file containing a thorough listing of contributors and
+      authors of Planner, its documentation, and its modules.  I'm about
+      half-way done verifying its contents.
+
+    new files:
+     .arch-ids/AUTHORS.id AUTHORS
+
+    modified files:
+     ChangeLog.2005 planner-authz.el planner-bbdb.el
+     planner-bibtex.el planner-bookmark.el planner-calendar.el
+     planner-cyclic.el planner-deadline.el planner-diary.el
+     planner-el.texi planner-multi.el planner-xtla.el planner.el
+
+
+2006-01-09 01:08:14 GMT	Michael Olson <mwolson@gnu.org>	patch-170
+
+    Summary:
+      Fix delegated task errors.  Work on updating copyright statements.
+    Revision:
+      planner-muse--mwolson--1.0--patch-170
+
+    * planner-publish.el (planner-publish-markup-regexps): Change ">" to "D"
+      for delegated mark.  Thanks to Seth Falcon for the report.
+    
+    * planner-rank.el (planner-sort-tasks-by-rank)
+      (planner-sort-tasks-by-importance, planner-sort-tasks-by-urgency):
+      Ditto.
+    
+    * planner-rdf.el (planner-rdf-matchstr-ptask): Ditto.
+    
+    * planner.el (planner-marks-regexp, planner-live-task-regexp):
+      (planner-sort-tasks-basic, planner-seek-next-unfinished-task): Ditto.
+    
+    * planner.el (planner-version): Set to 3.39.
+
+    modified files:
+     ChangeLog.2004 ChangeLog.2005 planner-accomplishments.el
+     planner-appt.el planner-authz.el planner-calendar.el
+     planner-deadline.el planner-experimental.el planner-publish.el
+     planner-rank.el planner-rdf.el planner.el
+
+    renamed files:
+     .arch-ids/PLANNER-README.id
+       ==> .arch-ids/COMMENTARY.id
+     PLANNER-README
+       ==> COMMENTARY
+
+
+2006-01-08 21:51:19 GMT	Michael Olson <mwolson@gnu.org>	patch-169
+
+    Summary:
+      Complete writing of ChangeLogs.
+    Revision:
+      planner-muse--mwolson--1.0--patch-169
+
+    * ChangeLog.2004, ChangeLog.2005, ChangeLog.2006: Complete the merging of
+      other logs and removal of "merged this" logs.
+
+    modified files:
+     ChangeLog.2004 ChangeLog.2005 ChangeLog.2006
+
+
+2006-01-08 04:54:05 GMT	Michael Olson <mwolson@gnu.org>	patch-168
+
+    Summary:
+      Add ChangeLogs from contributors.
+    Revision:
+      planner-muse--mwolson--1.0--patch-168
+
+    Remove a few emacs-wiki-only changelogs.
+    
+    * ChangeLog.2004, ChangeLog.2005: Add ChangeLog entries of contributors.
+      This is not complete yet.
+
+    modified files:
+     ChangeLog.2004 ChangeLog.2005
+
+
+2006-01-07 06:02:30 GMT	Michael Olson <mwolson@gnu.org>	patch-167
+
+    Summary:
+      Update Makefile, split ChangeLog.
+    Revision:
+      planner-muse--mwolson--1.0--patch-167
+
+    * Makefile (release): Create GPG keys here instead of at upload time.
+    
+    * ChangeLog: Refactor into ChangeLog.2004-2006.  We'll just manually
+      merge in entries at release time, I guess.  It might be good to get the
+      full logs from merged sources, too.
+
+    new files:
+     .arch-ids/ChangeLog.2004.id .arch-ids/ChangeLog.2005.id
+     .arch-ids/ChangeLog.2006.id ChangeLog.2004 ChangeLog.2005
+     ChangeLog.2006
+
+    removed files:
+     .arch-ids/ChangeLog.id ChangeLog
+
+    modified files:
+     Makefile Makefile.defs
+
+
+2006-01-06 20:21:25 GMT	Michael Olson <mwolson@gnu.org>	patch-166
+
+    Summary:
+      XEmacs fixes.
+    Revision:
+      planner-muse--mwolson--1.0--patch-166
+
+    * planner-appt.el (planner-appt-add-appts-from-tasks): Remove unused
+      obsolete variable.
+    
+    * planner-authz.el (planner-authz-mason-markup-table): 
+      (planner-authz-diary-tag): Use planner-line-beginning-position.
+    
+    * planner-el.texi (Appointments): Add code snippet for activating
+      appt.el.
+    
+    * planner-mhe.el: Require mh-index.
+    
+    * planner-rmail.el (planner-rmail-narrow-to-non-pruned-header): New
+      function that provides an implementation of
+      rmail-narrow-to-non-pruned-header, since XEmacs lacks it.
+      (planner-rmail-annotation-from-mail): Use
+      planner-rmail-narrow-to-non-pruned-header.
+    
+    * planner.el: Wrap conditional `require' in `eval-when-compile'.
+
+    modified files:
+     ChangeLog planner-appt.el planner-authz.el planner-el.texi
+     planner-mhe.el planner-rmail.el planner.el
+
+
+2006-01-06 19:53:00 GMT	Michael Olson <mwolson@gnu.org>	patch-165
+
+    Summary:
+      planner-appt: XEmacs fix.
+    Revision:
+      planner-muse--mwolson--1.0--patch-165
+
+    * Makefile.defs: Fix typo.
+    
+    * planner-appt.el: Add usage instructions which mention how to activate
+      appt.
+      (planner-appt-update-appt-section): Don't use `propertize', since
+      XEmacs doesn't have it.
+
+    modified files:
+     ChangeLog Makefile.defs planner-appt.el
+
+
+2006-01-06 02:44:17 GMT	Michael Olson <mwolson@gnu.org>	patch-164
+
+    Summary:
+      Massively clean whitespace and fix compiler warnings.
+    Revision:
+      planner-muse--mwolson--1.0--patch-164
+
+
+    modified files:
+     ChangeLog planner-appt.el planner-bibtex.el
+     planner-calendar.el planner-diary.el planner-export-diary.el
+     planner-gnus.el planner-ical.el planner-rank.el
+     planner-report.el planner-rss.el planner-tasks-overview.el
+     planner.el scripts/planner-build.el
+
+
+2006-01-06 01:45:10 GMT	Michael Olson <mwolson@gnu.org>	patch-163
+
+    Summary:
+      planner-el.texi: Fix a few URL examples.
+    Revision:
+      planner-muse--mwolson--1.0--patch-163
+
+    * planner-el.texi (Emacs Relay Chat): Use "irc://" instead of "erc://" in
+      the examples.
+      (BibTeX): Remove the initial forward-slashes from the sample bibtex
+      URL.  Thanks to Stefan van der Walt for the report.
+
+    modified files:
+     ChangeLog planner-el.texi
+
+
+2006-01-06 01:31:53 GMT	Michael Olson <mwolson@gnu.org>	patch-162
+
+    Summary:
+      planner-accomplishments: Use simpler method of determining hook to use.
+    Revision:
+      planner-muse--mwolson--1.0--patch-162
+
+    * planner-accomplishments.el (planner-accomplishments-insinuate):
+      Simplify.  This should fix an issue reported by Stefan van der Walt.
+
+    modified files:
+     ChangeLog planner-accomplishments.el
+
+
+2006-01-06 01:05:08 GMT	Michael Olson <mwolson@gnu.org>	patch-161
+
+    Summary:
+      Fix an extra-tasks problem in planner-tasks-overview.
+    Revision:
+      planner-muse--mwolson--1.0--patch-161
+
+    * planner.el (planner-list-daily-files): Prevent temp buffers from being
+      added when an existing buffer with the same name exists.  Thanks to
+      Stefan van der Walt for the report.  This should prevent task lists
+      from being doubled in planner-tasks-overview.
+
+    modified files:
+     ChangeLog planner.el
+
+
+2006-01-06 00:04:07 GMT	Michael Olson <mwolson@gnu.org>	patch-160
+
+    Summary:
+      Fix documentation example that I wrote earlier.
+    Revision:
+      planner-muse--mwolson--1.0--patch-160
+
+    * Makefile.defs: In this intermediate stage, we'll call it Planner 3.39.
+      Replace "planner-muse" with "planner".
+    
+    * debian/changelog: Condense old planner-muse-el entries into a new
+      planner-el entry.
+    
+    * debian/control, debian/emacsen-install, debian/emacsen-remove,
+      emacsen-startup: s/planner-muse-el/planner-muse/.
+    
+    * debian/rules: Use DH_COMPAT=4, since that was the most recent piece of
+      advice from my sponsor.
+    
+    * planner-el.texi (Viewing Tasks): Adjust whitespace.
+      (Publishing): Use an example that has a better chance of working.
+      Thanks to Stefan van der Walt for the report.
+
+    modified files:
+     ChangeLog Makefile.defs debian/changelog debian/control
+     debian/emacsen-install debian/emacsen-remove
+     debian/emacsen-startup debian/rules planner-el.texi
+
+
+2006-01-05 23:13:39 GMT	Michael Olson <mwolson@gnu.org>	patch-159
+
+    Summary:
+      Fix emacs-wiki Bug #14907.
+    Revision:
+      planner-muse--mwolson--1.0--patch-159
+
+    * planner.el (planner-extract-tasks): Fix backtrace.  This also fixes
+      #14907 on the emacs-wiki bug-tracker.
+
+    modified files:
+     ChangeLog planner.el
+
+
+2006-01-05 22:23:39 GMT	Michael Olson <mwolson@gnu.org>	patch-158
+
+    Summary:
+      planner-el.texi: Task numbers are not displayed by default.
+    Revision:
+      planner-muse--mwolson--1.0--patch-158
+
+    * planner-el.texi (Viewing Tasks): Note that by default, task numbers
+      will not be displayed.  Explain how to get them.  Thanks to Stefan van
+      der Walt for the report.
+
+    modified files:
+     ChangeLog planner-el.texi
+
+
+2006-01-04 00:31:10 GMT	John Sullivan <john@wjsullivan.net>	patch-5
+
+    Summary:
+      Added example and instructions for setting up a new Planner project.
+    Revision:
+      planner-muse--johnsu01--1.0--patch-5
+
+
+    modified files:
+     planner-el.texi
+
+
+2006-01-03 23:28:18 GMT	John Sullivan <john@wjsullivan.net>	patch-4
+
+    Summary:
+      Fixed name of Debian package and instructions for installing the package.
+    Revision:
+      planner-muse--johnsu01--1.0--patch-4
+
+
+    modified files:
+     planner-el.texi
+
+
+2006-01-03 22:26:15 GMT	Michael Olson <mwolson@gnu.org>	patch-155
+
+    Summary:
+      Yet Another paragraph detection try.
+    Revision:
+      planner-muse--mwolson--1.0--patch-155
+
+    * planner-publish.el (planner-publish-markup-note): Put the newlines in a
+      different spot.
+      (planner-publish-content-tag): Be a bit more delicate about where we
+      insert the markup.
+
+    modified files:
+     ChangeLog planner-publish.el
+
+
+2006-01-03 21:19:13 GMT	Michael Olson <mwolson@gnu.org>	patch-154
+
+    Summary:
+      Makefile: Fix argument for install-info.
+    Revision:
+      planner-muse--mwolson--1.0--patch-154
+
+    * Makefile (install): Give install-info the correct path.  Thanks to Dale
+      Smith for reporting this.
+
+    modified files:
+     ChangeLog Makefile
+
+
+2006-01-03 21:14:52 GMT	Michael Olson <mwolson@gnu.org>	patch-153
+
+    Summary:
+      Use "D" to indicate delegated tasks, instead of ">".
+    Revision:
+      planner-muse--mwolson--1.0--patch-153
+
+    * planner-accomplishments.el (planner-accomplishments-status-display):
+      Use "D" to indicate delegated tasks, instead of ">".
+    
+    * planner-el.texi (Modifying Tasks): Ditto.
+    
+    * planner-publish.el (planner-publish-task-status-expand): 
+      (planner-publish-task-status-collapse): Ditto.
+    
+    * planner-tasks-overview.el (planner-tasks-overview-sort-by-status):
+      Ditto.
+    
+    * planner.el (planner-sort-tasks-by-link, planner-highlight-tasks): 
+      (planner-task-delegated): Ditto.
+
+    modified files:
+     ChangeLog planner-accomplishments.el planner-el.texi
+     planner-publish.el planner-tasks-overview.el planner.el
+
+
+2006-01-03 19:36:56 GMT	Michael Olson <mwolson@gnu.org>	patch-152
+
+    Summary:
+      Fix double-escaping issue.
+    Revision:
+      planner-muse--mwolson--1.0--patch-152
+
+    * Makefile (install): Install the manual as "planner", not
+      "planner-muse".
+    
+    * Makefile.defs (ELISPDIR): Install the elisp files to site-lisp/planner
+      rather than site-lisp/planner-muse.
+    
+    * planner-publish.el (planner-publish-markup-note): Apply patch from Dale
+      Smith that fixes a double-escaping of specials with muse--main.
+      (planner-publish-section-tag): Revert a previous whitespace patch.
+      (planner-publish-content-tag): Insert an additional newline.  Hopefully
+      this finally fixes the paragraph detection problem.
+
+    modified files:
+     ChangeLog Makefile Makefile.defs planner-publish.el
+
+
+2006-01-03 01:40:44 GMT	Andrew J. Korty <ajk@iu.edu>	patch-14
+
+    Summary:
+      don't insert task number padding if planner-use-task-numbers is nil
+    Revision:
+      planner-muse--main--1.0--patch-14
+
+
+    modified files:
+     planner.el
+
+
+2006-01-03 01:32:10 GMT	John Sullivan <john@wjsullivan.net>	patch-3
+
+    Summary:
+	Updated maintainer information. Removed distinction between stable
+	and development versions. Distributed the Updating Your Version
+	node information and removed it. Made new nodes for each
+	installation method under a new Getting the Files section.
+
+    Revision:
+      planner-muse--johnsu01--1.0--patch-3
+
+
+    modified files:
+     planner-el.texi
+
+
+2006-01-03 00:32:40 GMT	Michael Olson <mwolson@gnu.org>	patch-150
+
+    Summary:
+      muse-publish: Try again to fix paragraph detection.
+    Revision:
+      planner-muse--mwolson--1.0--patch-150
+
+    * planner-publish.el (planner-publish-content-tag): Insert an extra
+      newline.
+
+    modified files:
+     ChangeLog planner-publish.el
+
+
+2006-01-02 23:31:02 GMT	Michael Olson <mwolson@gnu.org>	patch-149
+
+    Summary:
+      planner-publish: Try to fix paragraph error.
+    Revision:
+      planner-muse--mwolson--1.0--patch-149
+
+    * planner-publish.el (planner-publish-section-tag): Attempt to fix a
+      paragraph markup error.
+
+    modified files:
+     ChangeLog planner-publish.el
+
+
+2006-01-02 22:54:03 GMT	Michael Olson <mwolson@gnu.org>	patch-148
+
+    Summary:
+      planner-publish: Remove extra </span> tag.
+    Revision:
+      planner-muse--mwolson--1.0--patch-148
+
+    * planner-publish.el (planner-html-markup-strings): Apply patch from Dale
+      Smith that removes a stray </span> tag.
+
+    modified files:
+     ChangeLog planner-publish.el
+
+
+2006-01-02 22:48:38 GMT	Michael Olson <mwolson@gnu.org>	patch-147
+
+    Summary:
+      planner-publish: Yet Another Patch.  Remove stale functions.
+    Revision:
+      planner-muse--mwolson--1.0--patch-147
+
+    * planner-appt.el (planner-appt-de-wiki): Move to planner.el.
+      (planner-appt-format-description): Use planner-remove-links rather than
+      planner-appt-de-wiki.
+    
+    * planner-publish.el: Apply patch from Dale Smith.
+      (planner-publish-markup-tags): Use the correct attributes.
+      (planner-publish-notes-section-tag): Don't call
+      muse-publish-markup-region explicitly.
+    
+    * planner-publish.el (planner-publish-notes-tag): Use
+      planner-remove-links.
+    
+    * planner.el (planner-encode-url, planner-link-escape)
+      (planner-link-unescape): Remove.
+      (planner-remove-links): Renamed from planner-appt-de-wiki.  Keep track
+      of start position for sanity.
+
+    modified files:
+     ChangeLog planner-appt.el planner-publish.el planner.el
+
+
+2006-01-02 21:15:28 GMT	Michael Olson <mwolson@gnu.org>	patch-146
+
+    Summary:
+      planner-publish: Work further on <notes> and <past-notes> tags.
+    Revision:
+      planner-muse--mwolson--1.0--patch-146
+
+    * planner-publish.el (planner-html-markup-strings): Split
+      planner-note-details into manageable chunks.
+      (planner-publish-markup-note, planner-publish-notes-section-tag):
+      s/notes/notes-section/.  Thanks to Dale Smith for the patch.
+      (planner-publish-past-notes-tag): Fix the name of this function, thanks
+      to Dale Smith.  Make it use planner-insert-markup in some parts so that
+      raw HTML doesn't get escaped.
+      (planner-publish-note-tag): Split up the 'planner-note-details string
+      so that we can be selective about the parts that are marked up as
+      read-only.
+
+    modified files:
+     ChangeLog planner-publish.el
+
+
+2006-01-02 19:15:06 GMT	Michael Olson <mwolson@gnu.org>	patch-145
+
+    Summary:
+      planner-publish: Make "* Notes" section publish correctly again.
+    Revision:
+      planner-muse--mwolson--1.0--patch-145
+
+    * planner-publish.el: Re-add the planner-publish-notes-tag function, but
+      rename to planner-publish-notes-section.  emacs-wiki had the <notes>
+      tag insert an index of notes, so we'll use that as the behavior of
+      <notes>.  We still need the other function, though, to publish the 
+      "* Notes" section.  Thanks to Dale Smith for the advice.
+      (planner-publish-markup-tags): Add notes-section tag
+      (planner-publish-notes-section-tag): Renamed from the old
+      planner-publish-notes-tag function.
+      (sectionalize-markup-tagname): Mark up "* Notes" section as
+      "notes-section" instead of "notes".
+
+    modified files:
+     ChangeLog planner-publish.el
+
+
+2006-01-01 22:58:59 GMT	Michael Olson <mwolson@gnu.org>	patch-144
+
+    Summary:
+      Apply several bugfixes from Sacha.
+    Revision:
+      planner-muse--mwolson--1.0--patch-144
+
+    * planner-rss.el (planner-publish-markup-rss-functions): Fix typo.
+      Thanks to Sacha Chua for the fix.
+    
+    * planner.el (planner-jump-to-linked-note): Delete only occurs on linked
+      page if narrowing succeeds.  The previous behavior was to delete entire
+      linked page if linked note wasn't found.  Thanks to Lee Bigelow and
+      Sacha Chua for the fix.
+
+    modified files:
+     ChangeLog planner-rss.el planner.el
+
+See ChangeLog.2 for earlier changes.
+
+;; Local Variables:
+;; coding: utf-8
+;; End:

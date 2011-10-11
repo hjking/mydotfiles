@@ -1,0 +1,139 @@
+#+STARTUP: overview
+#+TAGS:  { 工作(x)  娱乐(y) 杂项(z) }
+#+TAGS:  { 编辑器(e) 网络(w) 多媒体(m) 压缩(z) 窗口管理器(c) 系统(s) 终端(t) }
+#+TAGS: @work(w) @home(h) @tennisclub(t)
+#+TAGS: laptop(l) pc(p) sailboat
+#+TAGS:  { 糟糕(1) 凑合(2) 不错(3) 很好(4) 极品(5) }
+#+SEQ_TODO: TODO(T) WAIT(W) | DONE(D!) CANCELED(C@)
+#+COLUMNS: %10ITEM  %10PRIORITY %15TODO %65TAGS
+
+
+* Emacs								     :工作:编辑器:极品:
+* Vim								     :工作:编辑器:很好:
+* EmEditor							     :工作:编辑器:不错:
+* bash								      :工作:系统:很好:
+* zsh								      :工作:系统:极品:
+* rxvt-unicode							      :工作:系统:很好:
+* tilda								      :工作:系统:很好:
+* awesome							   :杂项:窗口管理器:很好:
+* openbox							   :杂项:窗口管理器:很好:
+* xfce4								   :杂项:窗口管理器:不错:
+* firefox							      :杂项:网络:很好:
+* IE								      :杂项:网络:糟糕:
+* lftp								      :杂项:网络:很好:
+* wget								      :杂项:网络:很好:
+* aria2								      :杂项:网络:很好:
+* 迅雷								      :杂项:网络:极品:
+* mplayer							     :娱乐:多媒体:很好:
+* 暴风影音							     :娱乐:多媒体:不错: 
+
+
+
+
+* Top level headline
+** Second level
+*** 3rd level 1
+    some text
+*** 3rd level 2
+*** some text
+*** TODO
+*** 3rd level 3
+    some text
+
+
+* Plain lists
+** Lord of he Rings
+   My favourite scenes are (in this order)
+   1. [X] Checkbox test
+   2. The attack of the Rohirrim
+   3. Eowyn's fight with the witch king
+      + this was already my favourite scene in the book
+      + I really like Moranda Otto
+   Important actors in this film are:
+   - Elijah Wood :: He plays Frodo
+   - Sean Austin :: He plays Sam, Frodo's friend.
+
+
+* Footnotes
+The Org homepage[fn:1] now looks a lot better than it used to.
+
+[fn:1] The link is: http://orgmode.org
+
+
+* Table
+
+| No | Phone | Name | Age |   |
+|----+-------+------+-----+---|
+|  1 | Peter | 1234 |  17 |   |
+|  2 | Anna  | 4321 |  25 |   |
+|  3 | King  | 9876 |  20 |   |
+
+| Key       | Description                                            |
+|-----------+--------------------------------------------------------|
+| C-c 1     | Convert the active region to table; or create a table  |
+|           |                                                        |
+| C-c C-c   | re-align the table                                     |
+| TAB       | re-align the table, move to next field                 |
+| S-TAB     | re-align the table, move to previous field             |
+| RET       | re-align the table and move to next row.               |
+|           |                                                        |
+| M-LEFT    | move current column left                               |
+| M-RIGHT   | move current column right                              |
+| M-S-LEFT  | kill the current column                                |
+| M-S-RIGHT | insert a new column to the left of the cursor position |
+| M-UP      | move current row up                                    |
+| M-DOWN    | move current row down                                  |
+| M-S-UP    | kill current row                                       |
+| M-S-DOWN  | insert a new row above current row                     |
+| C-c  -    | insert a horizontal line below current row             |
+| C-c RET   | insert a horizontal line below current row with cursor |
+| C-c ^     | sort the table lines in the region                     |
+
+
+
+* Link
+** Internal Link
+  [[link][description]]
+  [[link]]
+  [[My%20Target][Find my target]]
+
+** External Link
+  [[http://www.gnu.org][GNU]]
+  [[http://www.gnu.org/software/emacs/][GNU Emacs]]
+  [[file:~/temp/test.txt][test.txt]]
+  [[mailto:test@test.org][Mail Me]]
+
+** Targeted Link
+  [[file:temp/test.txt::2][Find line 2 in test.txt]]
+  [[file:temp/test.txt::My%20Target][Find My Target in test.txt]]
+
+
+  <<My Target>>
+
+  C-c l          store a link.
+  C-c C-l        insert a link;
+                 if the link existing, then edit it.
+  C-c C-o        open a link.
+  C-c &          jump back to the link
+
+
+* TODO
+** TODO Write letter to Sma
+* Organize Party [1/3]
+** TODO Call People [50%]
+*** TODO Peter
+*** DONE [#A] Sarah
+** TODO [#A] Buy Food
+** DONE Talk to neighbors
+
+* Organize Party [1/3]
+  - [ ] call people [0/2]
+    - [ ] Peter <2011-01-17 Mon>
+    - [ ] Sarah <2011-01-18 Tue>
+  - [X] order food [2011-01-16 Sun]
+  - [ ] think about what music to play
+
+** TODO Pay the rent
+   DEADLINE: <2011-01-20 Thu +1m>
+
+** Pick up Sam at school <2011-01-17 Mon 12:30 +1w>

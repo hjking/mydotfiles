@@ -1,0 +1,16 @@
+
+==== Project Status ====
+
+# USB VIP Design
+  * Start Date: Wed 11/17/2010 AM
+  * Suspended:  Tue 11/30/2010 PM
+  * End Date
+# SATA_AES_Wrapper BB
+  * Start Date: Mon 11/8/2010 AM
+  * End Date:
+# ~~AHB BFM design~~
+  * Start Date: Tue 11/30/2010 PM
+  * End Date:   Thu 12/2/2010 PM (Cancled)
+# CEBU/SPIB
+# CEBU/JBIG
+# CEBU/FAXIF

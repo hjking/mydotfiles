@@ -1,0 +1,29 @@
+= My Knowledge Base =
+
+== To Do ==
+    # [[personal/MyUrgentTasks][MyUrgentTasks]] -- Things to be Done _yesterday_!!!
+    # [[personal/TodayTasks][TodayTasks]] -- Things to be Done *Today*!!!
+    # [[personal/Schedule][Schedule]] -- Next Action!!!
+
+== Links ==
+    # [[diary/diary][MyDiary]]
+    # [[book/books][GoodBook]] -- Good Books Are Power.
+
+== Program ==
+    # [[program/verilog][Verilog]] -- A Hardware Design Language
+    # [[program/python][Python]] -- A Powerful Script Language
+    # [[program/perl][Perl]] -- Another Powerful Script Language
+    # [[unix/shell][Shell]] -- [[unix/UNIX][UNIX]] Shells
+
+== Tools ==
+    # [[unix/UNIX][UNIX]] -- UNIX Reference.
+    # [[eda/EDA Tools][EDA Tools]] -- EDA Reference.
+
+== Sand Box ==
+    # [[ScratchPad]] -- Various Temporary Stuff.
+    # [[wikiMedia]] -- Various Temporary Stuff in wikiMedia syntax.
+
+== Project Status ==
+    # [[ASIC_PJ/ASIC_PJ][ASIC PJ]] -- Work of outsource ASIC projects.
+    # [[ASIC_PJ/Bus_Protocol][Bus Protocol]] -- Study Bus Protocol.
+

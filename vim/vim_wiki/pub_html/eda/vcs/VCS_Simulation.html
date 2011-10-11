@@ -1,0 +1,95 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>VCS_Simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+<h1 id="toc_1">Simulation</h1>
+<h2 id="toc_1.1">Getting Started</h2>
+<ul>
+<li>
+<strong>Setting Up Environment</strong>
+    To run VCS, you need to set the following environment variables:
+</li>
+<ol>
+<li>
+<strong>VCS_HOME</strong> environment variable
+      Set the environment variable VCS_HOME to the path where VCS is installed as shown below:
+</li>
+<ul>
+<li>
+% <strong>setenv VCS_HOME installation_path</strong>
+</li>
+</ul>
+<li>
+<strong>PATH</strong> environment variable
+      Set your UNIX PATH variable to $VCS_HOME/bin as shown below:
+</li>
+<ul>
+<li>
+% <strong>set path = ($VCS_HOME/bin $path)</strong>
+      OR
+</li>
+<li>
+% <strong>setenv PATH $VCS_HOME/bin:$PATH</strong>
+</li>
+</ul>
+<li>
+<strong>LM_LICENSE_FILE</strong> environment variable
+      Set the license variable LM_LICENSE_FILE to your license file as shown below:
+</li>
+<ul>
+<li>
+% <strong>setenv LM_LICENSE_FILE Location_to_the_license_file</strong>
+</li>
+</ul>
+</ol>
+</ul>
+
+<ul>
+<li>
+<strong>Using VCS</strong>
+    VCS uses the following steps to compile and simulate Verilog designs:
+</li>
+<ol>
+<li>
+<strong>Compiling the Design</strong>
+      VCS provides you with the vcs executable to compile and elaborate the design. This executable compiles your design using the intermediate files in the design or work library, generates the object code, and statically links them to generate a binary simulation executable <em>simv</em>.
+</li>
+<li>
+<strong>Simulating the Design</strong>
+      Simulate your design by executing the binary simulation executable <em>simv</em>.
+</li>
+</ol>
+</ul>
+
+<ul>
+<li>
+<strong>Basic Usage Model</strong>
+</li>
+<ul>
+<li>
+<strong>Compilation</strong>
+</li>
+<ul>
+<li>
+% <strong>vcs</strong> [compile_options] Verilog_files
+</li>
+</ul>
+<li>
+<strong>Simulation</strong>
+</li>
+<ul>
+<li>
+% <strong>simv</strong> [run_options]
+</li>
+</ul>
+</ul>
+</ul>
+
+
+<h2 id="toc_1.2">VCS Flow</h2>
+
+</body>
+</html>

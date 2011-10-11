@@ -1,0 +1,83 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>dc_intro</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+<h1 id="toc_1">Introduction to Synthesis</h1>
+
+<ul>
+<li>
+Levels of Abstraction
+    Functional --&gt; Behavioral --&gt; Register Transfer --&gt; <strong>Synthesis</strong> --&gt; Gate-Level --&gt; Physical Device
+</li>
+</ul>
+<blockquote>
+The <strong>Functional</strong> description serves to validate the intent of your new design. It might use stochastic processes to verify the performance.
+</blockquote>
+<blockquote>
+The <strong>behavioral</strong> description uses HDL code to model the design at system-level. It allows you to capture key algorithms and alternative architectures.
+</blockquote>
+<blockquote>
+The <strong>register transfer level</strong> completely models your design in detail. All clocks are defined and all registers declared. Use this HDL model as input for Design Compiler. You have enough details to synthesize trade-offs in area and timing.
+</blockquote>
+<blockquote>
+The input for ‘Place &amp; Route’ tools is a <strong>gate-level</strong> netlist. The physical tools generate a GDSII file for the chip manufacturing.
+</blockquote>
+<blockquote>
+<strong>Synthesis = Translation + Logic Optimization + Mapping</strong>
+</blockquote>
+<blockquote>
+HDL Source Code --&gt; Generic Boolean --&gt; Target Technology
+</blockquote>
+
+<ul>
+<li>
+Synthesis is Constraint-Driven
+    Designer guides the synthesis tool by providing <strong>constraints</strong>, i.e. information about the timing and area requirement for the design. The synthesis tool users this information and tries to generate the smallest possible design that will satisfy the timing requirements.
+</li>
+</ul>
+
+<ul>
+<li>
+Synthesis is Path-Based
+    Design Compiler uses Static Timing Analysis (STA) to calculate the timing of the paths in the design.
+    Static Timing Analysis (STA) is an integral part of the synthesis process. Design Compiler splits the design into paths, optimizes them according to the constraints, and checks every path in the design for timing violations. STA is not based on functional vectors, therefore it does not check the functionality of a design.
+</li>
+</ul>
+
+<ul>
+<li>
+Start Design Compiler
+    There are two ways to interface to the Design Compiler:
+</li>
+<ul>
+<li>
+Command Line Interface: <strong>dc_shell-xg-t</strong>
+</li>
+<li>
+GUI, <strong>Design Vision</strong> design_vision-xg
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+What is the XG Mode
+</li>
+<ul>
+<li>
+XG mode uses optimized memory management techniques that increase the tool’s capacity and can reduce runtime
+</li>
+<li>
+In XG mode, all synthesis tools use the tool command language (Tcl)
+</li>
+<li>
+Use the new binary .ddc format to save design netlists
+</li>
+</ul>
+</ul>
+
+</body>
+</html>

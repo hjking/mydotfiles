@@ -1,0 +1,69 @@
+=Setup, Libraries and Objects=
+
+==Variables==
+* Target Library Variable
+  - The target library is the library used by DC for building a circuit during compile
+
+  - During mapping, DC will:
+    Choose functionally-correct gates from this library
+    Calculate the timing of  the circuit using vendor-supplied timing data for these gates
+
+  - target_library is a reserved variable in DC:
+    Set it to point to the library file provided by your silicon vendor
+            set target_library my_tech.db
+
+* Link Library Variable
+  - Used to resolve leaf-cells and subdesign references:
+        set link_library "* my_tech.db"
+
+  - DC reads the libraries specified in the `link_library` variable during a read command
+
+  - When linking a design, DC searches memory first, then searches the library files specified in the `link_library` variable
+
+  - DC searches all Unix directories defined in the `search_path` variable
+
+* Search Path Variable
+
+
+==Setup==
+* Initialization Files
+  Commands in .synopsys_dc.setup are executed upon tool startup.
+  - Standard Setup
+    $/SYNOPSYS/admin/setup/.synopsys_dc.setup
+  - User's General Setup
+    $HOME/.synopsys_dc.setup
+  - User's Specific Project Setup
+    PJ_Dir/.synopsys_dc.setup
+
+* 
+
+==Object==
+  Design, Cell, Net, Pin, Port, Clock
+
+* `get_*` command
+  - Return objects in the `current_design`
+    Can be used stand-alone or composed with other functions
+  - Objects may be used together with the * wildcard
+    set_load 5 [get_ports addr_bus*]
+    set_load 6 [get_ports "A* B*"]
+  - "get_*" commands return a collection of design objects
+    If no matching, an empty collection is returned
+  - Other primary get commands:
+    `get_cells`         cells or instances
+    `get_clocks`        clocks
+    `get_designs`       designs
+    `get_libs`          libraries
+    `get_lib_cells`     library cells
+    `get_lib_pins`      library cell pins
+    `get_nets`          nets
+    `get_pins`          pins
+    `get_ports`         ports
+  - Other handy list commands
+    # List all input and inout ports
+      `all_inputs`
+    # List all output and inout ports
+      `all_outputs`
+    # List all designs in DC memory
+      `get_design *`
+    # List all designs under the current design, but not the current design itself
+      `get_design -hierarchy *`

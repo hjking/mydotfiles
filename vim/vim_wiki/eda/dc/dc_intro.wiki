@@ -1,0 +1,33 @@
+=Introduction to Synthesis=
+
+  * Levels of Abstraction
+    Functional --> Behavioral --> Register Transfer --> *Synthesis* --> Gate-Level --> Physical Device
+
+    The *Functional* description serves to validate the intent of your new design. It might use stochastic processes to verify the performance.
+
+    The *behavioral* description uses HDL code to model the design at system-level. It allows you to capture key algorithms and alternative architectures.
+
+    The *register transfer level* completely models your design in detail. All clocks are defined and all registers declared. Use this HDL model as input for Design Compiler. You have enough details to synthesize trade-offs in area and timing.
+
+    The input for ‘Place & Route’ tools is a *gate-level* netlist. The physical tools generate a GDSII file for the chip manufacturing.
+
+            *Synthesis = Translation + Logic Optimization + Mapping*
+
+            HDL Source Code --> Generic Boolean --> Target Technology
+
+  * Synthesis is Constraint-Driven
+    Designer guides the synthesis tool by providing *constraints*, i.e. information about the timing and area requirement for the design. The synthesis tool users this information and tries to generate the smallest possible design that will satisfy the timing requirements.
+
+  * Synthesis is Path-Based
+    Design Compiler uses Static Timing Analysis (STA) to calculate the timing of the paths in the design.
+    Static Timing Analysis (STA) is an integral part of the synthesis process. Design Compiler splits the design into paths, optimizes them according to the constraints, and checks every path in the design for timing violations. STA is not based on functional vectors, therefore it does not check the functionality of a design.
+
+  * Start Design Compiler
+    There are two ways to interface to the Design Compiler:
+    - Command Line Interface: *dc_shell-xg-t*
+    - GUI, *Design Vision* design_vision-xg
+
+  * What is the XG Mode
+    - XG mode uses optimized memory management techniques that increase the tool’s capacity and can reduce runtime
+    - In XG mode, all synthesis tools use the tool command language (Tcl)
+    - Use the new binary .ddc format to save design netlists

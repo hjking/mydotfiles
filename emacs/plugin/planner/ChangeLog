@@ -1,0 +1,491 @@
+2008-05-18  John Sullivan  <john@wjsullivan.net>
+
+	* Release Planner 3.42.
+
+2008-04-26  Michael Olson  <mwolson@gnu.org>
+
+	* planner.el (planner-copy-or-move-region): Make sure that the
+	very first task in a region is acted on exactly once.  The old
+	behavior was that the first task would be skipped.
+
+2008-04-16  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (distclean): Don't bother removing debian files.
+	(debclean, debprepare, debbuild, debinstall, deb): Remove obsolete
+	targets.
+
+	* Makefile.defs.default (DEBNAME, LASTUPLOAD, BUILDOPTS)
+	(DISTRIBUTOR): Remove obsolete variables.
+
+	* planner.el (planner-annotation-from-wiki): Use "::" instead of
+	"#" as the project/page delimiter.
+
+2008-02-24  Michael Olson  <mwolson@gnu.org>
+
+	* planner-report.el (planner-report-generate): Use
+	insert-file-contents instead of insert-file-contents-literally.
+	Otherwise non-ASCII characters get mangled.  Thanks to Michael
+	Heerdegen for the report.
+
+2008-01-20  Sacha Chua  <sacha@sachachua.com>
+
+	* planner-rss.el (planner-rss-add-item): Remove call to
+	muse-publish-markup-region.
+	(planner-publish-markup-note-rss): Use muse-insert-markup so that
+	markup doesn't get escaped.
+
+2007-12-27  Deus Max  <deusmax@gmail.com>
+
+	* planner-ledger.el (planner-ledger): New customize group.
+	(planner-ledger-data-file): New option specifying ledger file to
+	use.
+	(planner-ledger-balance-regexp, planner-ledger-pending-regexp)
+	(planner-ledger-balance-args): Update to work with newer versions
+	of ledger.
+	(planner-ledger-insert-balance-maybe): New function.
+	(planner-ledger-insert-pending-maybe): New function.
+	(planner-ledger-insert-section-maybe): Add newlines.
+	(planner-ledger-clear-section-balance)
+	(planner-ledger-clear-section-pending)
+	(planner-ledger-clear-section, planner-ledger-goto-section-end):
+	New functions.
+	(planner-ledger-add-entry-from-task): Use
+	planner-ledger-data-file.  Use more precise entry format.
+	(planner-ledger-run-ledger): New function to run ledger.
+
+2007-12-04  Michael Olson  <mwolson@gnu.org>
+
+	* planner-el.texi: Update to mention git instructions, rather than
+	Arch.
+
+2007-12-02  Jim Ottaway  <j.ottaway@lse.ac.uk>
+
+	* planner-appt.el: Move advice higher in file.
+	(planner-appt-update-appt-section-maybe): Fix bug with
+	planner-deadline and task-based appointments.
+
+2007-11-28  Markus Hoenicka  <markus.hoenicka@mhoenicka.de>
+
+	* planner-publish.el (planner-html-markup-strings): Add id to
+	planner-begin-task string.
+	(planner-publish-task-tag): Pass an appropriate id argument.  If
+	using task numbers, concatenate the priority and the task number.
+	Otherwise, concatenate the priority with a pseudo-random number.
+
+2007-10-29  Adrian Aichner  <adrian@xemacs.org>
+
+	* contrib/timeclock.el: Typo fix.
+
+	* planner-gnus.el (planner-gnus-get-message-id): Make gnuslog (see
+	http://www.emacswiki.org/cgi-bin/wiki/GnusLog) URLs useful in
+	context of current gnuslog-file.
+
+	* planner-timeclock.el (defadvice planner-replan-task): Make
+	project match optional (for tasks added manually).
+
+2007-10-28  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (DEFS): Use more-sophisticated Makefile.defs.default
+	setup.
+	(info-only): New rule to make just the info file.
+	(install): Use improved install_info method.
+	(dist, debprepare): Update rules for git.
+	(elpa): New rule that makes an ELPA package for Planner.
+
+	* Makefile.defs.default: Rename from Makefile.defs.
+	(install_info): New improved rule based on the old INSTALLINFO
+	variable.
+	(ELPADIR, ELPADESC): New variables used for making the Planner
+	ELPA package.
+
+2007-09-26  John Sullivan  <john@wjsullivan.net>
+
+	* planner.el (planner-search-notes-internal): Don't include the
+	title line of any following note in either the search or the
+	matched text. Closes #8973 and #7622.
+
+	* All files: Relicense to GPLv3, add new COPYING text and update
+	manual.
+
+2007-09-23  John Sullivan  <john@wjsullivan.net>
+
+	* planner.el (planner-copy-or-move-region): Use convenience
+	functions instead of ELT and regexps. Don't include the task at
+	the beginning of the region if point is at the end of the line,
+	but do include it otherwise. Correct docstring to reflect actual
+	behavior.
+
+
+2007-09-21  Michael Olson  <mwolson@gnu.org>
+
+	* planner.el (planner-annotation-as-kill): Fix error that occurred
+	when no annotation is found, and display a relevant message.
+
+2007-09-17  John Sullivan  <john@wjsullivan.net>
+
+	* planner-tasks-overview.el (planner-tasks-overview-show-summary),
+	(planner-tasks-overview-insert): Replace obsolete
+	`planner-directory'.
+
+
+2007-09-09  John Sullivan  <john@wjsullivan.net>
+
+	* planner-tasks-overview.el (planner-tasks-overview): Use
+	planner-extract-tasks.
+	(planner-tasks-overview-insert): Expect list layout returned by
+	planner-extract-tasks, and use parsing functions. Improve display.
+	Set working directory so that links work. Don't switch to
+	planner-mode, stay in planner-tasks-overview-mode.
+	(planner-tasks-overview-extract-all-tasks): Deleted because it's
+	redundant; we use planner-extract-tasks for this.
+	(planner-tasks-overview-mode): Derive from planner-mode, not
+	fundamental-mode.
+	(planner-tasks-overview-sort-by-date): Fix field number.
+	(planner-tasks-overview-sort-by-plan): Fix field number.
+	(planner-tasks-overview-sort-by-priority): Fix field number.
+	(planner-tasks-overview-sort-by-field): Handle nil properly for
+	sorting.
+	(planner-tasks-overview-sort-by-status): Fix field numbers.
+
+	* planner.el: Standardize and update compatibility info across all
+	files.
+
+	* planner-el.texi (Using Allout Mode): Minor doc fixes.
+
+2007-08-30  John Sullivan  <john@wjsullivan.net>
+
+	* planner.el (planner-goto-hook): It's only run for day pages.
+
+2007-08-29  John Sullivan  <john@wjsullivan.net>
+
+	* planner-registry.el (planner-registry-get-link-keywords): Use
+	it.
+	(planner-registry-get-keywords): Here too.
+
+	* planner.el (planner-split-string): Compatibility hack for
+	changes made in Emacs 22.
+
+	* planner.el (planner-delete-task): Use it.
+
+	* planner.el (planner-delete-task-hook): New hook. Thanks to David
+	Vazquez for the suggestion.
+
+	* planner-el.texi (Annotations): Remove misleadingly incomplete
+	sentence describing default annotations.
+
+	* planner.el (planner-annotation-from-man): New. Closes #8197 and
+	#8196.
+	(planner-annotation-from-woman): New. Thanks to Valery V.
+	Vorotyntsev for getting both of these started.
+
+2007-08-22  Michael Olson  <mwolson@gnu.org>
+
+	* planner-publish.el (planner-publish-diary-section-tag): Insert
+	newline so that we avoid a validation error.
+
+2007-08-19  Michael Olson  <mwolson@gnu.org>
+
+	* planner.el: Remove use of eval-when-compile in require
+	statements, since it breaks compiled code.  Also, emacs21 needs to
+	require 'derived.
+
+2007-07-21  Michael Olson  <mwolson@gnu.org>
+
+	* README: Mention that Muse 3.03 or later is needed.
+
+	* planner-authz.el, planner-timeclock.el, planner-calendar.el,
+	planner-publish.el: Remove support for old markup-tag syntax, now
+	that Muse 3.03 is released.
+
+	* planner-calendar.el (planner-calendar-prev-month-href)
+	(planner-calendar-next-month-href): Don't escape specials specials
+	in the URL description.  This should fix a bug with "&laquo;" and
+	"&raquo;".
+
+	* planner-publish.el: Error out when loading if we have Muse less
+	than 3.03.  Also, remove `unless' wrapper around uses of
+	muse-derive-style.
+	(planner-publish-ignore-url-desc-specials): New variable that
+	determines whether to ignore specials in URL descriptions.
+	(planner-publish-decide-specials): New function that uses this
+	variable.
+	("planner-xml", "planner-xhtml", "planner-xhtml"): Set :specials
+	to planner-publish-decide-specials.
+
+	* planner-el.texi: Replace "www.mwolson.org" with "mwolson.org"
+	for brevity.
+
+2007-07-03  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile: Update debian package-building rules.
+
+2007-06-17  Michael Olson  <mwolson@gnu.org>
+
+	* planner-publish.el (planner-publish-markup-regexps): Use group
+	of planner-publish, rather than muse-html.
+
+2007-05-26  Michael Olson  <mwolson@gnu.org>
+
+	* planner-el.texi (Installing from Arch): Update Archzoom URL.
+
+2007-05-07  Michael Olson  <mwolson@gnu.org>
+
+	* README: Mention that there are multiple mailing lists.
+
+	* planner-el.texi (Getting Help): Add entry for the new log
+	messages list.
+
+	* planner-publish.el: Fix bug in publishing of calendars.  The
+	finalization was happening before the header and footer were
+	inserted, which was incorrect.
+
+2007-04-09  Michael Olson  <mwolson@gnu.org>
+
+	* README: Use new link to online documentation.
+
+2007-04-08  Michael Olson  <mwolson@gnu.org>
+
+	* planner*.el: Replace plannerlove website with maintainer's
+	website.  Closes #8847.
+
+	* README: Mention maintainer's Planner page.  Remove plannerlove.
+
+2007-04-03  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Wanderlust): Update keybinding.
+
+	* planner-wl.el (planner-wl-insinuate): Change keybinding to C-c
+	C-t, closes #8361.
+
+2007-04-03  Michael Olson  <mwolson@gnu.org>
+
+	* planner-el.texi (Preface): Use John's on-line documentation for
+	Planner, rather than mine.
+
+2007-04-02  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Planning based on the Franklin-Covey Approach):
+	Correct MixedCase instructions, closes #8357. Other minor fixups
+	too.
+
+2007-03-04  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Installation): Mention what versions of emacsen
+	we're compatible with.
+
+2007-02-10  Michael Olson  <mwolson@gnu.org>
+
+	* planner.el (planner-setup-highlighting): Use quote instead of
+	backquote.  This should hopefully fix a weird error with ntemacs
+	23.0.0.1.
+
+2007-02-06  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Task Detail): Clarification, see #8366.
+	(Diary): We only bind a key in one of the two diary integration
+	methods. Closes #8359.
+
+2007-01-26  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Diary): Clarify that editing the diary section
+	on a planner page does not affect the diary file.
+
+2007-01-24  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Diary): Attach function name to keybinding
+	description.
+
+2007-01-14  John Sullivan  <john@wjsullivan.net>
+
+	* planner-gnus.el: Fix typo and change URL.
+	(planner-gnus-browse-url): Make it work in NoGnus and Gnus 5.11,
+	as suggested by Leo.
+
+2007-01-14  Michael Olson  <mwolson@gnu.org>
+
+	* planner.el: Make sure various planner-annotation functions show
+	up in the customize interface for `planner-annotation-functions'.
+	Thanks to Hadron Quark for the report.
+
+	* planner-el.texi (Installing from a Source Archive): Mention
+	creating an ~/elisp directory.  Also mention how to get Muse and
+	Remember.  Mention running "make clean".
+	(Installing from Arch): Document Remember archive usage.  Use "tla
+	update", not "tla replay".
+	(Installing from Debian): Mention remember-el.  Since I get asked
+	this so frequently, mention how to make the warning message go
+	away -- it's not an error!
+	(Timeclock): Shift xref to end of sentence so makeinfo doesn't
+	complain.
+	(Getting Help): Change URL to the emacswiki.org one.  So long,
+	plannerlove.  Thanks to Hadron Quark for pointing all this out.
+	(Tasks): Clarify wording of `C-c C-c' explanation.
+
+2007-01-07  John Sullivan  <john@wjsullivan.net>
+
+	* Remove erroneously committed ChangeLog entries.
+
+	* planner.el (planner-visit-link): We weren't passing the
+	other-window argument to muse. Thanks to Wanrong Lin for noticing.
+
+2007-01-05  John Sullivan  <john@wjsullivan.net>
+
+	* planner-timeclock.el (planner-schedule): Remove unnecessary
+	dependency.
+
+	* planner-el.texi (Timeclock): Fix typos.
+
+2006-12-26  Michael Olson  <mwolson@gnu.org>
+
+	* planner-publish.el: Associate finalize function with
+	:before-end, rather than :after.  That way, if Planner files are
+	included in another file by means of Muse's new <include> tag,
+	these transforms will still be applied.
+
+2006-11-29  Michael Olson  <mwolson@gnu.org>
+
+	* planner-publish.el (planner-publish-note-tag): Don't call
+	planner-replace-regexp-in-string if either the text or the regexp
+	are empty strings.  This should fix a bug with note publishing
+	that XEmacs users were experiencing.  Thanks to Cumhur Erkut for
+	the report.
+
+2006-11-04  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (PSVN): Document all options and dependencies.
+	(Hyperlinks): Reference Muse hyperlink syntax.
+
+	* planner.el (planner-search-notes-internal): Provide a full path
+	to the search results. Thanks to Michael Randall for reporting the
+	bug.
+	(planner-search-notes): Adjust display for new results return
+	format.
+
+	* planner-mhe.el: Remove unnecessary require. 
+
+2006-10-20  Michael Olson  <mwolson@gnu.org>
+
+	* planner-calendar.el: Adapt for nested tag support.  Thanks to
+	Charles philip Chan for noticing.
+
+2006-10-16  Adrian Aichner  <adrian@xemacs.org>
+
+	* timeclock.el: Typo fixes.
+	* timeclock.el (timeclock-history): New.
+	* timeclock.el (timeclock-use-history): New.
+	* timeclock.el (timeclock-log): Honor timeclock-use-history.
+	* timeclock.el (timeclock-read-moment): Provide error on
+	unexpected data in timeclock-file, going unnoticed until now.
+	* timeclock.el (timeclock-find-discrep): Report line number of
+	discrepancy to ease manual fixing.
+
+2006-10-16  Michael Olson  <mwolson@gnu.org>
+
+	* planner-authz.el (planner-authz-markup-tags): Adapt for nested
+	tag support.
+
+	* planner-notes-index.el: Use add-hook instead of add-to-list, in
+	case muse-publish has not been loaded yet.  Use
+	muse-publish-markup-tags instead of planner-markup-tags.
+
+	* planner-publish.el (planner-publish-markup-tags): Adapt for
+	nested tag support.  Make the <nested-section> tag nestable.
+
+	* planner-timeclock.el: Use add-hook instead of add-to-list, in
+	case muse-publish has not been loaded yet.  Use
+	muse-publish-markup-tags and muse-colors-markup-tags instead of
+	planner-markup-tags.
+	(planner-colors-timeclock-report-tag)
+	(planner-publish-timeclock-report-tag): New functions created from
+	planner-timeclock-report-tag.
+
+2006-09-26  Michael Olson  <mwolson@gnu.org>
+
+	* planner.el (planner-setup-highlighting): Don't quote
+	beginning-of-line.  This should fix a bug that was noticed in
+	recent Emacs 22 builds.
+
+2006-09-23  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Installing from Arch): Fix arch revision
+	number.
+
+2006-09-10  Michael Olson  <mwolson@gnu.org>
+
+	* planner-zoom.el (planner-zoom-iup, planner-zoom-idown)
+	(planner-zoom-inext, planner-zoom-iprev): Use planner-page-name
+	instead of buffer-name.  This fixes a match-string error, and
+	makes things work when you have muse-file-extension set to
+	something.
+
+2006-09-04  John Sullivan  <john@wjsullivan.net>
+
+	* planner.el (planner-list-tasks-with-status): Fix doc string.
+
+2006-08-26  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Publishing Planner pages): Clarify the
+	requirements and remove redundancies.
+	(Notes): Update and clarify information about remember-planner.
+
+2006-08-22  Magnus Henoch  <mange@freemail.hu>
+
+	* planner-gnus.el (planner-gnus-browse-url): Fix marking unread
+	messages as read problem.
+
+2006-08-20  John Sullivan  <john@wjsullivan.net>
+
+	* planner-el.texi (Concept Index): Standardize and add missing
+	module filenames as index entries.
+
+2006-08-18  Marko Schütz  <schutz_m@usp.ac.fj>
+
+	* planner-timeclock-summary-proj.el
+	(planner-timeclock-proj-entries): Fix bug that occurred when a
+	timeclock entry had no project name.
+
+2006-08-12  Michael Olson  <mwolson@gnu.org>
+
+	* Makefile (.PHONY): Split long line.
+
+	* AUTHORS: Bookkeeping.
+
+	* contrib/schedule.el: Update header.
+
+	* contrib/timeclock.el: Install Adrian's changes from 2006-08-01.
+	Note that this version of the file is not distributed with GNU
+	Emacs, but with Planner instead.
+
+2006-08-11  Michael Olson  <mwolson@gnu.org>
+
+	* planner-calendar.el (planner-calendar-published-file-href): Fix
+	potential error when the calendar for next month is empty.
+
+2006-08-08  Michael Olson  <mwolson@gnu.org>
+
+	* ChangeLog.1: Rename from ChangeLog.2004 to comply with standards
+	in the Emacs source tree.
+
+	* ChangeLog.2: Rename from ChangeLog.2005 to comply with standards
+	in the Emacs source tree.
+
+	* ChangeLog.3: New file created from the old ChangeLog.
+
+2006-08-01  Adrian Aichner  <adrian@xemacs.org>
+
+	* timeclock.el: Keep timeclock-file buffer around, so that an
+	encrypted timeclock-file does not have to be opened on each
+	clocking operation (requiring entry of encryption key).
+	* timeclock.el (timeclock-get-timeclock-file-buffer): New.
+	* timeclock.el (timeclock-log): Don't kill timeclock-file buffer.
+	* timeclock.el (timeclock-log-data): Use
+	`timeclock-get-timeclock-file-buffer', which avoids reading
+	timeclock-file, if it's already in a live buffer.
+	* timeclock.el (timeclock-find-discrep): Ditto.
+	* timeclock.el (timeclock-visit-timelog): Ditto.
+
+See ChangeLog.3 for earlier changes.
+
+;; Local Variables:
+;; coding: utf-8
+;; End:

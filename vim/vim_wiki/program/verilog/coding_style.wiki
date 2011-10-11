@@ -1,0 +1,84 @@
+ 
+==== Verilog Coding Style ====
+
+# Naming and Labeling Styles
+  * Using general naming conventions consistently
+    - Document the naming convention
+    - Use lowercase letters for all signal names, variable names, and port names.
+    - Use uppercase letters for names of constants and user-defined types.
+    - Use meaningful names for signals, ports, and parameters. Do not use ra for a RAM address bus, but use ram_addr.
+    - Use a consistent name for the clock signal, such as clk. If there is more than one clock, use clk as the prefix for all clock signals. (clk1, clk2, clk_interface).
+  * Using general naming conventions consistently
+    - Use the same name for all clock signals that are driven from the same source. 
+    - For active-low signals, end the signal with an underscore followed by a lowercase character (_b, _n)
+    - Use a consistent name for reset signals, such as rst. If the reset signal is active-low, use a name like, rst_n.
+    - When describing multibit buses, use a consistent ordering bits. Use [x:0] for Verilog, (x downto 0) for VHDL.
+    - When possible, use the same name or similar names for ports and signals that are connected.
+  * Using Named and Positional Association
+    - Incorrect
+      - BUFGS CLK_1 (.I(CLOCK_IN), CLOCK_OUT);
+    - Correct
+      - BUFGS CLK_1 (.I(CLOCK_IN), .O(CLOCK_OUT));
+  * Port maps and generic maps
+  * Rule
+    - Always use explicit mapping for ports and generics, using named association rather than positional association.
+
+# Do Not Use Hard-Coded Numeric Values
+  * Guideline
+    - Do not use hard-coded numeric values.
+  * Advantages using constants
+    - Constants are more intelligible as they associate a design intension with the value.
+  * Constant values can be changed in one place.
+  * Compilers can spot typos in constants but not in hard-coded values.
+# Constant Definition Files
+  * Guideline
+    - Keep constant and parameters definitions in one or a small number of files
+      with names such as *DesignName_constants.v* or *DesignName_parameters.v*
+# Specifying Constants
+  * Use constants in your design to substitute numbers to more meaningful names.
+  * The use of constants helps make a design more readable and portable.
+# Include Informational Headers in Source File
+  * Rule
+    - Include a commented, informational header at the top of every source file, including scripts.
+      # Legal statement: confidentiality, copyright, restrictions on reproduction
+      # Filename
+      # Author
+      # Description of function and list of key features of the module.
+      # Date the file was created
+      # Modification history, including date, name of modifier, and description
+        of the change
+# Use Comments
+  * Rule
+    - Use comments appropriately to explain processes, functions, and declarations of types and subtypes.
+  * Guideline
+    - Use comments to explain ports, signals, and variables, or group of signals or variables
+# Keep Commands on Separate Line 
+  * Rule 
+    - Use a separate line for each HDL statement. 
+    - More readable and maintainable.
+# Line Length & Indentation 
+  * Line length guideline 
+    - Keep the line length to 72 characters or less. 
+  * Indentation guidelines 
+    - Use indentation of 2 spaces. Larger indentation restricts line length when there are several levels of nesting. 
+    - Avoid of using tabs. Differences in editors and user setups make the positioning of tabs unpredictable and corrupt the intended indentation.
+# Port Ordering 
+  * Rule 
+    - Declare ports in a logical order, and keeps this order consistent throughout the design 
+  * Guidelines 
+    - Declare one port per line, with a comment following it (preferably on the same line) 
+    - For each instance, declare the ports in the following order 
+      # Inputs 
+        - Clocks 
+        - Resets 
+        - Enables 
+        - Other control signals 
+        - Data and address lines 
+      # Outputs 
+        - Clocks 
+        - Resets 
+        - Enables 
+        - Other control signals 
+        - Data 
+    -   Use comments to describe groups of ports.
+

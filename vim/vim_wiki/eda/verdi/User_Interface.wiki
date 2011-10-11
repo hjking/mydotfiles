@@ -1,0 +1,27 @@
+=User Interface=
+
+==Overview==
+The Verdi system is a multi-window application with an easy-to-use graphical user interface (GUI).
+
+==Common User Interface Features==
+The features described below are common to nWave, nTrace, nSchema, nState, and Flow View components.
+  -Window Banner
+  -Pull-down Menus
+  -Mnemonic Keys
+  -Bind Keys
+  -On-line Help
+  -Toolbars
+  -Mouse Operation
+  -Right Mouse Button Menus
+
+==nTrace==
+
+==nWave==
+
+==nSchema==
+
+==nState==
+
+==Flow View==
+
+==Transaction==

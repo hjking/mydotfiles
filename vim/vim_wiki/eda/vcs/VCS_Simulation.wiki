@@ -1,0 +1,31 @@
+= Simulation =
+== Getting Started ==
+  * *Setting Up Environment*
+    To run VCS, you need to set the following environment variables:
+    # *VCS_HOME* environment variable
+      Set the environment variable VCS_HOME to the path where VCS is installed as shown below:
+        - % *setenv VCS_HOME installation_path*
+    # *PATH* environment variable
+      Set your UNIX PATH variable to $VCS_HOME/bin as shown below:
+        - % *set path = ($VCS_HOME/bin $path)*
+      OR
+        - % *setenv PATH $VCS_HOME/bin:$PATH*
+    # *LM_LICENSE_FILE* environment variable
+      Set the license variable LM_LICENSE_FILE to your license file as shown below:
+        - % *setenv LM_LICENSE_FILE Location_to_the_license_file*
+
+  * *Using VCS*
+    VCS uses the following steps to compile and simulate Verilog designs:
+    # *Compiling the Design*
+      VCS provides you with the vcs executable to compile and elaborate the design. This executable compiles your design using the intermediate files in the design or work library, generates the object code, and statically links them to generate a binary simulation executable _simv_.
+    # *Simulating the Design*
+      Simulate your design by executing the binary simulation executable _simv_.
+
+  * *Basic Usage Model*
+    * *Compilation*
+      - % *vcs* [compile_options] Verilog_files
+    * *Simulation*
+      - % *simv* [run_options]
+
+
+== VCS Flow ==

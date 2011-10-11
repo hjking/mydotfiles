@@ -1,0 +1,105 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../style.css" />
+<title>verdi</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+
+<h1 id="toc_1">Introduction</h1>
+
+<h2 id="toc_1.1">Overview</h2>
+<p>
+The Verdi<sup><small>TM</small></sup> Automated Debug System is an advanced solution for debugging your digital designs that increases design productivity with complex System-on- Chip (SoC), ASIC, and FPGA designs. Traditional debug tools rely on structural information alone and the engineer's ability to infer the design's behavior from its structure. The Verdi system provides powerful technology to help you comprehend complex and unfamiliar design behavior, automate difficult and tedious debug processes, unify diverse and complicated design environments, and infer the dynamic behavior of a design over time.
+</p>
+
+<p>
+In addition to the standard features of a source code browser, schematics, waveforms, state machine diagrams, and waveform comparison (for comparing simulation results in FSDB format), the Verdi system includes advanced features for automatic tracing of signal activity using temporal flow views, assertion-based debug, power-aware debug, and debug and analysis of transaction and message data.
+</p>
+
+<p>
+The Verdi system enable engineers to locate, isolate, understand, and resolve bugs in a fraction of the time of traditional solutions. This maximizes the efficiency and productivity of expensive engineering resources, significantly reduces costs, and dramatically accelerates the process of getting silicon to market.
+</p>
+
+<h2 id="toc_1.2">Technology Overview</h2>
+
+<p>
+The Verdi system's unique architecture features powerful <strong>compilers, interfaces</strong>, <strong>databases</strong>, <strong>analysis engines</strong> and <strong>visualization</strong> tools in an integrated system for complete debugging.
+</p>
+
+<ul>
+<li>
+<strong>Compilers, Interfaces and Interoperability</strong>
+    The Verdi system has compilers for the most common design/verification languages and provides several interfaces for standard simulators.
+</li>
+<ul>
+<li>
+<strong>Compilers</strong>: The Verdi system provides compilers for the languages used in most design and verification environments, such as Verilog, VHDL and SystemVerilog (both design and verification code) and power code (CPF or UPF). As the code is analyzed and compiled, it is checked for syntax and semantic errors.
+</li>
+<li>
+<strong>Interfaces</strong>: The Verdi system's readers import industry-standard VCD and SDF data from all simulators and timing tools. The results are read in from the detection tool and stored in the Fast Signal Database (FSDB). Direct dumping to FSDB through the object files linked to a verification tool (simulator) results in smaller waveform files and flexible access to post-simulation data.
+</li>
+<li>
+<strong>Interoperability</strong>: The Verdi system's open, comprehensive, documented, and supported interfaces provide inter-operability with all popular logic simulators, as well as many formal verification and timing analysis applications. These interfaces also provide the ability to integrate other verification applications using Tcl and C-language application programming interfaces (APIs). SpringSoft has partnered with dozens of design and verification companies to integrate their tools with the Verdi system, which saves the time and expense of learning multiple interfaces by providing a consistent view throughout the entire verification and debug flow.
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+<strong>Databases</strong>
+    The Verdi system provides two databases.  All analysis engines and visualization tools use these databases.
+</li>
+<ul>
+<li>
+<strong>Knowledge Database (KDB)</strong>: As it compiles the design, the Verdi system uses its internal synthesis technology to recognize and extract specific structural, logical, and functional information about the design and stores the resulting detailed design information in the KDB.
+</li>
+<li>
+<strong>Fast Signal Database (FSDB)</strong>: The FSDB stores the simulation results, including transaction data and logged messages from SVTB or other applicable languages, in an efficient and compact format that allows data to be accessed quickly. SpringSoft provides the object files which can be linked to common simulators to store the simulation results in FSDB format directly. You can generate FSDB either from the provided routines or after reading and converting your VCD file. In addition, FSDB read/write API routines are provided for customers and partners to use.
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+<strong>Analysis Engines</strong>
+    Using the information from the KDB and FSDB, the Verdi system provides a set of analysis engines for different applications, including:
+</li>
+<ul>
+<li>
+<strong>Structure Analysis</strong>: analyze design structure to show how components are connected.
+</li>
+<li>
+<strong>Behavior Analysis</strong>: analyze design and simulation results to display design operation over time.
+</li>
+<li>
+<strong>Assertion Evaluation</strong>: answer questions and search for details about design operation from a previous simulation
+</li>
+<li>
+<strong>Transaction/Message Analysis</strong>: analyze transaction and message (log) data in the FSDB file and visualize in nWave and a spreadsheet view.
+</li>
+<li>
+<strong>Power State Evaluation</strong>: evaluate the power state based on the power intent description in the CPF/UPF and the values of related signals in the FSDB file.
+</li>
+</ul>
+</ul>
+
+<ul>
+<li>
+<strong>Visualization</strong>
+</li>
+<ul>
+<li>
+The Verdi system provides unparalleled temporal visualization capabilities in the form of the <em>Temporal Flow View</em>. This revolutionary tool extracts and displays multi-cycle temporal behavior from the design data and simulation results.
+</li>
+<li>
+In addition, the Verdi system includes state-of-the-art structure visualization and analysis tools: <a href="nTrace.html">nTrace</a> for source code, <a href="nWave.html">nWave</a> for waveforms, <a href="nSchema.html">nSchema</a> for schematic/ logic diagrams, and <a href="nState.html">nState</a> for finite state machines (FSMs). These tools focus on analyzing the structure of the design in the form of the signal relationships in the RTL, physical connections in schematic/logic diagrams, states and transitions in FSM bubble diagrams, and value changes in waveforms.
+</li>
+<li>
+The <em>Property Tools</em> window in the Verdi system provides integrated support for assertions and enables quick traversal from an assertion failure to the related design activity. While the <em>Transaction/Message Analyzer</em> enables debug and analysis at higher levels of abstraction from transaction or log information saved to the FSDB file. The Power Manager window provides visualization of the power intent and supports cross-probing with other Verdi system windows.
+</li>
+</ul>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>coding_style</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+ 
+<h4 id="toc_0.0.0.1">Verilog Coding Style</h4>
+
+<ol>
+<li>
+Naming and Labeling Styles
+</li>
+<ul>
+<li>
+Using general naming conventions consistently
+</li>
+<ul>
+<li>
+Document the naming convention
+</li>
+<li>
+Use lowercase letters for all signal names, variable names, and port names.
+</li>
+<li>
+Use uppercase letters for names of constants and user-defined types.
+</li>
+<li>
+Use meaningful names for signals, ports, and parameters. Do not use ra for a RAM address bus, but use ram_addr.
+</li>
+<li>
+Use a consistent name for the clock signal, such as clk. If there is more than one clock, use clk as the prefix for all clock signals. (clk1, clk2, clk_interface).
+</li>
+</ul>
+<li>
+Using general naming conventions consistently
+</li>
+<ul>
+<li>
+Use the same name for all clock signals that are driven from the same source. 
+</li>
+<li>
+For active-low signals, end the signal with an underscore followed by a lowercase character (_b, _n)
+</li>
+<li>
+Use a consistent name for reset signals, such as rst. If the reset signal is active-low, use a name like, rst_n.
+</li>
+<li>
+When describing multibit buses, use a consistent ordering bits. Use [x:0] for Verilog, (x downto 0) for VHDL.
+</li>
+<li>
+When possible, use the same name or similar names for ports and signals that are connected.
+</li>
+</ul>
+<li>
+Using Named and Positional Association
+</li>
+<ul>
+<li>
+Incorrect
+</li>
+<ul>
+<li>
+BUFGS CLK_1 (.I(CLOCK_IN), CLOCK_OUT);
+</li>
+</ul>
+<li>
+Correct
+</li>
+<ul>
+<li>
+BUFGS CLK_1 (.I(CLOCK_IN), .O(CLOCK_OUT));
+</li>
+</ul>
+</ul>
+<li>
+Port maps and generic maps
+</li>
+<li>
+Rule
+</li>
+<ul>
+<li>
+Always use explicit mapping for ports and generics, using named association rather than positional association.
+</li>
+</ul>
+</ul>
+</ol>
+
+<ol>
+<li>
+Do Not Use Hard-Coded Numeric Values
+</li>
+<ul>
+<li>
+Guideline
+</li>
+<ul>
+<li>
+Do not use hard-coded numeric values.
+</li>
+</ul>
+<li>
+Advantages using constants
+</li>
+<ul>
+<li>
+Constants are more intelligible as they associate a design intension with the value.
+</li>
+</ul>
+<li>
+Constant values can be changed in one place.
+</li>
+<li>
+Compilers can spot typos in constants but not in hard-coded values.
+</li>
+</ul>
+<li>
+Constant Definition Files
+</li>
+<ul>
+<li>
+Guideline
+</li>
+<ul>
+<li>
+Keep constant and parameters definitions in one or a small number of files
+      with names such as <strong>DesignName_constants.v</strong> or <strong>DesignName_parameters.v</strong>
+</li>
+</ul>
+</ul>
+<li>
+Specifying Constants
+</li>
+<ul>
+<li>
+Use constants in your design to substitute numbers to more meaningful names.
+</li>
+<li>
+The use of constants helps make a design more readable and portable.
+</li>
+</ul>
+<li>
+Include Informational Headers in Source File
+</li>
+<ul>
+<li>
+Rule
+</li>
+<ul>
+<li>
+Include a commented, informational header at the top of every source file, including scripts.
+</li>
+<ol>
+<li>
+Legal statement: confidentiality, copyright, restrictions on reproduction
+</li>
+<li>
+Filename
+</li>
+<li>
+Author
+</li>
+<li>
+Description of function and list of key features of the module.
+</li>
+<li>
+Date the file was created
+</li>
+<li>
+Modification history, including date, name of modifier, and description
+        of the change
+</li>
+</ol>
+</ul>
+</ul>
+<li>
+Use Comments
+</li>
+<ul>
+<li>
+Rule
+</li>
+<ul>
+<li>
+Use comments appropriately to explain processes, functions, and declarations of types and subtypes.
+</li>
+</ul>
+<li>
+Guideline
+</li>
+<ul>
+<li>
+Use comments to explain ports, signals, and variables, or group of signals or variables
+</li>
+</ul>
+</ul>
+<li>
+Keep Commands on Separate Line 
+</li>
+<ul>
+<li>
+Rule 
+</li>
+<ul>
+<li>
+Use a separate line for each HDL statement. 
+</li>
+<li>
+More readable and maintainable.
+</li>
+</ul>
+</ul>
+<li>
+Line Length &amp; Indentation 
+</li>
+<ul>
+<li>
+Line length guideline 
+</li>
+<ul>
+<li>
+Keep the line length to 72 characters or less. 
+</li>
+</ul>
+<li>
+Indentation guidelines 
+</li>
+<ul>
+<li>
+Use indentation of 2 spaces. Larger indentation restricts line length when there are several levels of nesting. 
+</li>
+<li>
+Avoid of using tabs. Differences in editors and user setups make the positioning of tabs unpredictable and corrupt the intended indentation.
+</li>
+</ul>
+</ul>
+<li>
+Port Ordering 
+</li>
+<ul>
+<li>
+Rule 
+</li>
+<ul>
+<li>
+Declare ports in a logical order, and keeps this order consistent throughout the design 
+</li>
+</ul>
+<li>
+Guidelines 
+</li>
+<ul>
+<li>
+Declare one port per line, with a comment following it (preferably on the same line) 
+</li>
+<li>
+For each instance, declare the ports in the following order 
+</li>
+<ol>
+<li>
+Inputs 
+</li>
+<ul>
+<li>
+Clocks 
+</li>
+<li>
+Resets 
+</li>
+<li>
+Enables 
+</li>
+<li>
+Other control signals 
+</li>
+<li>
+Data and address lines 
+</li>
+</ul>
+<li>
+Outputs 
+</li>
+<ul>
+<li>
+Clocks 
+</li>
+<li>
+Resets 
+</li>
+<li>
+Enables 
+</li>
+<li>
+Other control signals 
+</li>
+<li>
+Data 
+</li>
+</ul>
+</ol>
+<li>
+  Use comments to describe groups of ports.
+</li>
+</ul>
+</ul>
+</ol>
+
+</body>
+</html>

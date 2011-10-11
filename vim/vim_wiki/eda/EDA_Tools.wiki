@@ -1,0 +1,19 @@
+= EDA Tools =
+
+== [[vcs][VCS]] ==
+  # [[vcs/VCS Simulation][Simulation]]
+  # [[vcs/VCS Debug][Debug]]
+  # [[vcs/VCS Testbench][Testbench]]
+  # [[vcs/VCS Coverage][Coverage]]
+
+== [[verdi][VERDI]] ==
+  # [[verdi/User Interface][User Interface]]
+  # [[verdi/Linking And Dumping][linking and dumping]]
+
+== [[msim][ModelSim]] ==
+  # [[msim/msim Simulation][Simulation]]
+
+== [[dc][Design Compiler]] ==
+  # [[dc/dc intro][Introduction to Synthesis]]
+  # [[dc/dc setup][Setup,Libraries and Objects]]
+  # [[dc/Notes][Notes]]

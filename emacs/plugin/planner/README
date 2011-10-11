@@ -1,0 +1,168 @@
+
+This is the README file for Planner.
+
+Synopsis
+========
+
+Planner is an organizer and day planner for Emacs.  It helps you keep
+track of your pending and completed tasks, daily schedule, dates to
+remember, notes and inspirations.  It is a powerful tool not only for
+managing your time and productivity, but also for keeping within easy
+keystroke reach all of the information you need to be productive.  It
+can even publish reports charting your work for your personal web
+page, your conscience, or your soon-to-be-impressed boss.
+
+In fact, because it uses as its building blocks simple plain-text
+files, it is an incredibly modular and flexible tool capable of
+shaping and handling your personal information in ways whose variety
+is limited only by your imagination.  Because of this, Planner has a
+very active and generous community who regularly share their
+innovations with each other.  Many of these modules and extensions are
+included.
+
+License
+=======
+
+Planner is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 3, or (at your option) any
+later version.
+
+Planner is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License
+along with Planner; see the file COPYING.  If not, write to the Free
+Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Directory contents
+==================
+
+The directory structure is as follows.
+
+top level :: Planner source code and the documentation
+             (planner-el.texi).
+
+contrib :: Files that are not a part of Planner proper, but are useful
+           enough to be bundled with Planner.
+
+scripts :: Scripts that are used when compiling Planner.
+
+Getting started
+===============
+
+Compilation
+-----------
+
+This is an optional step, since Emacs Lisp source code does not
+necessarily have to be byte-compiled.  It will yield a speed increase,
+though.
+
+A working copy of Emacs or XEmacs is needed in order to compile
+Planner.  By default, the program that is installed with the name
+`emacs' will be used.
+
+You will also need to have Emacs Muse 3.03 or later installed.  See
+http://emacswiki.org/cgi-bin/wiki/PlannerModeQuickStart for current
+information on which release of Muse to get,
+
+If Muse is not present in the `~/elisp/muse' directory on your system,
+you will have to change the line that mentions Muse in
+`scripts/planner-build.el' to something like the following, replacing
+PATH with the path to Muse.
+
+(add-to-list 'load-path "PATH/lisp")
+
+If you want to use the `xemacs' binary to perform the compilation, you
+must copy `Makefile.defs.default' to `Makefile.defs' in the top-level
+directory, and then edit `Makefile.defs' as follows.  You can put
+either a full path to an Emacs or XEmacs binary or just the command
+name, as long as it is in the PATH.  Depending on your setup, changes
+to the PREFIX, ELISPDIR, and/or INFODIR variables may also need to be
+made.
+
+EMACS    = xemacs
+SITEFLAG = -no-site-file
+# Edit the section as necessary
+install_info = install-info --section "XEmacs 21.4" $(1).info \
+        $(INFODIR)/dir || :
+
+In order for Planner to be byte-compiled properly, you will need to
+specify the paths to Muse and other external software programs in
+`scripts/planner-build.el'.  If a file fails to be byte-compiled, only
+its source will be installed.
+
+Running `make' should compile the Planner source files in the `lisp'
+directory.
+
+Installation
+------------
+
+Planner may be installed into your file hierarchy by doing the
+following.
+
+Copy `Makefile.defs.default' to `Makefile.defs' in the top-level
+directory, if you haven't done so already.  Then edit the
+`Makefile.defs' file so that ELISPDIR points to where you want the
+source and compiled Muse files to be installed and INFODIR indicates
+where to put the Muse manual.  As mentioned earlier, you will want to
+edit EMACS and SITEFLAG as shown in the Compilation section if you are
+using XEmacs.
+
+If you are installing Planner on a Debian system, you might want to
+change the value of INSTALLINFO as specified in `Makefile.defs'.
+
+If you wish to install Planner to different locations than the
+defaults specify, edit `Makefile.defs' accordingly.
+
+Run `make' as a normal user.
+
+Run `make install' as the root user if you have chosen installation
+locations that require this.
+
+Insinuation
+-----------
+
+Two things need to happen in order for Planner to be usable with your
+version of Emacs or XEmacs.
+
+ 1. The location of the Planner directory needs to be added to the load
+    path so that your variant of Emacs can find it.
+
+ 2. You need to load whichever Planner files you wish to make use of.
+
+A quick example that accomplishes both of these follows.
+
+;; Add this to your .emacs or .xemacs/init.el file.
+(add-to-list 'load-path "/path/to/planner")
+(require 'planner)
+
+Documentation
+-------------
+
+The Planner manual may be generated by running `make doc'.
+
+It will produce two files: an Info file called `planner-el.info' and
+an HTML document called `planner-el.html'.
+
+This manual is also available online in several forms at
+http://www.wjsullivan.net/static/doc/planner/.
+
+Further Documentation
+=====================
+
+The maintainer of Planner has a webpage for it at
+http://www.wjsullivan.net/PlannerMode.html.
+
+Bugs may be reported using the Planner Bug-Tracker at
+https://gna.org/bugs/?group=planner-el.
+
+Planner has a collaborative wiki at
+http://emacswiki.org/cgi-bin/wiki/PlannerMode.
+
+Mailing lists for Planner and some related software exists; consult
+https://gna.org/mail/?group=planner-el for details on joining them or
+viewing their contents.

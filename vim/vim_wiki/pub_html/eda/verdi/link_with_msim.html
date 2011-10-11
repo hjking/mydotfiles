@@ -1,0 +1,314 @@
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="../../style.css" />
+<title>link_with_msim</title>
+<meta http-equiv="Content-Type" content="text/html; charset=cp936" />
+</head>
+<body>
+
+<h2 id="toc_0.1">Verdi version before 201001</h2>
+<h3 id="toc_0.1.1">ModelSim (6.1 or Later Versions) - Verilog Only</h3>
+
+<p>
+The Novas object file for FSDB dumping supports signal dumping in pure 
+Verilog designs with <a href="../msim.html">ModelSim</a>. To dump Verilog signals to the FSDB files, you 
+can use the FSDB dumping commands at the vsim prompt or in the Verilog code.
+</p>
+
+<p>
+The related files for FSDB dumping of pure Verilog designs with <a href="../msim.html">ModelSim</a> are 
+in the <strong>&lt;NOVAS_INST_DIR&gt;/share/PLI/modelsim_pli??/${PLATFORM}</strong> directory 
+(the ?? varies for different versions). The FSDB dumper is a shared library 
+file called <em>libpli.so</em>. You have to load it in <em>vsim</em> when running the <a href="../msim.html">ModelSim</a> simulation.
+</p>
+
+<h4 id="toc_0.1.1.1">Linking Novas Object Files</h4>
+<p>
+For vsim to load the FSDB dumper, run the following steps.
+</p>
+
+<h5 id="toc_0.1.1.1.1">Specify Shared Library Search Path</h5>
+<p>
+Set the system shared library search path to include the directory of the Novas 
+object file for FSDB dumping (<a href="../msim.html">ModelSim</a> 6.0 is used as an example).
+</p>
+
+<p>
+<strong>Solaris/Linux Platforms</strong>
+</p>
+
+<p>
+<code>&gt; setenv LD_LIBRARY_PATH ${NOVAS_INST_DIR}/share/PLI/modelsim_pli61/${PLATFORM}:$LD_LIBRARY_PATH</code>
+</p>
+
+<p>
+<strong>IBM Platforms</strong>
+</p>
+
+<p>
+<code>&gt; setenv SHLIB_PATH ${NOVAS_INST_DIR}/share/PLI/modelsim_pli61/${PLATFORM}:$SHLIB_PATH</code>
+</p>
+
+<p>
+<strong>NOTE</strong>: Do not load the libpli.so (the FSDB dumper for pure Verilog designs) and 
+<strong>novas_fli.so</strong> (the FSDB dumper for Mixed-HDL/VHDL designs) files simultaneously 
+when running a <a href="../msim.html">ModelSim</a> simulation. Therefore, if you are dumping pure Verilog 
+designs, point LD_LIBRARY_PATH to the libpli.so file and if you are dumping 
+mixed-language designs, point LD_LIBRARY_PATH to the novas_fli.so file.
+</p>
+
+<h5 id="toc_0.1.1.1.2">Compile and Include Novas FSDB Dumping Commands</h5>
+
+<p>
+This is optional; however, if you want to invoke FSDB dumping commands at the 
+vsim prompt, or run the <a href="../msim.html">ModelSim</a> simulation using interactive mode in Novas, 
+you must compile the novas_vlog.v file into the design library. You can find 
+this Verilog file in the &lt;NOVAS_INST_DIR&gt;/share/PLI/modelsim_pli??/${PLATFORM} directory.
+</p>
+
+<pre>
+&gt; vlog -work your_working_lib \
+${NOVAS_INST_DIR}/share/PLI/modelsim_pli61/${PLATFORM}/
+novas_vlog.v
+</pre>
+
+<h5 id="toc_0.1.1.1.3">Load the FSDB Dumper</h5>
+<p>
+There are three methods to load the FSDB dumper libpli.so (or libpli.sl) into 
+vsim during simulation.
+</p>
+<ul>
+<li>
+<strong>Method 1: -pli Option</strong>
+</li>
+</ul>
+<p>
+Use the -pli option with vsim. For example:
+</p>
+<ul>
+<li>
+<strong>Solaris/Linux Platforms</strong>
+</li>
+</ul>
+<p>
+<code>&gt; vsim -pli libpli.so novas_vlog top ...</code>
+</p>
+<ul>
+<li>
+<strong>IBM Platforms</strong>
+</li>
+</ul>
+<p>
+<code>&gt; vsim -pli libpli.sl novas_vlog top ...</code>
+</p>
+
+<ul>
+<li>
+<strong>Method 2: veriuser Entry</strong>
+</li>
+</ul>
+<p>
+Set the veriuser entry in the <em>modelsim.ini</em> file. For example:
+</p>
+<ol>
+<li>
+<strong>Solaris/Linux Platforms</strong>
+<pre>
+[vsim]
+...
+veriuser=libpli.so
+</pre>
+</li>
+</ol>
+
+<ol>
+<li>
+<strong>IBM Platforms</strong>
+<pre>
+[vsim]
+...
+veriuser=libpli.sl
+</pre>
+</li>
+</ol>
+
+<ul>
+<li>
+<strong>Method 3: PLIOBJS Environment Variable</strong>
+</li>
+</ul>
+<p>
+Set the PLIOBJS system environment variable before running vsim. For example:
+</p>
+
+<ul>
+<li>
+<strong>Solaris/Linux Platforms</strong>
+</li>
+</ul>
+
+<p>
+<code>&gt; setenv PLIOBJS "libpli.so"</code>
+</p>
+
+<ul>
+<li>
+<strong>IBM Platforms</strong>
+</li>
+</ul>
+
+<p>
+<code>&gt; setenv PLIOBJS "libpli.sl"</code>
+</p>
+
+<p>
+If you want to invoke FSDB dumping commands at the vsim prompt, or run the 
+<a href="../msim.html">ModelSim</a> simulation using interactive mode in Novas, you must Compile and 
+Include Novas FSDB Dumping Commands to compile novas_vlog.v into the 
+design library. Then specify novas_vlog as one of the top-level modules when 
+running vsim. For example:
+</p>
+
+<p>
+<strong>Solaris/Linux Platforms</strong>
+</p>
+
+<p>
+<code>&gt; vsim -pli libpli.so -lib your_working_lib novas_vlog top ...</code>
+</p>
+
+<p>
+<strong>IBM Platforms</strong>
+</p>
+
+<p>
+<code>&gt; vsim -pli libpli.sl -lib your_working_lib novas_vlog top ...</code>
+</p>
+
+<p>
+When running interactive mode in Novas, you can also specify novas_vlog in the 
+Options field on the Simulation page of the Preferences form (invoked from 
+<em>nTrace</em> under <em>Tools -&gt; Preferences</em>).
+</p>
+
+
+<h2 id="toc_0.2">Verdi version after 201001</h2>
+
+<p>
+<strong>NOTE</strong>: A <strong>novas_dump.log</strong> file gets created during simulation to record some essential 
+simulation/dumping information, such as simulation options used, environment variable 
+settings, and Novas object directories linked. This log file is needed to report a new 
+unified dumper related issue effectively.
+</p>
+
+<h3 id="toc_0.2.1">ModelSim (6.4 or later version)</h3>
+<p>
+The Novas object file for FSDB dumping supports signal dumping in pure Verilog 
+designs with <a href="../msim.html">ModelSim</a>. To dump Verilog signals to the FSDB files, you can 
+use the FSDB dumping commands at the vsim prompt or in the Verilog code.
+</p>
+
+<p>
+The related files for FSDB dumping of pure Verilog designs with <a href="../msim.html">ModelSim</a> are in 
+the <strong>&lt;NOVAS_INST_DIR&gt;/share/PLI/MODELSIM/${PLATFORM}</strong> directory. The FSDB dumper 
+is a shared library file called novas_fli.so. It has to be loaded in <em>vsim</em> when 
+running the <a href="../msim.html">ModelSim</a> simulation.
+</p>
+
+<p>
+To link the Novas object files for FSDB dumping with <a href="../msim.html">ModelSim</a>, specify the shared 
+library path and then load the FSDB dumper.
+</p>
+
+<h4 id="toc_0.2.1.1">Specify Shared Library Search Path</h4>
+<p>
+Set the system shared library search path to include the directory of the Novas 
+object file for FSDB dumping.
+</p>
+
+<p>
+<strong>Solaris/Linux Platforms</strong>
+</p>
+
+<p>
+<code>&gt; setenv LD_LIBRARY_PATH ${NOVAS_INST_DIR}/share/PLI/MODELSIM/${PLATFORM}: $LD_LIBRARY_PATH</code>
+</p>
+
+<h4 id="toc_0.2.1.2">Load the FSDB Dumper</h4>
+<p>
+There are three methods to load the FSDB dumper novas_fli.so into vsim during simulation.
+</p>
+
+<ul>
+<li>
+<strong>Method 1: -pli Option</strong>
+</li>
+</ul>
+<p>
+Use the -pli option with vsim. For example:
+</p>
+
+<p>
+<strong>Solaris/Linux Platforms</strong>
+</p>
+
+<p>
+<code>&gt; vsim -pli novas_fli.so top ...</code>
+</p>
+
+<ul>
+<li>
+<strong>Method 2: veriuser Entry</strong>
+</li>
+</ul>
+<p>
+Set the veriuser entry in the <em>modelsim.ini</em> file. For example:
+</p>
+
+<p>
+<strong>Solaris/Linux Platforms</strong>
+</p>
+<pre>
+[vsim]
+...
+veriuser=novas_fli.so
+</pre>
+
+<ul>
+<li>
+<strong>Method 3: PLIOBJS Environment Variable</strong>
+</li>
+</ul>
+<p>
+Set the PLIOBJS system environment variable before running vsim. For example:
+</p>
+
+<p>
+<strong>Solaris/Linux Platforms</strong>
+</p>
+
+<p>
+<code>&gt; setenv PLIOBJS "novas_fli.so" </code>
+</p>
+
+<p>
+When the linking is successful, a Novas banner will be shown to indicate the 
+coordinating FSDB dumper engine is loading; otherwise, a failed to load message 
+is shown instead.
+</p>
+
+<p>
+<strong>Succeeds:</strong>
+</p>
+<blockquote>
+<strong>Novas</strong> Loading libssocre_mtiXXX.so
+</blockquote>
+<p>
+<strong>Fails:</strong>
+</p>
+<blockquote>
+<strong>Novas</strong> Failed to load FSDB dumper.
+</blockquote>
+
+</body>
+</html>
