@@ -3,13 +3,14 @@
 ;; Description: Setting for ibuffer.el
 ;; Author: Hong Jin
 ;; Created: 2010-12-09 10:00
-;; Last Updated: 2011-01-17 15:36:36
+;; Last Updated: 2011-10-13 14:32:56
 ;;
 (message ">>>>> Loading [ ibuffer ] Customizations File ....")
 (require 'ibuffer)
 (require 'ibuf-ext nil t)
 (when (featurep 'ibuffer)
   (global-set-key (kbd "C-x C-b")   'ibuffer)
+  (autoload 'ibuffer "ibuffer" "List buffers." t)
   (define-key ibuffer-mode-map "r"  'ywb-ibuffer-rename-buffer)
   (define-key ibuffer-mode-map (kbd "C-x C-f")  'ywb-ibuffer-find-file)
   (define-key ibuffer-mode-map " "  'scroll-up)
@@ -41,6 +42,9 @@
         ("s" ((mode . shell-mode)))
         ("i" ((mode . image-mode)))
         ("h" ((mode . html-mode)))
+        ("emacs" (or
+             (name . "^\\*scratch\\*$")
+             (name . "^\\*Messages\\*$")))
         ("gnus" ((or (mode . message-mode)
                      (mode . mail-mode)
                      (mode . gnus-group-mode)
